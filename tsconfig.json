@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "jsx": "react",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
