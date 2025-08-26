@@ -1,25 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import CameraState from "./cameraState";
-import { MAX_ZOOM, MIN_ZOOM } from "./constants";
+import Camera from "@/types/camera";
+import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 
-const initialState: CameraState = {
-  x: 0,
-  y: 0,
+const initialState: Camera = {
+  offsetX: 0,
+  offsetY: 0,
   zoom: 1,
 };
 
 export const cameraSlice = createSlice({
   name: "camera",
-  initialState: initialState,
+  initialState,
   reducers: {
     zoomCamera: (state, action) => {
-      state.zoom *= action.payload;
-      state.zoom = Math.max(state.zoom, MIN_ZOOM);
-      state.zoom = Math.min(state.zoom, MAX_ZOOM);
+      state.zoom = action.payload.zoom;
+      state.offsetX += action.payload.dx;
+      state.offsetY += action.payload.dy;
     },
     moveCamera: (state, action) => {
-      state.x += action.payload.dx;
-      state.y += action.payload.dy;
+      state.offsetX += action.payload.dx;
+      state.offsetY += action.payload.dy;
     },
   },
 });
