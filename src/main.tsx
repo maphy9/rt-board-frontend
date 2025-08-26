@@ -3,11 +3,11 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "@/state/store";
-import App from "@/App";
+import Board from "@/components/Board/Board";
 import React from "react";
 import "@/index.css";
 
-const router = createBrowserRouter([{ path: "/", element: <App /> }]);
+const router = createBrowserRouter([{ path: "/", element: <Board /> }]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

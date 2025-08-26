@@ -1,27 +1,25 @@
+import { pbkdf2 } from "crypto";
 import Camera from "./camera";
 
-export default class Point {
+export default interface Point {
   x: number;
   y: number;
+}
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
+export function toCameraPoint(point: Point, camera: Camera): Point {
+  const x = (point.x - camera.offsetX) / camera.zoom;
+  const y = (point.y - camera.offsetY) / camera.zoom;
+  return { x, y };
+}
 
-  toCameraPoint(camera: Camera) {
-    const cameraX = (this.x - camera.offsetX) / camera.zoom;
-    const cameraY = (this.y - camera.offsetY) / camera.zoom;
-    return new Point(cameraX, cameraY);
-  }
+export function toRealPoint(point: Point, camera: Camera): Point {
+  const x = point.x * camera.zoom + camera.offsetX;
+  const y = point.y * camera.zoom + camera.offsetY;
+  return { x, y };
+}
 
-  toRealPoint(camera: Camera) {
-    const realX = this.x * camera.zoom + camera.offsetX;
-    const realY = this.y * camera.zoom + camera.offsetY;
-    return new Point(realX, realY);
-  }
-
-  getOffset(point: Point) {
-    return new Point(this.x - point.x, this.y - point.y);
-  }
+export function getOffset(p1: Point, p2: Point): Point {
+  const x = p1.x - p2.x;
+  const y = p1.y - p2.y;
+  return { x, y };
 }

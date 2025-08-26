@@ -1,23 +1,18 @@
 import Camera from "./camera";
 
-export default class Size {
+export default interface Size {
   width: number;
   height: number;
+}
 
-  constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
-  }
+export function toCameraSize(size: Size, camera: Camera) {
+  const width = size.width / camera.zoom;
+  const height = size.height / camera.zoom;
+  return { width, height };
+}
 
-  toCameraSize(camera: Camera) {
-    const cameraWidth = this.width / camera.zoom;
-    const cameraHeight = this.height / camera.zoom;
-    return new Size(cameraWidth, cameraHeight);
-  }
-
-  toRealSize(camera: Camera) {
-    const realWidth = this.width * camera.zoom;
-    const realHeight = this.height * camera.zoom;
-    return new Size(realWidth, realHeight);
-  }
+export function toRealSize(size: Size, camera: Camera) {
+  const width = size.width * camera.zoom;
+  const height = size.height * camera.zoom;
+  return { width, height };
 }

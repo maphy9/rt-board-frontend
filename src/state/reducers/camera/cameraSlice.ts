@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Camera from "@/types/camera";
-import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 
 const initialState: Camera = {
   offsetX: 0,

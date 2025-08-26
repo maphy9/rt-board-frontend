@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cameraReducer from "@/state/reducers/camera/cameraSlice";
+import boardObjectsReducer from "@/state/reducers/boardObjects/boardObjectsSlice";
 
 export const store = configureStore({
   reducer: {
     camera: cameraReducer,
+    boardObjects: boardObjectsReducer,
   },
 });
 
