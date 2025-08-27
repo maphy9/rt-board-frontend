@@ -6,17 +6,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextObject from "@/types/textObject";
 import TextObjectComponent from "./TextObject";
-import {
-  clearSelection,
-  selectObject,
-} from "@/state/reducers/boardObjects/boardObjectsSlice";
 import styles from "./styles.module.css";
-import {
-  setIsDragging,
-  setIsHoldingMouse,
-  setIsPanning,
-} from "@/state/reducers/input/inputSlice";
 import Input from "@/types/input";
+import useBoardObjectMouse from "@/hooks/useBoardObjectMouse";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -28,21 +20,7 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
     child = <TextObjectComponent textObject={boardObject as TextObject} />;
   }
 
-  const handleMouseUp = (event) => {
-    event.stopPropagation();
-    if (event.button === 1) {
-      dispatch(setIsPanning(false));
-    } else if (event.button === 0) {
-      if (event.shiftKey) {
-        dispatch(selectObject(boardObject.id));
-      } else if (!input.isDragging) {
-        dispatch(clearSelection());
-        dispatch(selectObject(boardObject.id));
-      }
-      dispatch(setIsDragging(false));
-      dispatch(setIsHoldingMouse(false));
-    }
-  };
+  const { handleMouseUp } = useBoardObjectMouse(boardObject);
 
   const position = toCameraPoint(boardObject.position, camera);
 
