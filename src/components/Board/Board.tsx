@@ -10,16 +10,24 @@ import {
   addTextObject,
   clearSelection,
   moveSelectedObjects,
+  selectObjectsInRectangle,
 } from "@/state/reducers/boardObjects/boardObjectsSlice";
-import { getOffset, toRealPoint } from "@/types/point";
+import { getOffset, toCameraPoint, toRealPoint } from "@/types/point";
 import BoardObjectComponent from "@/components/BoardObjects/BoardObject";
 import Input from "@/types/input";
 import {
   setIsDragging,
   setIsHoldingMouse,
   setIsPanning,
+  setIsSelecting,
   setMousePosition,
+  setSelectionStart,
 } from "@/state/reducers/input/inputSlice";
+import {
+  createRectangle,
+  getRectangleSize,
+  toCameraRectangle,
+} from "@/types/rectangle";
 
 function Board() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -31,17 +39,26 @@ function Board() {
 
   const handleMouseMove = (event) => {
     event.preventDefault();
+    const { x: oldX, y: oldY } = input.mousePosition;
     const { clientX: x, clientY: y } = event;
-    const dx = (input.mousePosition.x - x) * camera.zoom;
-    const dy = (input.mousePosition.y - y) * camera.zoom;
+    const dx = (oldX - x) * camera.zoom;
+    const dy = (oldY - y) * camera.zoom;
     dispatch(setMousePosition({ x, y }));
     if (input.isPanning) {
       dispatch(moveCamera({ dx, dy }));
       return;
     }
     if (input.isHoldingMouse) {
-      dispatch(setIsDragging(true));
-      dispatch(moveSelectedObjects({ dx, dy }));
+      if (
+        Object.keys(boardObjects.selected).length === 0 &&
+        !input.isSelecting
+      ) {
+        dispatch(setIsSelecting(true));
+        dispatch(setSelectionStart(toRealPoint({ x: oldX, y: oldY }, camera)));
+      } else if (!input.isSelecting) {
+        dispatch(setIsDragging(true));
+        dispatch(moveSelectedObjects({ dx, dy }));
+      }
     }
   };
 
@@ -67,19 +84,33 @@ function Board() {
     }
   };
 
+  const realSelectionRectangle = createRectangle(
+    input.selectionStart,
+    toRealPoint(input.mousePosition, camera)
+  );
+
   const handleMouseUp = (event) => {
     if (event.button === 1) {
       dispatch(setIsPanning(false));
       return;
     }
     if (event.button === 0) {
-      if (!input.isDragging) {
+      if (input.isSelecting) {
+        if (!event.shiftKey) {
+          dispatch(clearSelection());
+        }
+        dispatch(selectObjectsInRectangle(realSelectionRectangle));
+        dispatch(setIsSelecting(false));
+      } else if (!input.isDragging) {
         dispatch(clearSelection());
       }
       dispatch(setIsDragging(false));
       dispatch(setIsHoldingMouse(false));
     }
   };
+
+  const selectionRectangle = toCameraRectangle(realSelectionRectangle, camera);
+  const selectionSize = getRectangleSize(selectionRectangle);
 
   return (
     <div
@@ -103,6 +134,21 @@ function Board() {
         const boardObject = boardObjects.objects[id];
         return <BoardObjectComponent boardObject={boardObject} />;
       })}
+
+      {input.isSelecting ? (
+        <div
+          style={{
+            position: "absolute",
+            top: selectionRectangle.start.y,
+            left: selectionRectangle.start.x,
+            width: selectionSize.width,
+            height: selectionSize.height,
+            border: "1px solid black",
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

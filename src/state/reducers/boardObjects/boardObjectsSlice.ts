@@ -1,4 +1,6 @@
 import BoardObjects from "@/types/boardObjects";
+import { addOffset } from "@/types/point";
+import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
 import { createTextObject } from "@/types/textObject";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -22,6 +24,23 @@ export const boardObjectsSlice = createSlice({
       const id = action.payload;
       state.selected[id] = true;
       state.objects[id].isSelected = true;
+    },
+    selectObjectsInRectangle: (state, action) => {
+      const selectionRectangle = action.payload;
+      for (const id in state.objects) {
+        const object = state.objects[id];
+        const objectRectangle = createRectangle(
+          object.position,
+          addOffset(object.position, {
+            x: object.size.width,
+            y: object.size.height,
+          })
+        );
+        if (areRectanglesIntersecting(selectionRectangle, objectRectangle)) {
+          state.selected[id] = true;
+          state.objects[id].isSelected = true;
+        }
+      }
     },
     unselectObject: (state, action) => {
       const id = action.payload;
@@ -50,6 +69,7 @@ export const {
   unselectObject,
   clearSelection,
   moveSelectedObjects,
+  selectObjectsInRectangle,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

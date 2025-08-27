@@ -5,4 +5,6 @@ export default interface Input {
   isPanning: boolean;
   isHoldingMouse: boolean;
   isDragging: boolean;
+  isSelecting: boolean;
+  selectionStart: Point;
 }
