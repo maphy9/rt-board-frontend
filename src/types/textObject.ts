@@ -1,4 +1,4 @@
-import BoardObject from "./BoardObject";
+import BoardObject from "./boardObject";
 import Point from "./point";
 
 export default interface TextObject extends BoardObject {

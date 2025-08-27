@@ -1,4 +1,4 @@
-import Input from "@/types/Input";
+import Input from "@/types/input";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: Input = {

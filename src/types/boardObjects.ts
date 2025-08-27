@@ -1,4 +1,4 @@
-import BoardObject from "./BoardObject";
+import BoardObject from "./boardObject";
 
 export default interface BoardObjects {
   objects: Record<number, BoardObject>;

@@ -5,7 +5,7 @@ import { moveCamera, zoomCamera } from "@/state/reducers/camera/cameraSlice";
 import Camera from "@/types/camera";
 import styles from "./styles.module.css";
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
-import BoardObjects from "@/types/BoardObjects";
+import BoardObjects from "@/types/boardObjects";
 import {
   addTextObject,
   clearSelection,
@@ -13,7 +13,7 @@ import {
 } from "@/state/reducers/boardObjects/boardObjectsSlice";
 import { getOffset, toRealPoint } from "@/types/point";
 import BoardObjectComponent from "@/components/BoardObjects/BoardObject";
-import Input from "@/types/Input";
+import Input from "@/types/input";
 import {
   setIsDragging,
   setIsHoldingMouse,

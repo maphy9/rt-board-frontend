@@ -1,10 +1,10 @@
 import { RootState } from "@/state/store";
-import BoardObject from "@/types/BoardObject";
+import BoardObject from "@/types/boardObject";
 import Camera from "@/types/camera";
 import { toCameraPoint } from "@/types/point";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TextObject from "@/types/TextObject";
+import TextObject from "@/types/textObject";
 import TextObjectComponent from "./TextObject";
 import {
   clearSelection,
@@ -16,7 +16,7 @@ import {
   setIsHoldingMouse,
   setIsPanning,
 } from "@/state/reducers/input/inputSlice";
-import Input from "@/types/Input";
+import Input from "@/types/input";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);

@@ -1,7 +1,7 @@
 import { RootState } from "@/state/store";
 import Camera from "@/types/camera";
 import { toCameraSize } from "@/types/size";
-import TextObject from "@/types/TextObject";
+import TextObject from "@/types/textObject";
 import React from "react";
 import { useSelector } from "react-redux";
 

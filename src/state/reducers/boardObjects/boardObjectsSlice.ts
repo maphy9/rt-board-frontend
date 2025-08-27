@@ -1,5 +1,5 @@
-import BoardObjects from "@/types/BoardObjects";
-import { createTextObject } from "@/types/TextObject";
+import BoardObjects from "@/types/boardObjects";
+import { createTextObject } from "@/types/textObject";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: BoardObjects = {
