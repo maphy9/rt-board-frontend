@@ -16,12 +16,12 @@ export const cameraSlice = createSlice({
       state.offsetX += action.payload.dx;
       state.offsetY += action.payload.dy;
     },
-    moveCamera: (state, action) => {
+    panCamera: (state, action) => {
       state.offsetX += action.payload.dx;
       state.offsetY += action.payload.dy;
     },
   },
 });
 
-export const { zoomCamera, moveCamera } = cameraSlice.actions;
+export const { zoomCamera, panCamera } = cameraSlice.actions;
 export default cameraSlice.reducer;

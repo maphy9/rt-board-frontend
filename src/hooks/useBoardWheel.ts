@@ -6,6 +6,10 @@ import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";
 import { useDispatch, useSelector } from "react-redux";
 
+function scaleZoom(zoom: number, zoomFactor: number): number {
+  return Math.min(MAX_ZOOM, Math.max(zoom * zoomFactor, MIN_ZOOM));
+}
+
 export default function useBoardWheel() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const input: Input = useSelector((state: RootState) => state.input);
@@ -14,10 +18,7 @@ export default function useBoardWheel() {
   const handleWheel = (event) => {
     const { deltaY } = event;
     const zoomFactor = deltaY > 0 ? 1.05 : 0.95;
-    const newZoom = Math.min(
-      MAX_ZOOM,
-      Math.max(camera.zoom * zoomFactor, MIN_ZOOM)
-    );
+    const newZoom = scaleZoom(camera.zoom, zoomFactor);
     const newCamera = { ...camera, zoom: newZoom };
     const mouseBefore = toRealPoint(input.mousePosition, camera);
     const mouseAfter = toRealPoint(input.mousePosition, newCamera);

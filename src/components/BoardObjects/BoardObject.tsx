@@ -3,29 +3,29 @@ import BoardObject from "@/types/boardObject";
 import Camera from "@/types/camera";
 import { toCameraPoint } from "@/types/point";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import TextObject from "@/types/textObject";
 import TextObjectComponent from "./TextObject";
 import styles from "./styles.module.css";
-import Input from "@/types/input";
 import useBoardObjectMouse from "@/hooks/useBoardObjectMouse";
+import { useSelector } from "react-redux";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
-  const input: Input = useSelector((state: RootState) => state.input);
-  const dispatch = useDispatch();
 
   let child = <span>Something went wrong</span>;
   if (boardObject.type == "text") {
     child = <TextObjectComponent textObject={boardObject as TextObject} />;
   }
 
-  const { handleMouseUp } = useBoardObjectMouse(boardObject);
+  const { handleMouseUp, handleMouseDown, handleMouseMove } =
+    useBoardObjectMouse(boardObject);
 
   const position = toCameraPoint(boardObject.position, camera);
 
   return (
     <div
+      onMouseMove={handleMouseMove}
+      onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       className={styles.boardObject}
       style={{
