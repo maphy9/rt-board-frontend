@@ -6,7 +6,6 @@ export default interface TextObject extends BoardObject {
   fontSize: number;
   fontStyle: string;
   color: string;
-  isEditing: boolean;
 }
 
 export function createTextObject(position: Point, text: string): TextObject {

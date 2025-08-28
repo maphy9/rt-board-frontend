@@ -1,7 +1,5 @@
-import {
-  setIsEditing,
-  setText,
-} from "@/state/reducers/boardObjects/boardObjectsSlice";
+import useEditEvents from "@/hooks/useEditEvents";
+import { setText } from "@/state/reducers/boardObjects/boardObjectsSlice";
 import { RootState } from "@/state/store";
 import Camera from "@/types/camera";
 import { toCameraSize } from "@/types/size";
@@ -16,22 +14,16 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
   const size = toCameraSize(textObject.size, camera);
   const fontSize = textObject.fontSize / camera.zoom;
 
-  const handleDoubleClick = (event) => {
-    dispatch(setIsEditing({ id: textObject.id, isEditing: true }));
-  };
-
   const handleChange = (event) => {
     const text = event.target.value;
     dispatch(setText({ id: textObject.id, text }));
   };
 
-  const handleBlur = (event) => {
-    dispatch(setIsEditing({ id: textObject.id, isEditing: false }));
-  };
+  const { handleBlur, handleDoubleClick } = useEditEvents(textObject);
 
   return (
     <div
-      onDoubleClick={textObject.isSelected ? handleDoubleClick : () => {}}
+      onDoubleClick={handleDoubleClick}
       style={{
         width: size.width,
         height: size.height,
@@ -45,6 +37,16 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
     >
       {textObject.isEditing ? (
         <input
+          onBlur={handleBlur}
+          onMouseDown={(event) => {
+            event.stopPropagation();
+          }}
+          onMouseUp={(event) => {
+            event.stopPropagation();
+          }}
+          onMouseMove={(event) => {
+            event.stopPropagation();
+          }}
           style={{
             width: size.width,
             height: size.height,
@@ -58,7 +60,6 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
           }}
           value={textObject.text}
           onChange={handleChange}
-          onBlur={handleBlur}
         />
       ) : (
         <span>{textObject.text}</span>

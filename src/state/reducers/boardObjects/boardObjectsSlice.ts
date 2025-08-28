@@ -24,6 +24,9 @@ export const boardObjectsSlice = createSlice({
       const id = action.payload;
       state.selected[id] = true;
       state.objects[id].isSelected = true;
+      for (const id in state.selected) {
+        state.objects[id].isEditing = false;
+      }
     },
     selectObjectsInRectangle: (state, action) => {
       const selectionRectangle = action.payload;
@@ -36,20 +39,26 @@ export const boardObjectsSlice = createSlice({
             y: object.size.height,
           })
         );
-        if (areRectanglesIntersecting(selectionRectangle, objectRectangle)) {
-          state.selected[id] = true;
-          state.objects[id].isSelected = true;
+        if (!areRectanglesIntersecting(selectionRectangle, objectRectangle)) {
+          continue;
         }
+        state.selected[id] = true;
+        state.objects[id].isSelected = true;
+      }
+      for (const id in state.selected) {
+        state.objects[id].isEditing = false;
       }
     },
     unselectObject: (state, action) => {
       const id = action.payload;
       delete state.selected[id];
       state.objects[id].isSelected = false;
+      state.objects[id].isEditing = false;
     },
     clearSelection: (state) => {
       for (const id in state.selected) {
         state.objects[id].isSelected = false;
+        state.objects[id].isEditing = false;
       }
       state.selected = {};
     },
@@ -62,7 +71,7 @@ export const boardObjectsSlice = createSlice({
     },
     setIsEditing: (state, action) => {
       const { id, isEditing } = action.payload;
-      (state.objects[id] as TextObject).isEditing = isEditing;
+      state.objects[id].isEditing = isEditing;
     },
     setText: (state, action) => {
       const { id, text } = action.payload;

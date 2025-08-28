@@ -1,6 +1,7 @@
 import {
   clearSelection,
   selectObject,
+  setIsEditing,
   unselectObject,
 } from "@/state/reducers/boardObjects/boardObjectsSlice";
 import { setIsDragging, setIsPanning } from "@/state/reducers/input/inputSlice";
@@ -66,8 +67,10 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
 
     if (!event.shiftKey) {
       // Select only the pressed object
+      const { id, isEditing } = boardObject;
       dispatch(clearSelection());
       dispatch(selectObject(boardObject.id));
+      dispatch(setIsEditing({ id, isEditing }));
     } else {
       // Toggle selection
       if (boardObject.isSelected) {

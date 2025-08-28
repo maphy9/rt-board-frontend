@@ -7,6 +7,7 @@ export default interface BoardObject {
   id: number;
   position: Point;
   size: Size;
+  isEditing: boolean;
   isSelected: boolean;
   type: BoardObjectTypes;
 }
