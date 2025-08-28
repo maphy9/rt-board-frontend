@@ -60,13 +60,12 @@ function Board() {
 
       {input.isSelecting ? (
         <div
+          className={styles.selectionRectangle}
           style={{
-            position: "absolute",
             top: selectionRectangle.start.y,
             left: selectionRectangle.start.x,
             width: selectionSize.width,
             height: selectionSize.height,
-            border: "1px solid black",
           }}
         />
       ) : (

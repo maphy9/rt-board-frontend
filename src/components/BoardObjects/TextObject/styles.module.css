@@ -1,0 +1,12 @@
+.textObject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textObjectInput {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

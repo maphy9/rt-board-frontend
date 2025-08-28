@@ -3,3 +3,7 @@ export default interface Camera {
   offsetY: number;
   zoom: number;
 }
+
+export function scaleToCamera(x: number, camera: Camera): number {
+  return x / camera.zoom;
+}

@@ -2,3 +2,9 @@
   width: 100vw;
   height: 100vh;
 }
+
+.selectionRectangle {
+  position: absolute;
+  border: 1px solid #478eff;
+  background-color: rgb(71, 142, 255, 0.5);
+}
