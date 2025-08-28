@@ -44,6 +44,7 @@ function Board() {
     >
       <button
         onClick={(event) => {
+          event.preventDefault();
           event.stopPropagation();
           const x = Math.floor(Math.random() * (window.innerWidth + 1));
           const y = Math.floor(Math.random() * (window.innerHeight + 1));

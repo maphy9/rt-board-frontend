@@ -1,7 +1,7 @@
 import BoardObjects from "@/types/boardObjects";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
-import { createTextObject } from "@/types/textObject";
+import TextObject, { createTextObject } from "@/types/textObject";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: BoardObjects = {
@@ -60,6 +60,14 @@ export const boardObjectsSlice = createSlice({
         state.objects[id].position.y -= dy;
       }
     },
+    setIsEditing: (state, action) => {
+      const { id, isEditing } = action.payload;
+      (state.objects[id] as TextObject).isEditing = isEditing;
+    },
+    setText: (state, action) => {
+      const { id, text } = action.payload;
+      (state.objects[id] as TextObject).text = text;
+    },
   },
 });
 
@@ -70,6 +78,8 @@ export const {
   clearSelection,
   moveSelectedObjects,
   selectObjectsInRectangle,
+  setIsEditing,
+  setText,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

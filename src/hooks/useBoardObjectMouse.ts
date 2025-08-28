@@ -1,6 +1,7 @@
 import {
   clearSelection,
   selectObject,
+  unselectObject,
 } from "@/state/reducers/boardObjects/boardObjectsSlice";
 import { setIsDragging, setIsPanning } from "@/state/reducers/input/inputSlice";
 import { RootState } from "@/state/store";
@@ -12,11 +13,18 @@ import { useDispatch, useSelector } from "react-redux";
 export default function useBoardObjectMouse(boardObject: BoardObject) {
   const dispatch = useDispatch();
   const input: Input = useSelector((state: RootState) => state.input);
-  const hasMoved = useRef(false);
+  const isPressed = useRef(false);
 
-  const handleMouseMove = () => {
-    if (input.isDragging) {
-      hasMoved.current = true;
+  const handleMouseMove = (event) => {
+    if (isPressed.current) {
+      if (!boardObject.isSelected) {
+        if (!event.shiftKey) {
+          dispatch(clearSelection());
+        }
+
+        dispatch(selectObject(boardObject.id));
+      }
+      dispatch(setIsDragging(true));
     }
   };
 
@@ -33,10 +41,7 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       return;
     }
 
-    dispatch(selectObject(boardObject.id));
-
-    // The user is dragging selected objects
-    dispatch(setIsDragging(true));
+    isPressed.current = true;
   };
 
   const handleMouseUp = (event) => {
@@ -48,18 +53,29 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       return;
     }
 
-    if (event.button !== 0) {
+    if (event.button !== 0 || !isPressed.current) {
       return;
     }
 
-    if (!event.shiftKey && !hasMoved.current) {
-      dispatch(clearSelection());
+    isPressed.current = false;
+    if (input.isDragging) {
+      // If dragging - don't handle selection
+      dispatch(setIsDragging(false));
+      return;
     }
 
-    dispatch(selectObject(boardObject.id));
-
-    dispatch(setIsDragging(false));
-    hasMoved.current = false;
+    if (!event.shiftKey) {
+      // Select only the pressed object
+      dispatch(clearSelection());
+      dispatch(selectObject(boardObject.id));
+    } else {
+      // Toggle selection
+      if (boardObject.isSelected) {
+        dispatch(unselectObject(boardObject.id));
+      } else {
+        dispatch(selectObject(boardObject.id));
+      }
+    }
   };
 
   return {

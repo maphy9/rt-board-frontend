@@ -6,25 +6,20 @@ export default interface TextObject extends BoardObject {
   fontSize: number;
   fontStyle: string;
   color: string;
+  isEditing: boolean;
 }
 
 export function createTextObject(position: Point, text: string): TextObject {
-  const id = Date.now();
-  const size = { width: 100, height: 32 };
-  const isSelected = false;
-  const fontSize = 16;
-  const fontStyle = "normal";
-  const color = "black";
-  const textObject: TextObject = {
-    id,
+  return {
+    id: Date.now(),
     position,
-    size,
-    isSelected,
+    size: { width: 100, height: 32 },
+    isSelected: false,
     type: "text",
     text,
-    fontSize,
-    fontStyle,
-    color,
+    fontSize: 16,
+    fontStyle: "normal",
+    color: "black",
+    isEditing: false,
   };
-  return textObject;
 }
