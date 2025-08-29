@@ -4,15 +4,15 @@ import {
   resize,
   selectObjectsInRectangle,
   setResized,
-} from "@/state/reducers/boardObjects/boardObjectsSlice";
-import { panCamera } from "@/state/reducers/camera/cameraSlice";
+} from "@/state/slices/boardObjectsSlice";
+import { panCamera } from "@/state/slices/cameraSlice";
 import {
   setIsDragging,
   setIsPanning,
   setIsSelecting,
   setMousePosition,
   setSelectionStart,
-} from "@/state/reducers/input/inputSlice";
+} from "@/state/slices/inputSlice";
 import { RootState } from "@/state/store";
 import BoardObjects from "@/types/boardObjects";
 import Camera from "@/types/camera";

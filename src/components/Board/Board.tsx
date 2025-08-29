@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Camera from "@/types/camera";
 import styles from "./styles.module.css";
 import BoardObjects from "@/types/boardObjects";
-import { addTextObject } from "@/state/reducers/boardObjects/boardObjectsSlice";
+import { addTextObject } from "@/state/slices/boardObjectsSlice";
 import { toRealPoint } from "@/types/point";
 import BoardObjectComponent from "@/components/BoardObjects/BoardObject";
 import Input from "@/types/input";

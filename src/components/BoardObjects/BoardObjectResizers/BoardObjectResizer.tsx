@@ -13,7 +13,8 @@ import {
 import {
   setResized,
   setResizingCorner,
-} from "@/state/reducers/boardObjects/boardObjectsSlice";
+} from "@/state/slices/boardObjectsSlice";
+import { getResizerPosition } from "@/utils/resizing";
 
 function BoardObjectResizer({
   boardObject,
@@ -48,23 +49,12 @@ function BoardObjectResizer({
     cursor = "ne-resize";
   }
 
-  let position = { x: -OBJECT_RESIZER_SIZE, y: -OBJECT_RESIZER_SIZE };
-  if (resizingCorner === "top-left") {
-    position.x = objectPosition.x - resizerSize / 2;
-    position.y = objectPosition.y - resizerSize / 2;
-  }
-  if (resizingCorner === "top-right") {
-    position.x = objectPosition.x + objectSize.width - resizerSize / 2;
-    position.y = objectPosition.y - resizerSize / 2;
-  }
-  if (resizingCorner === "bottom-left") {
-    position.x = objectPosition.x - resizerSize / 2;
-    position.y = objectPosition.y + objectSize.height - resizerSize / 2;
-  }
-  if (resizingCorner === "bottom-right") {
-    position.x = objectPosition.x + objectSize.width - resizerSize / 2;
-    position.y = objectPosition.y + objectSize.height - resizerSize / 2;
-  }
+  const position = getResizerPosition(
+    objectPosition,
+    objectSize,
+    resizerSize,
+    resizingCorner
+  );
 
   return (
     <div

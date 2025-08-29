@@ -1,5 +1,5 @@
 import useEditEvents from "@/hooks/useEditEvents";
-import { setText } from "@/state/reducers/boardObjects/boardObjectsSlice";
+import { setText } from "@/state/slices/boardObjectsSlice";
 import { RootState } from "@/state/store";
 import Camera, { scaleToCamera } from "@/types/camera";
 import { toCameraSize } from "@/types/size";

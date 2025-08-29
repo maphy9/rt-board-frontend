@@ -3,8 +3,8 @@ import {
   selectObject,
   setIsEditing,
   unselectObject,
-} from "@/state/reducers/boardObjects/boardObjectsSlice";
-import { setIsDragging, setIsPanning } from "@/state/reducers/input/inputSlice";
+} from "@/state/slices/boardObjectsSlice";
+import { setIsDragging, setIsPanning } from "@/state/slices/inputSlice";
 import { RootState } from "@/state/store";
 import BoardObject from "@/types/boardObject";
 import Input from "@/types/input";

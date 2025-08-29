@@ -1,4 +1,4 @@
-import { setIsEditing } from "@/state/reducers/boardObjects/boardObjectsSlice";
+import { setIsEditing } from "@/state/slices/boardObjectsSlice";
 import BoardObject from "@/types/boardObject";
 import { useDispatch } from "react-redux";
 

@@ -2,8 +2,8 @@ import BoardObjects from "@/types/boardObjects";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
 import TextObject, { createTextObject } from "@/types/textObject";
+import { resizeBoardObject } from "@/utils/resizing";
 import { createSlice } from "@reduxjs/toolkit";
-import { resizeBoardObject } from "./resizing";
 
 const initialState: BoardObjects = {
   objects: {},

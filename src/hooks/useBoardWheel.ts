@@ -1,5 +1,5 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
-import { zoomCamera } from "@/state/reducers/camera/cameraSlice";
+import { zoomCamera } from "@/state/slices/cameraSlice";
 import { RootState } from "@/state/store";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
