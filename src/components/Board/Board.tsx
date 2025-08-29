@@ -1,11 +1,11 @@
 import React from "react";
 import { RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
-import Camera from "@/types/camera";
+import Camera, { scaleToCamera } from "@/types/camera";
 import styles from "./styles.module.css";
 import BoardObjects from "@/types/boardObjects";
 import { addTextObject } from "@/state/slices/boardObjectsSlice";
-import { toRealPoint } from "@/types/point";
+import { toCameraPoint, toRealPoint } from "@/types/point";
 import BoardObjectComponent from "@/components/BoardObjects/BoardObject";
 import Input from "@/types/input";
 import {
@@ -15,6 +15,12 @@ import {
 } from "@/types/rectangle";
 import useBoardWheel from "@/hooks/useBoardWheel";
 import useBoardMouse from "@/hooks/useBoardMouse";
+import { toCameraSize } from "@/types/size";
+import {
+  BACKGROUND_DOT_GAP,
+  BACKGROUND_DOT_SIZE,
+  BACKGROUND_POSITION,
+} from "@/constants/boardConstants";
 
 function Board() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -34,9 +40,18 @@ function Board() {
   const selectionRectangle = toCameraRectangle(realSelectionRectangle, camera);
   const selectionSize = getRectangleSize(selectionRectangle);
 
+  const backgroundDotSize = scaleToCamera(BACKGROUND_DOT_SIZE, camera);
+  const backgroundDotGap = scaleToCamera(BACKGROUND_DOT_GAP, camera);
+  const backgroundPosition = toCameraPoint(BACKGROUND_POSITION, camera);
+
   return (
     <div
       className={styles.board}
+      style={{
+        backgroundImage: `radial-gradient(gray ${backgroundDotSize}px, transparent ${backgroundDotSize}px)`,
+        backgroundSize: `${backgroundDotGap}px ${backgroundDotGap}px`,
+        backgroundPosition: `${backgroundPosition.x}px ${backgroundPosition.y}px`,
+      }}
       onMouseMove={handleMouseMove}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
