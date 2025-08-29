@@ -12,6 +12,8 @@ export function createTextObject(position: Point, text: string): TextObject {
   return {
     id: Date.now(),
     position,
+    minWidth: 50,
+    minHeight: 32,
     size: { width: 100, height: 32 },
     isSelected: false,
     type: "text",
@@ -20,5 +22,6 @@ export function createTextObject(position: Point, text: string): TextObject {
     fontStyle: "normal",
     color: "black",
     isEditing: false,
+    resizingCorner: null,
   };
 }

@@ -50,6 +50,9 @@ function Board() {
           const y = Math.floor(Math.random() * (window.innerHeight + 1));
           dispatch(addTextObject({ position: { x, y }, text: "Hello world" }));
         }}
+        onMouseDown={(event) => {
+          event.stopPropagation();
+        }}
       >
         Add text object
       </button>

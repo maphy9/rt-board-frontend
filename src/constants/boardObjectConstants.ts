@@ -1,0 +1,3 @@
+export const OBJECT_BORDER_RADIUS = 3;
+export const OBJECT_RESIZER_SIZE = 10;
+export const OBJECT_RESIZER_BORDER_RADIUS = 10;

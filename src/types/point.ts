@@ -1,6 +1,4 @@
-import { pbkdf2 } from "crypto";
 import Camera from "./camera";
-import Size from "./size";
 
 export default interface Point {
   x: number;

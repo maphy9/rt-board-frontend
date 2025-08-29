@@ -1,18 +1,20 @@
 import {
   clearSelection,
   moveSelectedObjects,
+  resize,
   selectObjectsInRectangle,
+  setResized,
 } from "@/state/reducers/boardObjects/boardObjectsSlice";
 import { panCamera } from "@/state/reducers/camera/cameraSlice";
 import {
   setIsDragging,
-  setIsHoldingMouse,
   setIsPanning,
   setIsSelecting,
   setMousePosition,
   setSelectionStart,
 } from "@/state/reducers/input/inputSlice";
 import { RootState } from "@/state/store";
+import BoardObjects from "@/types/boardObjects";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { toRealPoint } from "@/types/point";
@@ -22,6 +24,9 @@ import { useDispatch, useSelector } from "react-redux";
 export default function useBoardMouse() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const input: Input = useSelector((state: RootState) => state.input);
+  const boardObjects: BoardObjects = useSelector(
+    (state: RootState) => state.boardObjects
+  );
   const dispatch = useDispatch();
 
   function finishSelection(event) {
@@ -50,8 +55,12 @@ export default function useBoardMouse() {
       return;
     }
 
+    if (boardObjects.resized !== null) {
+      dispatch(resize({ dx, dy }));
+      return;
+    }
+
     if (input.isDragging) {
-      // Drag selected objects
       dispatch(moveSelectedObjects({ dx, dy }));
       return;
     }
@@ -59,13 +68,11 @@ export default function useBoardMouse() {
 
   const handleMouseDown = (event) => {
     if (event.button === 1) {
-      // Start panning
       dispatch(setIsPanning(true));
       return;
     }
 
     if (event.button === 0) {
-      // The user is holding mouse
       dispatch(setIsSelecting(true));
       const { clientX: x, clientY: y } = event;
       const realMousePosition = toRealPoint({ x, y }, camera);
@@ -84,10 +91,13 @@ export default function useBoardMouse() {
       return;
     }
 
-    dispatch(setIsHoldingMouse(false));
-
     if (input.isSelecting) {
       finishSelection(event);
+      return;
+    }
+
+    if (boardObjects.resized !== null) {
+      dispatch(setResized(null));
       return;
     }
 

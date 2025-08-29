@@ -3,11 +3,13 @@ import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
 import TextObject, { createTextObject } from "@/types/textObject";
 import { createSlice } from "@reduxjs/toolkit";
+import { resizeBoardObject } from "./resizing";
 
 const initialState: BoardObjects = {
   objects: {},
   order: [],
   selected: {},
+  resized: null,
 };
 
 export const boardObjectsSlice = createSlice({
@@ -77,6 +79,25 @@ export const boardObjectsSlice = createSlice({
       const { id, text } = action.payload;
       (state.objects[id] as TextObject).text = text;
     },
+    setResized: (state, action) => {
+      const resized = action.payload;
+      if (resized === null) {
+        const boardObject = state.objects[state.resized];
+        boardObject.resizingCorner = null;
+      }
+      state.resized = action.payload;
+    },
+    setResizingCorner: (state, action) => {
+      const { id, resizingCorner } = action.payload;
+      state.objects[id].resizingCorner = resizingCorner;
+    },
+    resize: (state, action) => {
+      const { dx, dy } = action.payload;
+      const boardObject = state.objects[state.resized];
+      const { position, size } = resizeBoardObject(boardObject, dx, dy);
+      boardObject.position = position;
+      boardObject.size = size;
+    },
   },
 });
 
@@ -89,6 +110,9 @@ export const {
   selectObjectsInRectangle,
   setIsEditing,
   setText,
+  setResized,
+  setResizingCorner,
+  resize,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;
