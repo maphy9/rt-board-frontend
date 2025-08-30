@@ -2,7 +2,7 @@ import { RootState } from "@/state/store";
 import BoardObject from "@/types/boardObject";
 import Camera, { scaleToCamera } from "@/types/camera";
 import { toCameraPoint } from "@/types/point";
-import React, { useMemo } from "react";
+import React from "react";
 import TextObject from "@/types/textObject";
 import TextObjectComponent from "./TextObject/TextObject";
 import styles from "./styles.module.css";
@@ -20,14 +20,11 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   );
   const input: Input = useSelector((state: RootState) => state.input);
 
-  const canResize = useMemo(() => {
-    return (
-      boardObject.isSelected &&
-      !boardObject.isEditing &&
-      Object.keys(boardObjects.selected).length === 1 &&
-      !input.isDragging
-    );
-  }, [boardObject, boardObject, boardObjects, input]);
+  const canResize =
+    boardObject.isSelected &&
+    !boardObject.isEditing &&
+    Object.keys(boardObjects.selected).length === 1 &&
+    !input.isDragging;
 
   let child = <span>Something went wrong</span>;
   if (boardObject.type == "text") {
