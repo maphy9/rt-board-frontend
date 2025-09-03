@@ -102,6 +102,10 @@ export const boardObjectsSlice = createSlice({
       const { id, fontSize } = action.payload;
       (state.objects[id] as TextObject).fontSize = fontSize;
     },
+    setFontStyle: (state, action) => {
+      const { id, fontStyle } = action.payload;
+      (state.objects[id] as TextObject).fontStyle = fontStyle;
+    },
   },
 });
 
@@ -118,6 +122,7 @@ export const {
   setResizingCorner,
   resize,
   setFontSize,
+  setFontStyle,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

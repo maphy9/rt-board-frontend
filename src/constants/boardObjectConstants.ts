@@ -1,9 +1,5 @@
 export const OBJECT_BORDER_RADIUS = 3;
 export const OBJECT_RESIZER_SIZE = 10;
 export const OBJECT_RESIZER_BORDER_RADIUS = 10;
-export const OBJECT_MENU_OPTION_GAP = 8;
 export const OBJECT_MENU_MARGIN = 20;
 export const OBJECT_MENU_OPTION_SIZE = 36;
-export const OBJECT_MENU_ICON_SIZE = 24;
-export const OBJECT_MENU_FONT_SIZE_NORMAL = 16;
-export const OBJECT_MENU_FONT_SIZE_SMALL = 8;

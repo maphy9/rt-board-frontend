@@ -15,6 +15,21 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
   const size = toCameraSize(textObject.size, camera);
   const fontSize = scaleToCamera(textObject.fontSize, camera);
 
+  const textStyle = {
+    fontWeight: "normal",
+    textDecoration: "none",
+    fontStyle: "normal",
+  };
+  if (textObject.fontStyle === "bold") {
+    textStyle.fontWeight = "bold";
+  } else if (textObject.fontStyle === "italic") {
+    textStyle.fontStyle = "italic";
+  } else if (textObject.fontStyle === "line-through") {
+    textStyle.textDecoration = "line-through";
+  } else if (textObject.fontStyle === "underline") {
+    textStyle.textDecoration = "underline";
+  }
+
   const handleChange = (event) => {
     const text = event.target.value;
     dispatch(setText({ id: textObject.id, text }));
@@ -50,16 +65,16 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
             width: size.width,
             height: size.height,
             color: textObject.color,
-            fontStyle: textObject.fontStyle,
             fontSize,
+            ...textStyle,
           }}
           value={textObject.text}
           onChange={handleChange}
         />
       ) : textObject.text !== "" ? (
-        <span>{textObject.text}</span>
+        <span style={textStyle}>{textObject.text}</span>
       ) : (
-        <span style={{ color: "gray" }}>Enter text</span>
+        <span style={{ ...textStyle, color: "gray" }}>Enter text</span>
       )}
     </div>
   );

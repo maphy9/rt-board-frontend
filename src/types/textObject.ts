@@ -1,10 +1,17 @@
 import BoardObject from "./boardObject";
 import Point from "./point";
 
+export type FontStyle =
+  | "normal"
+  | "bold"
+  | "italic"
+  | "line-through"
+  | "underline";
+
 export default interface TextObject extends BoardObject {
   text: string;
   fontSize: number;
-  fontStyle: string;
+  fontStyle: FontStyle;
   color: string;
 }
 

@@ -5,9 +5,9 @@ import TextObject from "@/types/textObject";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
-import { setFontSize } from "@/state/slices/boardObjectsSlice";
+import { setFontStyle } from "@/state/slices/boardObjectsSlice";
 
-function FontSizeOption({ id }: { id: number }) {
+function FontStyleOption({ id }: { id: number }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
@@ -15,29 +15,17 @@ function FontSizeOption({ id }: { id: number }) {
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>(
-    textObject.fontSize + ""
-  );
 
   const handleOpen = (event) => {
     event.stopPropagation();
     setIsOpen((prev) => !prev);
   };
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setInputValue(value);
-    let newFontSize = Number.parseInt(value);
-    if (Number.isNaN(newFontSize)) {
-      return;
+  const _setFontStyle = (newFontStyle) => {
+    if (textObject.fontStyle === newFontStyle) {
+      newFontStyle = "normal";
     }
-    newFontSize = Math.max(1, newFontSize);
-    dispatch(setFontSize({ id: textObject.id, fontSize: newFontSize }));
-  };
-
-  const _setFontSize = (newFontSize) => {
-    setInputValue(newFontSize + "");
-    dispatch(setFontSize({ id: textObject.id, fontSize: newFontSize }));
+    dispatch(setFontStyle({ id: textObject.id, fontStyle: newFontStyle }));
     setIsOpen(false);
   };
 
@@ -46,7 +34,7 @@ function FontSizeOption({ id }: { id: number }) {
   return (
     <div className={styles.dropDownContainer}>
       <img
-        src="fontSize.svg"
+        src="fontStyle.svg"
         className={styles.optionIcon}
         onClick={handleOpen}
       />
@@ -61,42 +49,29 @@ function FontSizeOption({ id }: { id: number }) {
         >
           <div className={styles.dropdownOptions}>
             <div
-              onClick={() => _setFontSize(16)}
+              onClick={() => _setFontStyle("bold")}
               className={styles.dropdownOption}
             >
-              <span>Small</span>
-              <span>16px</span>
+              <b>Bold</b>
             </div>
             <div
-              onClick={() => _setFontSize(24)}
+              onClick={() => _setFontStyle("italic")}
               className={styles.dropdownOption}
             >
-              <span>Medium</span>
-              <span>24px</span>
+              <i>Italic</i>
             </div>
             <div
-              onClick={() => _setFontSize(36)}
+              onClick={() => _setFontStyle("underline")}
               className={styles.dropdownOption}
             >
-              <span>Large</span>
-              <span>36px</span>
+              <u>Underline</u>
             </div>
             <div
-              onClick={() => _setFontSize(48)}
+              onClick={() => _setFontStyle("line-through")}
               className={styles.dropdownOption}
             >
-              <span>Extra Large</span>
-              <span>48px</span>
+              <s>Line-through</s>
             </div>
-          </div>
-          <div className={styles.dropdownInputContainer}>
-            <label htmlFor="fontSizeInput">Custom font size</label>
-            <input
-              name="fontSizeInput"
-              className={styles.dropdownInput}
-              value={inputValue}
-              onChange={handleChange}
-            />
           </div>
         </div>
       )}
@@ -104,4 +79,4 @@ function FontSizeOption({ id }: { id: number }) {
   );
 }
 
-export default FontSizeOption;
+export default FontStyleOption;
