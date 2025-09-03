@@ -32,7 +32,7 @@ function FontStyleOption({ id }: { id: number }) {
   const { stopPropagation } = useGlobalHooks();
 
   return (
-    <div className={styles.dropDownContainer}>
+    <div className={styles.optionContainer}>
       <img
         src="fontStyle.svg"
         className={styles.optionIcon}

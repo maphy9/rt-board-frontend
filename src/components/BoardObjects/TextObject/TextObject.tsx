@@ -30,6 +30,9 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
     textStyle.textDecoration = "underline";
   }
 
+  const { r, g, b, a } = textObject.fontColor;
+  const fontColor = `rgba(${r},${g},${b},${a})`;
+
   const handleChange = (event) => {
     const text = event.target.value;
     dispatch(setText({ id: textObject.id, text }));
@@ -48,7 +51,7 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
       style={{
         width: size.width,
         height: size.height,
-        color: textObject.color,
+        color: fontColor,
         fontStyle: textObject.fontStyle,
         fontSize,
       }}
@@ -64,7 +67,7 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
           style={{
             width: size.width,
             height: size.height,
-            color: textObject.color,
+            color: fontColor,
             fontSize,
             ...textStyle,
           }}

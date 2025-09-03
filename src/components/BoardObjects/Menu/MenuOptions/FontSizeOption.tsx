@@ -44,7 +44,7 @@ function FontSizeOption({ id }: { id: number }) {
   const { stopPropagation } = useGlobalHooks();
 
   return (
-    <div className={styles.dropDownContainer}>
+    <div className={styles.optionContainer}>
       <img
         src="fontSize.svg"
         className={styles.optionIcon}

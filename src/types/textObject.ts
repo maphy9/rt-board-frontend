@@ -8,11 +8,18 @@ export type FontStyle =
   | "line-through"
   | "underline";
 
+export interface FontColor {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
 export default interface TextObject extends BoardObject {
   text: string;
   fontSize: number;
   fontStyle: FontStyle;
-  color: string;
+  fontColor: FontColor;
 }
 
 export function createTextObject(position: Point): TextObject {
@@ -27,7 +34,7 @@ export function createTextObject(position: Point): TextObject {
     text: "",
     fontSize: 16,
     fontStyle: "normal",
-    color: "black",
+    fontColor: { r: 0, g: 0, b: 0, a: 1 },
     isEditing: false,
     resizingCorner: null,
   };

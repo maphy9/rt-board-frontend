@@ -1,4 +1,4 @@
-.dropDownContainer {
+.optionContainer {
   padding: 4px;
   display: flex;
   flex-direction: column;
@@ -10,6 +10,7 @@
 .optionIcon {
   width: 28px;
   height: 28px;
+  cursor: pointer;
 }
 
 .dropdown {
@@ -54,4 +55,15 @@
   border: 1px solid black;
   border-radius: 4px;
   padding: 0 4px;
+}
+
+.colorPickerContainer {
+  position: absolute;
+  color: black;
+  background-color: white;
+  top: 40px;
+  left: 0px;
+  z-index: 3;
+  border-radius: 8px;
+  border: 1px solid black;
 }
