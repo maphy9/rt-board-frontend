@@ -61,7 +61,7 @@ function Board() {
           event.stopPropagation();
           const x = Math.floor(Math.random() * (window.innerWidth + 1));
           const y = Math.floor(Math.random() * (window.innerHeight + 1));
-          dispatch(addTextObject({ position: { x, y }, text: "Hello world" }));
+          dispatch(addTextObject({ x, y }));
         }}
         onMouseDown={(event) => {
           event.stopPropagation();

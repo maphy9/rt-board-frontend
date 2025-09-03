@@ -17,8 +17,8 @@ export const boardObjectsSlice = createSlice({
   initialState,
   reducers: {
     addTextObject: (state, action) => {
-      const { position, text } = action.payload;
-      const textObject = createTextObject(position, text);
+      const position = action.payload;
+      const textObject = createTextObject(position);
       state.objects[textObject.id] = textObject;
       state.order.push(textObject.id);
     },

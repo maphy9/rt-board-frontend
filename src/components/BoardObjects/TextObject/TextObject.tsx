@@ -56,8 +56,10 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
           value={textObject.text}
           onChange={handleChange}
         />
-      ) : (
+      ) : textObject.text !== "" ? (
         <span>{textObject.text}</span>
+      ) : (
+        <span style={{ color: "gray" }}>Enter text</span>
       )}
     </div>
   );

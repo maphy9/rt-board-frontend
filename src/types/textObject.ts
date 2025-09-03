@@ -8,7 +8,7 @@ export default interface TextObject extends BoardObject {
   color: string;
 }
 
-export function createTextObject(position: Point, text: string): TextObject {
+export function createTextObject(position: Point): TextObject {
   return {
     id: Date.now(),
     position,
@@ -17,7 +17,7 @@ export function createTextObject(position: Point, text: string): TextObject {
     size: { width: 100, height: 32 },
     isSelected: false,
     type: "text",
-    text,
+    text: "",
     fontSize: 16,
     fontStyle: "normal",
     color: "black",
