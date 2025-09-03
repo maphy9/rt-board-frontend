@@ -1,3 +1,7 @@
+.boardObjectContainer {
+  overflow: visible;
+}
+
 .boardObject {
   position: absolute;
   cursor: pointer;

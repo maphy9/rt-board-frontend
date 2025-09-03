@@ -1,3 +1,4 @@
+import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
   clearSelection,
   moveSelectedObjects,
@@ -5,7 +6,7 @@ import {
   selectObjectsInRectangle,
   setResized,
 } from "@/state/slices/boardObjectsSlice";
-import { panCamera } from "@/state/slices/cameraSlice";
+import { panCamera, zoomCamera } from "@/state/slices/cameraSlice";
 import {
   setIsDragging,
   setIsPanning,
@@ -17,7 +18,7 @@ import { RootState } from "@/state/store";
 import BoardObjects from "@/types/boardObjects";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
-import { toRealPoint } from "@/types/point";
+import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -109,9 +110,25 @@ export default function useBoardMouse() {
     dispatch(setIsDragging(false));
   };
 
+  function scaleZoom(zoom: number, zoomFactor: number): number {
+    return Math.min(MAX_ZOOM, Math.max(zoom * zoomFactor, MIN_ZOOM));
+  }
+
+  const handleWheel = (event) => {
+    const { deltaY } = event;
+    const zoomFactor = deltaY > 0 ? 1.05 : 0.95;
+    const newZoom = scaleZoom(camera.zoom, zoomFactor);
+    const newCamera = { ...camera, zoom: newZoom };
+    const mouseBefore = toRealPoint(input.mousePosition, camera);
+    const mouseAfter = toRealPoint(input.mousePosition, newCamera);
+    const { x: dx, y: dy } = getOffset(mouseBefore, mouseAfter);
+    dispatch(zoomCamera({ zoom: newZoom, dx, dy }));
+  };
+
   return {
     handleMouseMove,
     handleMouseDown,
     handleMouseUp,
+    handleWheel,
   };
 }

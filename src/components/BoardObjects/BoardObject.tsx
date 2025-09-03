@@ -12,6 +12,7 @@ import BoardObjects from "@/types/boardObjects";
 import Input from "@/types/input";
 import BoardObjectResizers from "./BoardObjectResizers/BoardObjectResizers";
 import { OBJECT_BORDER_RADIUS } from "@/constants/boardObjectConstants";
+import TextObjectMenu from "./TextObject/TextObjectMenu";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -26,9 +27,20 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
     Object.keys(boardObjects.selected).length === 1 &&
     !input.isDragging;
 
-  let child = <span>Something went wrong</span>;
+  const showMenu =
+    boardObject.isSelected &&
+    Object.keys(boardObjects.selected).length === 1 &&
+    !input.isDragging;
+
+  let objectComponent = <></>;
+  let objectMenuComponent = <></>;
   if (boardObject.type == "text") {
-    child = <TextObjectComponent textObject={boardObject as TextObject} />;
+    objectComponent = (
+      <TextObjectComponent textObject={boardObject as TextObject} />
+    );
+    objectMenuComponent = (
+      <TextObjectMenu textObject={boardObject as TextObject} />
+    );
   }
 
   const { handleMouseUp, handleMouseDown, handleMouseMove } =
@@ -38,7 +50,8 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const borderRadius = scaleToCamera(OBJECT_BORDER_RADIUS, camera);
 
   return (
-    <>
+    <div className={styles.boardObjectContainer}>
+      {showMenu ? objectMenuComponent : <></>}
       {canResize ? <BoardObjectResizers boardObject={boardObject} /> : <></>}
       <div
         onMouseMove={handleMouseMove}
@@ -52,9 +65,9 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
           borderRadius: `${borderRadius}px`,
         }}
       >
-        {child}
+        {objectComponent}
       </div>
-    </>
+    </div>
   );
 }
 

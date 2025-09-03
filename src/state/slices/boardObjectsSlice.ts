@@ -85,7 +85,7 @@ export const boardObjectsSlice = createSlice({
         const boardObject = state.objects[state.resized];
         boardObject.resizingCorner = null;
       }
-      state.resized = action.payload;
+      state.resized = resized;
     },
     setResizingCorner: (state, action) => {
       const { id, resizingCorner } = action.payload;
@@ -97,6 +97,10 @@ export const boardObjectsSlice = createSlice({
       const { position, size } = resizeBoardObject(boardObject, dx, dy);
       boardObject.position = position;
       boardObject.size = size;
+    },
+    setFontSize: (state, action) => {
+      const { id, fontSize } = action.payload;
+      (state.objects[id] as TextObject).fontSize = fontSize;
     },
   },
 });
@@ -113,6 +117,7 @@ export const {
   setResized,
   setResizingCorner,
   resize,
+  setFontSize,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

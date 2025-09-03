@@ -13,9 +13,7 @@ import {
   getRectangleSize,
   toCameraRectangle,
 } from "@/types/rectangle";
-import useBoardWheel from "@/hooks/useBoardWheel";
 import useBoardMouse from "@/hooks/useBoardMouse";
-import { toCameraSize } from "@/types/size";
 import {
   BACKGROUND_DOT_GAP,
   BACKGROUND_DOT_SIZE,
@@ -30,8 +28,8 @@ function Board() {
   const input: Input = useSelector((state: RootState) => state.input);
   const dispatch = useDispatch();
 
-  const { handleMouseMove, handleMouseDown, handleMouseUp } = useBoardMouse();
-  const { handleWheel } = useBoardWheel();
+  const { handleMouseMove, handleMouseDown, handleMouseUp, handleWheel } =
+    useBoardMouse();
 
   const realSelectionRectangle = createRectangle(
     input.selectionStart,
