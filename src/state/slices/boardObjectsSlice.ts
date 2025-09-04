@@ -18,11 +18,14 @@ export const boardObjectsSlice = createSlice({
   name: "boardObjectsSlice",
   initialState,
   reducers: {
-    addTextObject: (state, action) => {
-      const position = action.payload;
-      const textObject = createTextObject(position);
-      state.objects[textObject.id] = textObject;
-      state.order.push(textObject.id);
+    addBoardObject: (state, action) => {
+      const { selectedTool, position } = action.payload;
+      let boardObject = null;
+      if (selectedTool === "text") {
+        boardObject = createTextObject(position);
+      }
+      state.objects[boardObject.id] = boardObject;
+      state.order.push(boardObject.id);
     },
     selectObject: (state, action) => {
       const id = action.payload;
@@ -144,7 +147,7 @@ export const boardObjectsSlice = createSlice({
 });
 
 export const {
-  addTextObject,
+  addBoardObject,
   selectObject,
   unselectObject,
   clearSelection,

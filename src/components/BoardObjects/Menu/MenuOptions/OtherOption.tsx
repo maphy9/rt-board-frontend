@@ -12,7 +12,7 @@ import {
   insertCopy,
 } from "@/state/slices/boardObjectsSlice";
 
-function OtherOption({ id }: { id: number }) {
+function OtherOption({ id }: { id: string }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );

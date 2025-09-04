@@ -1,7 +1,7 @@
 import Point from "./point";
 import Size from "./size";
 
-export type BoardObjectTypes = "text";
+export type BoardObjectType = "text";
 export type ResizingCorner =
   | "top-left"
   | "top-right"
@@ -15,7 +15,7 @@ export default interface BoardObject {
   isEditing: boolean;
   isSelected: boolean;
   resizingCorner: ResizingCorner | null;
-  type: BoardObjectTypes;
+  type: BoardObjectType;
   minWidth: number;
   minHeight: number;
 }

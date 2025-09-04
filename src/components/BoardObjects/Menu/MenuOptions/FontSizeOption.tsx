@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import { setFontSize } from "@/state/slices/boardObjectsSlice";
 
-function FontSizeOption({ id }: { id: number }) {
+function FontSizeOption({ id }: { id: string }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );

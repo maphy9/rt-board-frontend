@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 import { RgbaColorPicker } from "react-colorful";
 import { setFontColor } from "@/state/slices/boardObjectsSlice";
 
-function FontColorOption({ id }: { id: number }) {
+function FontColorOption({ id }: { id: string }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );

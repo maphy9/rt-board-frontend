@@ -16,21 +16,6 @@ import TextObjectMenu from "./TextObject/TextObjectMenu";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
-  const boardObjects: BoardObjects = useSelector(
-    (state: RootState) => state.boardObjects
-  );
-  const input: Input = useSelector((state: RootState) => state.input);
-
-  const canResize =
-    boardObject.isSelected &&
-    !boardObject.isEditing &&
-    Object.keys(boardObjects.selected).length === 1 &&
-    !input.isDragging;
-
-  const showMenu =
-    boardObject.isSelected &&
-    Object.keys(boardObjects.selected).length === 1 &&
-    !input.isDragging;
 
   let objectComponent = <></>;
   let objectMenuComponent = <></>;
@@ -51,8 +36,8 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
 
   return (
     <div className={styles.boardObjectContainer}>
-      {showMenu ? objectMenuComponent : <></>}
-      {canResize ? <BoardObjectResizers boardObject={boardObject} /> : <></>}
+      {objectMenuComponent}
+      {<BoardObjectResizers boardObject={boardObject} />}
       <div
         onMouseMove={handleMouseMove}
         onMouseDown={handleMouseDown}

@@ -1,5 +1,6 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
+  addBoardObject,
   clearSelection,
   moveSelectedObjects,
   resize,
@@ -14,12 +15,14 @@ import {
   setMousePosition,
   setSelectionStart,
 } from "@/state/slices/inputSlice";
+import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import BoardObjects from "@/types/boardObjects";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
+import Toolbox from "@/types/Toolbox";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function useBoardMouse() {
@@ -28,6 +31,8 @@ export default function useBoardMouse() {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
+  const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
+  const { selectedTool } = toolbox;
   const dispatch = useDispatch();
 
   function finishSelection(event) {
@@ -74,6 +79,12 @@ export default function useBoardMouse() {
     }
 
     if (event.button === 0) {
+      if (selectedTool !== "cursor") {
+        const position = toRealPoint(input.mousePosition, camera);
+        dispatch(addBoardObject({ selectedTool, position }));
+        dispatch(setSelectedTool("cursor"));
+        return;
+      }
       dispatch(setIsSelecting(true));
       const { clientX: x, clientY: y } = event;
       const realMousePosition = toRealPoint({ x, y }, camera);

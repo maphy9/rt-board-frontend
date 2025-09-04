@@ -10,6 +10,8 @@ import {
 import BoardObject from "@/types/boardObject";
 import useGlobalHooks from "@/hooks/globalHooks";
 import styles from "./styles.module.css";
+import BoardObjects from "@/types/boardObjects";
+import Input from "@/types/input";
 
 function BoardObjectMenu({
   boardObject,
@@ -18,6 +20,11 @@ function BoardObjectMenu({
   boardObject: BoardObject;
   children: React.ReactNode;
 }) {
+  const boardObjects: BoardObjects = useSelector(
+    (state: RootState) => state.boardObjects
+  );
+  const input: Input = useSelector((state: RootState) => state.input);
+
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const position = toCameraPoint(
     {
@@ -29,6 +36,15 @@ function BoardObjectMenu({
   position.y -= OBJECT_MENU_OPTION_SIZE + OBJECT_MENU_MARGIN;
 
   const { stopPropagation } = useGlobalHooks();
+
+  const showMenu =
+    boardObject.isSelected &&
+    Object.keys(boardObjects.selected).length === 1 &&
+    !input.isDragging;
+
+  if (!showMenu) {
+    return <></>;
+  }
 
   return (
     <div
