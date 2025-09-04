@@ -1,3 +1,4 @@
+import getID from "@/utils/id";
 import BoardObject from "./boardObject";
 import Point from "./point";
 
@@ -24,7 +25,7 @@ export default interface TextObject extends BoardObject {
 
 export function createTextObject(position: Point): TextObject {
   return {
-    id: Date.now(),
+    id: getID(),
     position,
     minWidth: 50,
     minHeight: 32,

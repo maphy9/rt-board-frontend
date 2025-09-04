@@ -1,7 +1,9 @@
+import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import BoardObjects from "@/types/boardObjects";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
 import TextObject, { createTextObject } from "@/types/textObject";
+import getID from "@/utils/id";
 import { resizeBoardObject } from "@/utils/resizing";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -110,6 +112,34 @@ export const boardObjectsSlice = createSlice({
       const { id, fontColor } = action.payload;
       (state.objects[id] as TextObject).fontColor = fontColor;
     },
+    deleteObject: (state, action) => {
+      const id = action.payload;
+      delete state.objects[id];
+      delete state.selected[id];
+      state.order = state.order.filter((_id) => _id !== id);
+    },
+    insertCopy: (state, action) => {
+      const object = action.payload;
+      const objectCopy = {
+        ...JSON.parse(JSON.stringify(object)),
+        id: getID(),
+        isSelected: false,
+        isEdited: false,
+        position: addOffset(object.position, OBJECT_COPY_MARGIN),
+      };
+      state.objects[objectCopy.id] = objectCopy;
+      state.order.push(objectCopy.id);
+    },
+    bringToFront: (state, action) => {
+      const id = action.payload;
+      state.order = state.order.filter((_id) => _id !== id);
+      state.order.push(id);
+    },
+    bringToRear: (state, action) => {
+      const id = action.payload;
+      state.order = state.order.filter((_id) => _id !== id);
+      state.order.unshift(id);
+    },
   },
 });
 
@@ -128,6 +158,10 @@ export const {
   setFontSize,
   setFontStyle,
   setFontColor,
+  deleteObject,
+  insertCopy,
+  bringToFront,
+  bringToRear,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

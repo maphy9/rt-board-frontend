@@ -9,7 +9,7 @@ export type ResizingCorner =
   | "bottom-right";
 
 export default interface BoardObject {
-  id: number;
+  id: string;
   position: Point;
   size: Size;
   isEditing: boolean;
