@@ -8,8 +8,6 @@ import TextObjectComponent from "./TextObject/TextObject";
 import styles from "./styles.module.css";
 import useBoardObjectMouse from "@/hooks/useBoardObjectMouse";
 import { useSelector } from "react-redux";
-import BoardObjects from "@/types/boardObjects";
-import Input from "@/types/input";
 import BoardObjectResizers from "./BoardObjectResizers/BoardObjectResizers";
 import { OBJECT_BORDER_RADIUS } from "@/constants/boardObjectConstants";
 import TextObjectMenu from "./TextObject/TextObjectMenu";
@@ -17,22 +15,12 @@ import TextObjectMenu from "./TextObject/TextObjectMenu";
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
 
-  let objectComponent = <></>;
-  let objectMenuComponent = <></>;
-  if (boardObject.type == "text") {
-    objectComponent = (
-      <TextObjectComponent textObject={boardObject as TextObject} />
-    );
-    objectMenuComponent = (
-      <TextObjectMenu textObject={boardObject as TextObject} />
-    );
-  }
-
   const { handleMouseUp, handleMouseDown, handleMouseMove } =
     useBoardObjectMouse(boardObject);
 
   const position = toCameraPoint(boardObject.position, camera);
   const borderRadius = scaleToCamera(OBJECT_BORDER_RADIUS, camera);
+  const { objectComponent, objectMenuComponent } = getObjectData(boardObject);
 
   return (
     <div className={styles.boardObjectContainer}>
@@ -57,3 +45,18 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
 }
 
 export default BoardObjectComponent;
+
+const getObjectData = (boardObject: BoardObject) => {
+  let objectComponent = <></>;
+  let objectMenuComponent = <></>;
+  if (boardObject.type == "text") {
+    objectComponent = (
+      <TextObjectComponent textObject={boardObject as TextObject} />
+    );
+    objectMenuComponent = (
+      <TextObjectMenu textObject={boardObject as TextObject} />
+    );
+  }
+
+  return { objectComponent, objectMenuComponent };
+};

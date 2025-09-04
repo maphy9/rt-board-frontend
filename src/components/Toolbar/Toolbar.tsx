@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./styles.module.css";
 import Tool from "./Tool";
-import useGlobalHooks from "@/hooks/globalHooks";
+import useUniversalInput from "@/hooks/useUniversalInput";
 
 function Toolbar() {
-  const { stopPropagation } = useGlobalHooks();
+  const { stopPropagation } = useUniversalInput();
 
   return (
     <div

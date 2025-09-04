@@ -1,8 +1,8 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
-  addBoardObject,
+  addObject,
   clearSelection,
-  moveSelectedObjects,
+  dragSelected,
   resize,
   selectObjectsInRectangle,
   setResized,
@@ -22,7 +22,7 @@ import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
-import Toolbox from "@/types/Toolbox";
+import Toolbox from "@/types/toolbox";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function useBoardMouse() {
@@ -34,6 +34,19 @@ export default function useBoardMouse() {
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
   const dispatch = useDispatch();
+
+  function addSelectedObject() {
+    const position = toRealPoint(input.mousePosition, camera);
+    dispatch(addObject({ selectedTool, position }));
+    dispatch(setSelectedTool("cursor"));
+  }
+
+  function startSelecting(event) {
+    dispatch(setIsSelecting(true));
+    const { clientX: x, clientY: y } = event;
+    const realMousePosition = toRealPoint({ x, y }, camera);
+    dispatch(setSelectionStart(realMousePosition));
+  }
 
   function finishSelection(event) {
     if (!event.shiftKey) {
@@ -48,12 +61,17 @@ export default function useBoardMouse() {
     dispatch(setIsSelecting(false));
   }
 
-  const handleMouseMove = (event) => {
-    // Get the mouse position delta and update the current mouse position
+  function getMouseData(event) {
     const { x: oldX, y: oldY } = input.mousePosition;
     const { clientX: newX, clientY: newY } = event;
     const dx = (oldX - newX) * camera.zoom;
     const dy = (oldY - newY) * camera.zoom;
+
+    return { newX, newY, dx, dy };
+  }
+
+  const handleMouseMove = (event) => {
+    const { newX, newY, dx, dy } = getMouseData(event);
     dispatch(setMousePosition({ x: newX, y: newY }));
 
     if (input.isPanning) {
@@ -67,7 +85,7 @@ export default function useBoardMouse() {
     }
 
     if (input.isDragging) {
-      dispatch(moveSelectedObjects({ dx, dy }));
+      dispatch(dragSelected({ dx, dy }));
       return;
     }
   };
@@ -80,21 +98,16 @@ export default function useBoardMouse() {
 
     if (event.button === 0) {
       if (selectedTool !== "cursor") {
-        const position = toRealPoint(input.mousePosition, camera);
-        dispatch(addBoardObject({ selectedTool, position }));
-        dispatch(setSelectedTool("cursor"));
+        addSelectedObject();
         return;
       }
-      dispatch(setIsSelecting(true));
-      const { clientX: x, clientY: y } = event;
-      const realMousePosition = toRealPoint({ x, y }, camera);
-      dispatch(setSelectionStart(realMousePosition));
+
+      startSelecting(event);
     }
   };
 
   const handleMouseUp = (event) => {
     if (event.button === 1) {
-      // Stop panning
       dispatch(setIsPanning(false));
       return;
     }

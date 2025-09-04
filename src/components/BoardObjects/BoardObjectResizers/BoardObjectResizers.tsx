@@ -18,11 +18,7 @@ function BoardObjectResizers({ boardObject }: { boardObject: BoardObject }) {
     Object.keys(boardObjects.selected).length === 1 &&
     !input.isDragging;
 
-  if (!canResize) {
-    return <></>;
-  }
-
-  return (
+  return canResize ? (
     <>
       <BoardObjectResizer
         boardObject={boardObject}
@@ -44,6 +40,8 @@ function BoardObjectResizers({ boardObject }: { boardObject: BoardObject }) {
         resizingCorner={"bottom-right"}
       />
     </>
+  ) : (
+    <></>
   );
 }
 

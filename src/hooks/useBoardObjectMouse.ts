@@ -30,10 +30,9 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
   };
 
   const handleMouseDown = (event) => {
-    event.stopPropagation(); // Handle mouseDown event separately from the board
+    event.stopPropagation();
 
     if (event.button === 1) {
-      // Start panning
       dispatch(setIsPanning(true));
       return;
     }
@@ -45,11 +44,25 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
     isPressed.current = true;
   };
 
+  function selectOnlyOne() {
+    const { id, isEditing } = boardObject;
+    dispatch(clearSelection());
+    dispatch(selectObject(boardObject.id));
+    dispatch(setIsEditing({ id, isEditing }));
+  }
+
+  function toggleSelection() {
+    if (boardObject.isSelected) {
+      dispatch(unselectObject(boardObject.id));
+    } else {
+      dispatch(selectObject(boardObject.id));
+    }
+  }
+
   const handleMouseUp = (event) => {
-    event.stopPropagation(); // Handle mouseUp event separately from the board
+    event.stopPropagation();
 
     if (event.button === 1) {
-      // Stop panning
       dispatch(setIsPanning(false));
       return;
     }
@@ -60,25 +73,16 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
 
     isPressed.current = false;
     if (input.isDragging) {
-      // If dragging - don't handle selection
       dispatch(setIsDragging(false));
       return;
     }
 
     if (!event.shiftKey) {
-      // Select only the pressed object
-      const { id, isEditing } = boardObject;
-      dispatch(clearSelection());
-      dispatch(selectObject(boardObject.id));
-      dispatch(setIsEditing({ id, isEditing }));
-    } else {
-      // Toggle selection
-      if (boardObject.isSelected) {
-        dispatch(unselectObject(boardObject.id));
-      } else {
-        dispatch(selectObject(boardObject.id));
-      }
+      selectOnlyOne();
+      return;
     }
+
+    toggleSelection();
   };
 
   return {

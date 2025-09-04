@@ -18,7 +18,7 @@ export const boardObjectsSlice = createSlice({
   name: "boardObjectsSlice",
   initialState,
   reducers: {
-    addBoardObject: (state, action) => {
+    addObject: (state, action) => {
       const { selectedTool, position } = action.payload;
       let boardObject = null;
       if (selectedTool === "text") {
@@ -69,7 +69,7 @@ export const boardObjectsSlice = createSlice({
       }
       state.selected = {};
     },
-    moveSelectedObjects: (state, action) => {
+    dragSelected: (state, action) => {
       const { dx, dy } = action.payload;
       for (const id in state.selected) {
         state.objects[id].position.x -= dx;
@@ -121,17 +121,17 @@ export const boardObjectsSlice = createSlice({
       delete state.selected[id];
       state.order = state.order.filter((_id) => _id !== id);
     },
-    insertCopy: (state, action) => {
-      const object = action.payload;
-      const objectCopy = {
-        ...JSON.parse(JSON.stringify(object)),
+    addCopy: (state, action) => {
+      const boardObject = action.payload;
+      const copy = {
+        ...JSON.parse(JSON.stringify(boardObject)),
         id: getID(),
         isSelected: false,
         isEdited: false,
-        position: addOffset(object.position, OBJECT_COPY_MARGIN),
+        position: addOffset(boardObject.position, OBJECT_COPY_MARGIN),
       };
-      state.objects[objectCopy.id] = objectCopy;
-      state.order.push(objectCopy.id);
+      state.objects[copy.id] = copy;
+      state.order.push(copy.id);
     },
     bringToFront: (state, action) => {
       const id = action.payload;
@@ -147,11 +147,11 @@ export const boardObjectsSlice = createSlice({
 });
 
 export const {
-  addBoardObject,
+  addObject,
   selectObject,
   unselectObject,
   clearSelection,
-  moveSelectedObjects,
+  dragSelected,
   selectObjectsInRectangle,
   setIsEditing,
   setText,
@@ -162,7 +162,7 @@ export const {
   setFontStyle,
   setFontColor,
   deleteObject,
-  insertCopy,
+  addCopy,
   bringToFront,
   bringToRear,
 } = boardObjectsSlice.actions;

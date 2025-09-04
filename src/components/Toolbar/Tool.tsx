@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./styles.module.css";
-import { SelectedTool } from "@/types/Toolbox";
+import { SelectedTool } from "@/types/toolbox";
 import { capitalize } from "@/utils/string";
 import { useDispatch } from "react-redux";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";

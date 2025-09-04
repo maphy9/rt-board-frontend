@@ -1,9 +1,5 @@
-import Toolbox from "@/types/Toolbox";
+import Toolbox from "@/types/toolbox";
 import { createSlice } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-import { addBoardObject } from "./boardObjectsSlice";
-import { createTextObject } from "@/types/textObject";
-import BoardObject from "@/types/boardObject";
 
 const initialState: Toolbox = {
   selectedTool: "cursor",

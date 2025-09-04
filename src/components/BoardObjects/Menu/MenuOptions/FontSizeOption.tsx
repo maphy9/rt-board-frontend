@@ -1,4 +1,4 @@
-import useGlobalHooks from "@/hooks/globalHooks";
+import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
 import BoardObjects from "@/types/boardObjects";
 import TextObject from "@/types/textObject";
@@ -41,7 +41,7 @@ function FontSizeOption({ id }: { id: string }) {
     setIsOpen(false);
   };
 
-  const { stopPropagation } = useGlobalHooks();
+  const { stopPropagation } = useUniversalInput();
 
   return (
     <div className={styles.optionContainer}>

@@ -1,4 +1,4 @@
-import useGlobalHooks from "@/hooks/globalHooks";
+import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
 import BoardObjects from "@/types/boardObjects";
 import TextObject from "@/types/textObject";
@@ -9,7 +9,7 @@ import {
   bringToFront,
   bringToRear,
   deleteObject,
-  insertCopy,
+  addCopy,
 } from "@/state/slices/boardObjectsSlice";
 
 function OtherOption({ id }: { id: string }) {
@@ -32,7 +32,7 @@ function OtherOption({ id }: { id: string }) {
   };
 
   const handleDuplicate = () => {
-    dispatch(insertCopy(textObject));
+    dispatch(addCopy(textObject));
     setIsOpen(false);
   };
 
@@ -46,7 +46,7 @@ function OtherOption({ id }: { id: string }) {
     setIsOpen(false);
   };
 
-  const { stopPropagation } = useGlobalHooks();
+  const { stopPropagation } = useUniversalInput();
 
   return (
     <div className={styles.optionContainer}>

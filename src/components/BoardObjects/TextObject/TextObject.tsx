@@ -3,10 +3,11 @@ import { setText } from "@/state/slices/boardObjectsSlice";
 import { RootState } from "@/state/store";
 import Camera, { scaleToCamera } from "@/types/camera";
 import { toCameraSize } from "@/types/size";
-import TextObject from "@/types/textObject";
+import TextObject, { FontColor, FontStyle } from "@/types/textObject";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
+import useUniversalInput from "@/hooks/useUniversalInput";
 
 function TextObjectComponent({ textObject }: { textObject: TextObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -14,35 +15,16 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
 
   const size = toCameraSize(textObject.size, camera);
   const fontSize = scaleToCamera(textObject.fontSize, camera);
-
-  const textStyle = {
-    fontWeight: "normal",
-    textDecoration: "none",
-    fontStyle: "normal",
-  };
-  if (textObject.fontStyle === "bold") {
-    textStyle.fontWeight = "bold";
-  } else if (textObject.fontStyle === "italic") {
-    textStyle.fontStyle = "italic";
-  } else if (textObject.fontStyle === "line-through") {
-    textStyle.textDecoration = "line-through";
-  } else if (textObject.fontStyle === "underline") {
-    textStyle.textDecoration = "underline";
-  }
-
-  const { r, g, b, a } = textObject.fontColor;
-  const fontColor = `rgba(${r},${g},${b},${a})`;
+  const fontStyle = getFontStyle(textObject.fontStyle);
+  const fontColor = getFontColor(textObject.fontColor);
 
   const handleChange = (event) => {
     const text = event.target.value;
     dispatch(setText({ id: textObject.id, text }));
   };
 
-  const handleMouse = (event) => {
-    event.stopPropagation();
-  };
-
   const { handleBlur, handleDoubleClick } = useEditEvents(textObject);
+  const { stopPropagation } = useUniversalInput();
 
   return (
     <div
@@ -61,26 +43,49 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
           autoFocus
           className={styles.textObjectInput}
           onBlur={handleBlur}
-          onMouseDown={handleMouse}
-          onMouseUp={handleMouse}
-          onMouseMove={handleMouse}
+          onMouseDown={stopPropagation}
+          onMouseUp={stopPropagation}
+          onMouseMove={stopPropagation}
           style={{
             width: size.width,
             height: size.height,
             color: fontColor,
             fontSize,
-            ...textStyle,
+            ...fontStyle,
           }}
           value={textObject.text}
           onChange={handleChange}
         />
       ) : textObject.text !== "" ? (
-        <span style={textStyle}>{textObject.text}</span>
+        <span style={fontStyle}>{textObject.text}</span>
       ) : (
-        <span style={{ ...textStyle, color: "gray" }}>Enter text</span>
+        <span style={{ ...fontStyle, color: "gray" }}>Enter text</span>
       )}
     </div>
   );
 }
 
 export default TextObjectComponent;
+
+const getFontStyle = (fontStyle: FontStyle) => {
+  const textStyle = {
+    fontWeight: "normal",
+    textDecoration: "none",
+    fontStyle: "normal",
+  };
+  if (fontStyle === "bold") {
+    textStyle.fontWeight = "bold";
+  } else if (fontStyle === "italic") {
+    textStyle.fontStyle = "italic";
+  } else if (fontStyle === "line-through") {
+    textStyle.textDecoration = "line-through";
+  } else if (fontStyle === "underline") {
+    textStyle.textDecoration = "underline";
+  }
+  return textStyle;
+};
+
+const getFontColor = (fontColor: FontColor) => {
+  const { r, g, b, a } = fontColor;
+  return `rgba(${r},${g},${b},${a})`;
+};

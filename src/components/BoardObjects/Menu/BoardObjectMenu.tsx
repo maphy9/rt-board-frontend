@@ -8,7 +8,7 @@ import {
   OBJECT_MENU_OPTION_SIZE,
 } from "@/constants/boardObjectConstants";
 import BoardObject from "@/types/boardObject";
-import useGlobalHooks from "@/hooks/globalHooks";
+import useUniversalInput from "@/hooks/useUniversalInput";
 import styles from "./styles.module.css";
 import BoardObjects from "@/types/boardObjects";
 import Input from "@/types/input";
@@ -35,18 +35,14 @@ function BoardObjectMenu({
   );
   position.y -= OBJECT_MENU_OPTION_SIZE + OBJECT_MENU_MARGIN;
 
-  const { stopPropagation } = useGlobalHooks();
+  const { stopPropagation } = useUniversalInput();
 
   const showMenu =
     boardObject.isSelected &&
     Object.keys(boardObjects.selected).length === 1 &&
     !input.isDragging;
 
-  if (!showMenu) {
-    return <></>;
-  }
-
-  return (
+  return showMenu ? (
     <div
       className={styles.boardObjectMenu}
       onMouseDown={stopPropagation}
@@ -58,6 +54,8 @@ function BoardObjectMenu({
     >
       {children}
     </div>
+  ) : (
+    <></>
   );
 }
 
