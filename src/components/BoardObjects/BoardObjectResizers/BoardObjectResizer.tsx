@@ -42,11 +42,19 @@ function BoardObjectResizer({
   };
 
   let cursor = "not-allowed";
-  if (resizingCorner === "top-left" || resizingCorner === "bottom-right") {
-    cursor = "nw-resize";
-  }
-  if (resizingCorner === "top-right" || resizingCorner === "bottom-left") {
-    cursor = "ne-resize";
+  switch (resizingCorner) {
+    case "top-left":
+      cursor = "nw-resize";
+      break;
+    case "bottom-right":
+      cursor = "se-resize";
+      break;
+    case "top-right":
+      cursor = "ne-resize";
+      break;
+    case "bottom-left":
+      cursor = "sw-resize";
+      break;
   }
 
   const position = getResizerPosition(
