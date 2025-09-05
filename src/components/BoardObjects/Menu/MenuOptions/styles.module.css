@@ -16,6 +16,8 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  -webkit-mask-size: cover;
+  mask-size: cover;
 }
 
 .dropdown {
@@ -27,6 +29,8 @@
   z-index: 3;
   border-radius: 8px;
   border: 1px solid black;
+  display: flex;
+  flex-direction: column;
 }
 
 .dropdownOptions {
@@ -71,4 +75,13 @@
   z-index: 3;
   border-radius: 8px;
   border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+.optionDescription {
+  padding: 0 6px;
+  width: calc(100% - 12px);
+  border-bottom: 1px solid black;
+  margin: 4px 0;
 }

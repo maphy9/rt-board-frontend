@@ -30,4 +30,6 @@
 .toolIcon {
   width: calc(100% - 4px);
   height: calc(100% - 4px);
+  -webkit-mask-size: cover;
+  mask-size: cover;
 }

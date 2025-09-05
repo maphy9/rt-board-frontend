@@ -34,8 +34,14 @@ function FontStyleOption({ id, isOpen, toggleIsOpen }) {
   return (
     <div className={styles.optionContainer}>
       <img
-        src="fontStyle.svg"
         className={styles.optionIcon}
+        style={
+          {
+            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            "-webkit-mask-image": "url(fontStyle.svg)",
+            "mask-image": "url(fontStyle.svg)",
+          } as any
+        }
         onClick={handleOpen}
       />
 
@@ -47,6 +53,8 @@ function FontStyleOption({ id, isOpen, toggleIsOpen }) {
           onMouseDown={stopPropagation}
           onMouseUp={stopPropagation}
         >
+          <span className={styles.optionDescription}>Font style</span>
+
           <div className={styles.dropdownOptions}>
             <div
               onClick={() => _setFontStyle("bold")}

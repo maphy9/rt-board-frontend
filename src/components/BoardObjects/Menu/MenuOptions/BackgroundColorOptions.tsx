@@ -35,8 +35,14 @@ function BackgroundColorOption({ id, isOpen, toggleIsOpen }) {
   return (
     <div className={styles.optionContainer}>
       <img
-        src="backgroundColor.svg"
         className={styles.optionIcon}
+        style={
+          {
+            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            "-webkit-mask-image": "url(backgroundColor.svg)",
+            "mask-image": "url(backgroundColor.svg)",
+          } as any
+        }
         onClick={handleOpen}
       />
 
@@ -44,6 +50,7 @@ function BackgroundColorOption({ id, isOpen, toggleIsOpen }) {
         <></>
       ) : (
         <div className={styles.colorPickerContainer}>
+          <span className={styles.optionDescription}>Background color</span>
           <RgbaColorPicker color={color} onChange={handleChange} />
         </div>
       )}

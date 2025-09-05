@@ -30,8 +30,14 @@ function FontColorOption({ id, isOpen, toggleIsOpen }) {
   return (
     <div className={styles.optionContainer}>
       <img
-        src="fontColor.svg"
         className={styles.optionIcon}
+        style={
+          {
+            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            "-webkit-mask-image": "url(fontColor.svg)",
+            "mask-image": "url(fontColor.svg)",
+          } as any
+        }
         onClick={handleOpen}
       />
 
@@ -39,6 +45,7 @@ function FontColorOption({ id, isOpen, toggleIsOpen }) {
         <></>
       ) : (
         <div className={styles.colorPickerContainer}>
+          <span className={styles.optionDescription}>Font color</span>
           <RgbaColorPicker color={color} onChange={handleChange} />
         </div>
       )}

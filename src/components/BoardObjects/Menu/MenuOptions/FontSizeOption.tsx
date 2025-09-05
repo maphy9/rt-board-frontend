@@ -47,8 +47,14 @@ function FontSizeOption({ id, isOpen, toggleIsOpen }) {
   return (
     <div className={styles.optionContainer}>
       <img
-        src="fontSize.svg"
         className={styles.optionIcon}
+        style={
+          {
+            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            "-webkit-mask-image": "url(fontSize.svg)",
+            "mask-image": "url(fontSize.svg)",
+          } as any
+        }
         onClick={handleOpen}
       />
 
@@ -60,6 +66,8 @@ function FontSizeOption({ id, isOpen, toggleIsOpen }) {
           onMouseDown={stopPropagation}
           onMouseUp={stopPropagation}
         >
+          <span className={styles.optionDescription}>Background color</span>
+
           <div className={styles.dropdownOptions}>
             <div
               onClick={() => _setFontSize(16)}

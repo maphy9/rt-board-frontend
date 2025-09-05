@@ -52,7 +52,17 @@ function OtherOption({ id, isOpen, toggleIsOpen }) {
 
   return (
     <div className={styles.optionContainer}>
-      <img src="dots.svg" className={styles.optionIcon} onClick={handleOpen} />
+      <img
+        className={styles.optionIcon}
+        style={
+          {
+            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            "-webkit-mask-image": "url(dots.svg)",
+            "mask-image": "url(dots.svg)",
+          } as any
+        }
+        onClick={handleOpen}
+      />
 
       {!isOpen ? (
         <></>
@@ -62,6 +72,8 @@ function OtherOption({ id, isOpen, toggleIsOpen }) {
           onMouseDown={stopPropagation}
           onMouseUp={stopPropagation}
         >
+          <span className={styles.optionDescription}>Other options</span>
+
           <div className={styles.dropdownOptions}>
             <div className={styles.dropdownOption} onClick={handleDuplicate}>
               <span>Duplicate</span>
