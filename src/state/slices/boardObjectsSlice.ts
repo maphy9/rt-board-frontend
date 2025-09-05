@@ -1,8 +1,8 @@
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
-import BoardObjects from "@/types/boardObjects";
+import BoardObjects from "@/types/BoardObjects/boardObjects";
+import TextObject, { createTextObject } from "@/types/BoardObjects/textObject";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
-import TextObject, { createTextObject } from "@/types/textObject";
 import getID from "@/utils/id";
 import { resizeBoardObject } from "@/utils/resizing";
 import { createSlice } from "@reduxjs/toolkit";

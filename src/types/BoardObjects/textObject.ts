@@ -1,6 +1,6 @@
 import getID from "@/utils/id";
+import Point from "../point";
 import BoardObject from "./boardObject";
-import Point from "./point";
 
 export type FontStyle =
   | "normal"

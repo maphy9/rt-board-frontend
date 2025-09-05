@@ -7,12 +7,12 @@ import {
   OBJECT_MENU_MARGIN,
   OBJECT_MENU_OPTION_SIZE,
 } from "@/constants/boardObjectConstants";
-import BoardObject from "@/types/boardObject";
 import useUniversalInput from "@/hooks/useUniversalInput";
 import styles from "./styles.module.css";
-import BoardObjects from "@/types/boardObjects";
 import Input from "@/types/input";
 import MenuOption from "./MenuOption";
+import BoardObject from "@/types/BoardObjects/boardObject";
+import BoardObjects from "@/types/BoardObjects/boardObjects";
 
 function BoardObjectMenu({
   boardObject,

@@ -1,7 +1,5 @@
 import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
-import BoardObjects from "@/types/boardObjects";
-import TextObject from "@/types/textObject";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
@@ -11,12 +9,13 @@ import {
   deleteObject,
   addCopy,
 } from "@/state/slices/boardObjectsSlice";
+import BoardObjects from "@/types/BoardObjects/boardObjects";
 
 function OtherOption({ id, isOpen, toggleIsOpen }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
-  const textObject = boardObjects.objects[id] as TextObject;
+  const boardObject = boardObjects.objects[id];
   const dispatch = useDispatch();
 
   const handleOpen = (event) => {
@@ -32,7 +31,7 @@ function OtherOption({ id, isOpen, toggleIsOpen }) {
   };
 
   const handleDuplicate = () => {
-    dispatch(addCopy(textObject));
+    dispatch(addCopy(boardObject));
 
     toggleIsOpen();
   };

@@ -1,9 +1,7 @@
 import { RootState } from "@/state/store";
-import BoardObject from "@/types/boardObject";
 import Camera, { scaleToCamera } from "@/types/camera";
 import { toCameraPoint } from "@/types/point";
 import React from "react";
-import TextObject from "@/types/textObject";
 import TextObjectComponent from "./TextObject/TextObject";
 import styles from "./styles.module.css";
 import useBoardObjectMouse from "@/hooks/useBoardObjectMouse";
@@ -11,6 +9,8 @@ import { useSelector } from "react-redux";
 import BoardObjectResizers from "./BoardObjectResizers/BoardObjectResizers";
 import { OBJECT_BORDER_RADIUS } from "@/constants/boardObjectConstants";
 import TextObjectMenu from "./TextObject/TextObjectMenu";
+import BoardObject from "@/types/BoardObjects/boardObject";
+import TextObject from "@/types/BoardObjects/textObject";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);

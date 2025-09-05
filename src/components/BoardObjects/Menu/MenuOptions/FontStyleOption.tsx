@@ -1,11 +1,11 @@
 import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
-import BoardObjects from "@/types/boardObjects";
-import TextObject from "@/types/textObject";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import { setFontStyle } from "@/state/slices/boardObjectsSlice";
+import BoardObjects from "@/types/BoardObjects/boardObjects";
+import TextObject from "@/types/BoardObjects/textObject";
 
 function FontStyleOption({ id, isOpen, toggleIsOpen }) {
   const boardObjects: BoardObjects = useSelector(

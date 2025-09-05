@@ -3,11 +3,14 @@ import { setText } from "@/state/slices/boardObjectsSlice";
 import { RootState } from "@/state/store";
 import Camera, { scaleToCamera } from "@/types/camera";
 import { toCameraSize } from "@/types/size";
-import TextObject, { FontColor, FontStyle } from "@/types/textObject";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import useUniversalInput from "@/hooks/useUniversalInput";
+import TextObject, {
+  FontColor,
+  FontStyle,
+} from "@/types/BoardObjects/textObject";
 
 function TextObjectComponent({ textObject }: { textObject: TextObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
