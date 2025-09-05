@@ -2,7 +2,7 @@ import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
 import BoardObjects from "@/types/boardObjects";
 import TextObject from "@/types/textObject";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import {
@@ -12,38 +12,41 @@ import {
   addCopy,
 } from "@/state/slices/boardObjectsSlice";
 
-function OtherOption({ id }: { id: string }) {
+function OtherOption({ id, isOpen, toggleIsOpen }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const handleOpen = (event) => {
     event.stopPropagation();
-    setIsOpen((prev) => !prev);
+
+    toggleIsOpen();
   };
 
   const handleDelete = () => {
     dispatch(deleteObject(id));
-    setIsOpen(false);
+
+    toggleIsOpen();
   };
 
   const handleDuplicate = () => {
     dispatch(addCopy(textObject));
-    setIsOpen(false);
+
+    toggleIsOpen();
   };
 
   const handleBringToFront = () => {
     dispatch(bringToFront(id));
-    setIsOpen(false);
+
+    toggleIsOpen();
   };
 
   const handleBringToRear = () => {
     dispatch(bringToRear(id));
-    setIsOpen(false);
+
+    toggleIsOpen();
   };
 
   const { stopPropagation } = useUniversalInput();

@@ -2,23 +2,22 @@ import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
 import BoardObjects from "@/types/boardObjects";
 import TextObject from "@/types/textObject";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import { setFontStyle } from "@/state/slices/boardObjectsSlice";
 
-function FontStyleOption({ id }: { id: string }) {
+function FontStyleOption({ id, isOpen, toggleIsOpen }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const handleOpen = (event) => {
     event.stopPropagation();
-    setIsOpen((prev) => !prev);
+
+    toggleIsOpen();
   };
 
   const _setFontStyle = (newFontStyle) => {
@@ -26,7 +25,8 @@ function FontStyleOption({ id }: { id: string }) {
       newFontStyle = "normal";
     }
     dispatch(setFontStyle({ id: textObject.id, fontStyle: newFontStyle }));
-    setIsOpen(false);
+
+    toggleIsOpen();
   };
 
   const { stopPropagation } = useUniversalInput();

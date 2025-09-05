@@ -7,19 +7,19 @@ import styles from "./styles.module.css";
 import { RgbaColorPicker } from "react-colorful";
 import { setFontColor } from "@/state/slices/boardObjectsSlice";
 
-function FontColorOption({ id }: { id: string }) {
+function FontColorOption({ id, isOpen, toggleIsOpen }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [color, setColor] = useState({ ...textObject.fontColor });
 
   const handleOpen = (event) => {
     event.stopPropagation();
-    setIsOpen((prev) => !prev);
+
+    toggleIsOpen();
   };
 
   const handleChange = (newColor) => {

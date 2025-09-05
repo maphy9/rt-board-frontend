@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children, useState } from "react";
 import { toCameraPoint } from "@/types/point";
 import Camera from "@/types/camera";
 import { useSelector } from "react-redux";
@@ -12,13 +12,14 @@ import useUniversalInput from "@/hooks/useUniversalInput";
 import styles from "./styles.module.css";
 import BoardObjects from "@/types/boardObjects";
 import Input from "@/types/input";
+import MenuOption from "./MenuOption";
 
 function BoardObjectMenu({
   boardObject,
   children,
 }: {
   boardObject: BoardObject;
-  children: React.ReactNode;
+  children: any;
 }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
@@ -42,6 +43,19 @@ function BoardObjectMenu({
     Object.keys(boardObjects.selected).length === 1 &&
     !input.isDragging;
 
+  const numberOfOptions = children.length;
+  const [isOpen, setIsOpen] = useState(new Array(numberOfOptions).fill(false));
+  const options = Children.map(children, (child, index) => (
+    <MenuOption
+      id={boardObject.id}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      index={index}
+    >
+      {child}
+    </MenuOption>
+  ));
+
   return showMenu ? (
     <div
       className={styles.boardObjectMenu}
@@ -52,7 +66,7 @@ function BoardObjectMenu({
         left: position.x,
       }}
     >
-      {children}
+      {...options}
     </div>
   ) : (
     <></>

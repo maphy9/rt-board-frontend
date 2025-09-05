@@ -7,21 +7,21 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import { setFontSize } from "@/state/slices/boardObjectsSlice";
 
-function FontSizeOption({ id }: { id: string }) {
+function FontSizeOption({ id, isOpen, toggleIsOpen }) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>(
     textObject.fontSize + ""
   );
 
   const handleOpen = (event) => {
     event.stopPropagation();
-    setIsOpen((prev) => !prev);
+
+    toggleIsOpen();
   };
 
   const handleChange = (event) => {
@@ -38,7 +38,8 @@ function FontSizeOption({ id }: { id: string }) {
   const _setFontSize = (newFontSize) => {
     setInputValue(newFontSize + "");
     dispatch(setFontSize({ id: textObject.id, fontSize: newFontSize }));
-    setIsOpen(false);
+
+    toggleIsOpen();
   };
 
   const { stopPropagation } = useUniversalInput();
