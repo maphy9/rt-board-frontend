@@ -9,7 +9,7 @@ export type FontStyle =
   | "line-through"
   | "underline";
 
-export interface FontColor {
+export interface Color {
   r: number;
   g: number;
   b: number;
@@ -20,7 +20,7 @@ export default interface TextObject extends BoardObject {
   text: string;
   fontSize: number;
   fontStyle: FontStyle;
-  fontColor: FontColor;
+  fontColor: Color;
 }
 
 export function createTextObject(position: Point): TextObject {
@@ -40,3 +40,26 @@ export function createTextObject(position: Point): TextObject {
     resizingCorner: null,
   };
 }
+
+export const getFontStyle = (fontStyle: FontStyle) => {
+  const textStyle = {
+    fontWeight: "normal",
+    textDecoration: "none",
+    fontStyle: "normal",
+  };
+  if (fontStyle === "bold") {
+    textStyle.fontWeight = "bold";
+  } else if (fontStyle === "italic") {
+    textStyle.fontStyle = "italic";
+  } else if (fontStyle === "line-through") {
+    textStyle.textDecoration = "line-through";
+  } else if (fontStyle === "underline") {
+    textStyle.textDecoration = "underline";
+  }
+  return textStyle;
+};
+
+export const getCssColor = (fontColor: Color) => {
+  const { r, g, b, a } = fontColor;
+  return `rgba(${r},${g},${b},${a})`;
+};

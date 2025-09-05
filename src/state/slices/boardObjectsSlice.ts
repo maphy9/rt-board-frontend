@@ -1,5 +1,6 @@
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
+import NoteObject, { createNoteObject } from "@/types/BoardObjects/noteObject";
 import TextObject, { createTextObject } from "@/types/BoardObjects/textObject";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
@@ -23,7 +24,10 @@ export const boardObjectsSlice = createSlice({
       let boardObject = null;
       if (selectedTool === "text") {
         boardObject = createTextObject(position);
+      } else if (selectedTool === "note") {
+        boardObject = createNoteObject(position);
       }
+      console.dir(boardObject);
       state.objects[boardObject.id] = boardObject;
       state.order.push(boardObject.id);
     },
@@ -143,6 +147,10 @@ export const boardObjectsSlice = createSlice({
       state.order = state.order.filter((_id) => _id !== id);
       state.order.unshift(id);
     },
+    setBackgroundColor: (state, action) => {
+      const { id, backgroundColor } = action.payload;
+      (state.objects[id] as NoteObject).backgroundColor = backgroundColor;
+    },
   },
 });
 
@@ -165,6 +173,7 @@ export const {
   addCopy,
   bringToFront,
   bringToRear,
+  setBackgroundColor,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

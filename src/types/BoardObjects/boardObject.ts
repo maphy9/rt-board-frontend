@@ -1,7 +1,7 @@
-import Point from "./point";
-import Size from "./size";
+import Point from "../point";
+import Size from "../size";
 
-export type BoardObjectType = "text";
+export type BoardObjectType = "text" | "note";
 export type ResizingCorner =
   | "top-left"
   | "top-right"

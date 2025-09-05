@@ -11,6 +11,9 @@ import { OBJECT_BORDER_RADIUS } from "@/constants/boardObjectConstants";
 import TextObjectMenu from "./TextObject/TextObjectMenu";
 import BoardObject from "@/types/BoardObjects/boardObject";
 import TextObject from "@/types/BoardObjects/textObject";
+import NoteObjectComponent from "./NoteObject/NoteObject";
+import NoteObject from "@/types/BoardObjects/noteObject";
+import NoteObjectMenu from "./NoteObject/NoteObjectMenu";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -55,6 +58,13 @@ const getObjectData = (boardObject: BoardObject) => {
     );
     objectMenuComponent = (
       <TextObjectMenu textObject={boardObject as TextObject} />
+    );
+  } else if (boardObject.type == "note") {
+    objectComponent = (
+      <NoteObjectComponent noteObject={boardObject as NoteObject} />
+    );
+    objectMenuComponent = (
+      <NoteObjectMenu noteObject={boardObject as NoteObject} />
     );
   }
 
