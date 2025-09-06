@@ -5,6 +5,7 @@ import { capitalize } from "@/utils/string";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
+import { clearSelection } from "@/state/slices/boardObjectsSlice";
 
 function Tool({
   selectedTool,
@@ -18,6 +19,7 @@ function Tool({
   const dispatch = useDispatch();
 
   const handleClick = () => {
+    dispatch(clearSelection());
     dispatch(setSelectedTool(selectedTool));
   };
 

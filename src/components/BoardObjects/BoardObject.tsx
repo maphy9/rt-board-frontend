@@ -14,6 +14,9 @@ import TextObject from "@/types/BoardObjects/textObject";
 import NoteObjectComponent from "./NoteObject/NoteObject";
 import NoteObject from "@/types/BoardObjects/noteObject";
 import NoteObjectMenu from "./NoteObject/NoteObjectMenu";
+import ImageObjectComponent from "./ImageObject/ImageObject";
+import ImageObject from "@/types/BoardObjects/imageObject";
+import { toCameraSize } from "@/types/size";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -21,14 +24,13 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const { handleMouseUp, handleMouseDown, handleMouseMove } =
     useBoardObjectMouse(boardObject);
 
+  const size = toCameraSize(boardObject.size, camera);
   const position = toCameraPoint(boardObject.position, camera);
   const borderRadius = scaleToCamera(OBJECT_BORDER_RADIUS, camera);
   const { objectComponent, objectMenuComponent } = getObjectData(boardObject);
 
   return (
     <div className={styles.boardObjectContainer}>
-      {objectMenuComponent}
-      {<BoardObjectResizers boardObject={boardObject} />}
       <div
         onMouseMove={handleMouseMove}
         onMouseDown={handleMouseDown}
@@ -37,12 +39,17 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
         style={{
           top: position.y,
           left: position.x,
+          width: size.width,
+          height: size.height,
           outline: boardObject.isSelected ? "1px solid black" : "",
           borderRadius: `${borderRadius}px`,
         }}
       >
         {objectComponent}
       </div>
+
+      {objectMenuComponent}
+      {<BoardObjectResizers boardObject={boardObject} />}
     </div>
   );
 }
@@ -66,6 +73,11 @@ const getObjectData = (boardObject: BoardObject) => {
     objectMenuComponent = (
       <NoteObjectMenu noteObject={boardObject as NoteObject} />
     );
+  } else if (boardObject.type == "image") {
+    objectComponent = (
+      <ImageObjectComponent imageObject={boardObject as ImageObject} />
+    );
+    objectMenuComponent = <></>;
   }
 
   return { objectComponent, objectMenuComponent };

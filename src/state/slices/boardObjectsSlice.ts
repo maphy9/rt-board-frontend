@@ -1,5 +1,6 @@
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
+import { createImageObject } from "@/types/BoardObjects/imageObject";
 import NoteObject, { createNoteObject } from "@/types/BoardObjects/noteObject";
 import TextObject, { createTextObject } from "@/types/BoardObjects/textObject";
 import { addOffset } from "@/types/point";
@@ -27,9 +28,21 @@ export const boardObjectsSlice = createSlice({
       } else if (selectedTool === "note") {
         boardObject = createNoteObject(position);
       }
-      console.dir(boardObject);
       state.objects[boardObject.id] = boardObject;
       state.order.push(boardObject.id);
+    },
+    addImageObject: (state, action) => {
+      const { src, position, size } = action.payload;
+      const imageObject = createImageObject(src, position, size);
+      state.objects[imageObject.id] = imageObject;
+      state.order.push(imageObject.id);
+    },
+    deleteSelected: (state) => {
+      state.order = state.order.filter((id) => !(id in state.selected));
+      for (const id in state.selected) {
+        delete state.objects[id];
+      }
+      state.selected = {};
     },
     selectObject: (state, action) => {
       const id = action.payload;
@@ -174,6 +187,8 @@ export const {
   bringToFront,
   bringToRear,
   setBackgroundColor,
+  addImageObject,
+  deleteSelected,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;
