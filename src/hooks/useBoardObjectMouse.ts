@@ -6,7 +6,7 @@ import {
 } from "@/state/slices/boardObjectsSlice";
 import { setIsDragging, setIsPanning } from "@/state/slices/inputSlice";
 import { RootState } from "@/state/store";
-import BoardObject from "@/types/boardObject";
+import BoardObject from "@/types/BoardObjects/boardObject";
 import Input from "@/types/input";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";

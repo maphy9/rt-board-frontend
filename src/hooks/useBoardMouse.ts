@@ -17,7 +17,7 @@ import {
 } from "@/state/slices/inputSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
-import BoardObjects from "@/types/boardObjects";
+import BoardObjects from "@/types/BoardObjects/boardObjects";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";

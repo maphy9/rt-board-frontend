@@ -24,7 +24,13 @@ function TextObjectContent({ textObject }: { textObject: TextObject }) {
           {textObject.text}
         </span>
       ) : (
-        <span style={{ ...fontStyle, color: "black", fontSize }}>
+        <span
+          style={{
+            ...fontStyle,
+            color: getCssColor({ ...textObject.fontColor, a: 0.5 }),
+            fontSize,
+          }}
+        >
           Enter text
         </span>
       )}

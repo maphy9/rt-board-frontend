@@ -1,5 +1,5 @@
 import { setIsEditing } from "@/state/slices/boardObjectsSlice";
-import BoardObject from "@/types/boardObject";
+import BoardObject from "@/types/BoardObjects/boardObject";
 import { useDispatch } from "react-redux";
 
 export default function useEditEvents(boardObject: BoardObject) {
