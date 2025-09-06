@@ -57,8 +57,8 @@ function OtherOption({ id, isOpen, toggleIsOpen }) {
         style={
           {
             backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
-            "-webkit-mask-image": "url(dots.svg)",
-            "mask-image": "url(dots.svg)",
+            WebkitMaskImage: "url(dots.svg)",
+            maskImage: "url(dots.svg)",
           } as any
         }
         onClick={handleOpen}

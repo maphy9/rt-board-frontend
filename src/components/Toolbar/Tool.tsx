@@ -34,8 +34,8 @@ function Tool({
         style={
           {
             backgroundColor: isSelected ? "rgb(46, 103, 248)" : "black",
-            "-webkit-mask-image": `url(${iconPath})`,
-            "mask-image": `url(${iconPath})`,
+            WebkitMaskImage: `url(${iconPath})`,
+            maskImage: `url(${iconPath})`,
           } as any
         }
       />

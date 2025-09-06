@@ -38,8 +38,8 @@ function FontStyleOption({ id, isOpen, toggleIsOpen }) {
         style={
           {
             backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
-            "-webkit-mask-image": "url(fontStyle.svg)",
-            "mask-image": "url(fontStyle.svg)",
+            WebkitMaskImage: "url(fontStyle.svg)",
+            maskImage: "url(fontStyle.svg)",
           } as any
         }
         onClick={handleOpen}

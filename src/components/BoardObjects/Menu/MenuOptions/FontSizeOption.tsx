@@ -51,8 +51,8 @@ function FontSizeOption({ id, isOpen, toggleIsOpen }) {
         style={
           {
             backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
-            "-webkit-mask-image": "url(fontSize.svg)",
-            "mask-image": "url(fontSize.svg)",
+            WebkitMaskImage: "url(fontSize.svg)",
+            maskImage: "url(fontSize.svg)",
           } as any
         }
         onClick={handleOpen}

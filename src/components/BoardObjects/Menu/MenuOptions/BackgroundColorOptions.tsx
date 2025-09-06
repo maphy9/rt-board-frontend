@@ -39,8 +39,8 @@ function BackgroundColorOption({ id, isOpen, toggleIsOpen }) {
         style={
           {
             backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
-            "-webkit-mask-image": "url(backgroundColor.svg)",
-            "mask-image": "url(backgroundColor.svg)",
+            WebkitMaskImage: "url(backgroundColor.svg)",
+            maskImage: "url(backgroundColor.svg)",
           } as any
         }
         onClick={handleOpen}
