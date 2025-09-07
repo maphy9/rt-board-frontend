@@ -1,4 +1,4 @@
-import React, { Children, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import { toCameraPoint } from "@/types/point";
 import Camera from "@/types/camera";
 import { useSelector } from "react-redux";
@@ -55,6 +55,12 @@ function BoardObjectMenu({
       {child}
     </MenuOption>
   ));
+
+  useEffect(() => {
+    if (!boardObject.isSelected) {
+      setIsOpen((prev) => new Array(prev.length).fill(false));
+    }
+  }, [boardObject]);
 
   return showMenu ? (
     <div
