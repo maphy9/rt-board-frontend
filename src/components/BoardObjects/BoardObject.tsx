@@ -17,6 +17,7 @@ import NoteObjectMenu from "./NoteObject/NoteObjectMenu";
 import ImageObjectComponent from "./ImageObject/ImageObject";
 import ImageObject from "@/types/BoardObjects/imageObject";
 import { toCameraSize } from "@/types/size";
+import ImageObjectMenu from "./ImageObject/ImageObjectMenu";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -77,7 +78,9 @@ const getObjectData = (boardObject: BoardObject) => {
     objectComponent = (
       <ImageObjectComponent imageObject={boardObject as ImageObject} />
     );
-    objectMenuComponent = <></>;
+    objectMenuComponent = (
+      <ImageObjectMenu imageObject={boardObject as ImageObject} />
+    );
   }
 
   return { objectComponent, objectMenuComponent };
