@@ -28,6 +28,8 @@ export const boardObjectsSlice = createSlice({
       } else if (selectedTool === "note") {
         boardObject = createNoteObject(position);
       }
+      boardObject.position.x -= boardObject.size.width / 2;
+      boardObject.position.y -= boardObject.size.height / 2;
       state.objects[boardObject.id] = boardObject;
       state.order.push(boardObject.id);
     },
