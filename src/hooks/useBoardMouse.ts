@@ -90,6 +90,21 @@ export default function useBoardMouse() {
     }
   };
 
+  const handleSelectedTool = (event) => {
+    if (selectedTool === "cursor") {
+      startSelecting(event);
+      return;
+    }
+
+    if (selectedTool === "image") {
+      document.getElementById("image-uploader").click();
+      dispatch(setSelectedTool("cursor"));
+      return;
+    }
+
+    addSelectedObject();
+  };
+
   const handleMouseDown = (event) => {
     if (event.button === 1) {
       dispatch(setIsPanning(true));
@@ -97,12 +112,7 @@ export default function useBoardMouse() {
     }
 
     if (event.button === 0) {
-      if (selectedTool !== "cursor") {
-        addSelectedObject();
-        return;
-      }
-
-      startSelecting(event);
+      handleSelectedTool(event);
     }
   };
 

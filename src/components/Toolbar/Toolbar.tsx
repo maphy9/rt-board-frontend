@@ -15,6 +15,7 @@ function Toolbar() {
       <Tool selectedTool="cursor" iconPath="cursor.svg" />
       <Tool selectedTool="text" iconPath="text.svg" />
       <Tool selectedTool="note" iconPath="note.svg" />
+      <Tool selectedTool="image" iconPath="image.svg" />
     </div>
   );
 }

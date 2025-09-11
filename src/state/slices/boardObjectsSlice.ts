@@ -36,12 +36,18 @@ export const boardObjectsSlice = createSlice({
     addImageObject: (state, action) => {
       const { src, position, size } = action.payload;
       const imageObject = createImageObject(src, position, size);
+      imageObject.position.x -= imageObject.size.width / 2;
+      imageObject.position.y -= imageObject.size.height / 2;
       state.objects[imageObject.id] = imageObject;
       state.order.push(imageObject.id);
     },
     deleteSelected: (state) => {
       state.order = state.order.filter((id) => !(id in state.selected));
       for (const id in state.selected) {
+        const object = state.objects[id];
+        if (object.type === "image") {
+          URL.revokeObjectURL(object.src);
+        }
         delete state.objects[id];
       }
       state.selected = {};

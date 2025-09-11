@@ -39,6 +39,9 @@ function getSelectedToolIcon(selectedTool: SelectedTool) {
     case "note":
       selectedToolIcon = "note.svg";
       break;
+    case "image":
+      selectedToolIcon = "image.svg";
+      break;
   }
   return selectedToolIcon;
 }

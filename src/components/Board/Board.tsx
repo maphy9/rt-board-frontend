@@ -13,6 +13,7 @@ import {
 import BoardObjectComponents from "./BoardObjects";
 import SelectionRectangle from "./SelectionRectangle";
 import SelectedToolComponent from "./SelectedTool";
+import ImageUploader from "./ImageUploader";
 
 function Board() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -42,6 +43,8 @@ function Board() {
       <SelectionRectangle />
 
       <SelectedToolComponent />
+
+      <ImageUploader />
     </div>
   );
 }
