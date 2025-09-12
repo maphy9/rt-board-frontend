@@ -8,35 +8,13 @@ import NoteObject from "@/types/BoardObjects/noteObject";
 import BackgroundColorOption from "../Menu/MenuOptions/BackgroundColorOptions";
 
 function NoteObjectMenu({ noteObject }: { noteObject: NoteObject }) {
-  const isOpen = false;
-  const toggleIsOpen = () => {};
   return (
     <BoardObjectMenu boardObject={noteObject}>
-      <FontSizeOption
-        id={noteObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
-      <FontStyleOption
-        id={noteObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
-      <FontColorOption
-        id={noteObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
-      <BackgroundColorOption
-        id={noteObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
-      <OtherOption
-        id={noteObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
+      <FontSizeOption />
+      <FontStyleOption />
+      <FontColorOption />
+      <BackgroundColorOption />
+      <OtherOption />
     </BoardObjectMenu>
   );
 }

@@ -48,8 +48,6 @@ export default function useKeyboard() {
   }
 
   function handleKeyboard(event) {
-    console.dir(event);
-
     if (event.key === "Escape") {
       handleEscape();
       return;

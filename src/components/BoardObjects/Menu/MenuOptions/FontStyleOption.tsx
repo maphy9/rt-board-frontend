@@ -7,7 +7,15 @@ import { setFontStyle } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
 
-function FontStyleOption({ id, isOpen, toggleIsOpen }) {
+function FontStyleOption({
+  id,
+  isOpen,
+  toggleIsOpen,
+}: {
+  id?: string;
+  isOpen?: boolean;
+  toggleIsOpen?: () => void;
+}) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );

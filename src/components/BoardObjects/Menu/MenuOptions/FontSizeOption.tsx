@@ -7,7 +7,15 @@ import { setFontSize } from "@/state/slices/boardObjectsSlice";
 import TextObject from "@/types/BoardObjects/textObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 
-function FontSizeOption({ id, isOpen, toggleIsOpen }) {
+function FontSizeOption({
+  id,
+  isOpen,
+  toggleIsOpen,
+}: {
+  id?: string;
+  isOpen?: boolean;
+  toggleIsOpen?: () => void;
+}) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );

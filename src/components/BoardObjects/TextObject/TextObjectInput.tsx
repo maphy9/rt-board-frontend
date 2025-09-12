@@ -1,16 +1,14 @@
 import React from "react";
 import styles from "./styles.module.css";
 import useEditEvents from "@/hooks/useEditEvents";
-import TextObject, {
-  getCssColor,
-  getFontStyle,
-} from "@/types/BoardObjects/textObject";
+import TextObject, { getFontStyle } from "@/types/BoardObjects/textObject";
 import useUniversalInput from "@/hooks/useUniversalInput";
 import Camera, { scaleToCamera } from "@/types/camera";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { toCameraSize } from "@/types/size";
 import { setText } from "@/state/slices/boardObjectsSlice";
+import { getCssColor } from "@/types/color";
 
 function TextObjectInput({ textObject }: { textObject: TextObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);

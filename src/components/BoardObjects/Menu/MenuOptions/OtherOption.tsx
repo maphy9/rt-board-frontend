@@ -11,7 +11,15 @@ import {
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 
-function OtherOption({ id, isOpen, toggleIsOpen }) {
+function OtherOption({
+  id,
+  isOpen,
+  toggleIsOpen,
+}: {
+  id?: string;
+  isOpen?: boolean;
+  toggleIsOpen?: () => void;
+}) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );

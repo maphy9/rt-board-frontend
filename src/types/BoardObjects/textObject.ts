@@ -1,6 +1,7 @@
 import getID from "@/utils/id";
 import Point from "../point";
 import BoardObject from "./boardObject";
+import Color from "../color";
 
 export type FontStyle =
   | "normal"
@@ -8,13 +9,6 @@ export type FontStyle =
   | "italic"
   | "line-through"
   | "underline";
-
-export interface Color {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
 
 export default interface TextObject extends BoardObject {
   text: string;
@@ -57,9 +51,4 @@ export const getFontStyle = (fontStyle: FontStyle) => {
     textStyle.textDecoration = "underline";
   }
   return textStyle;
-};
-
-export const getCssColor = (fontColor: Color) => {
-  const { r, g, b, a } = fontColor;
-  return `rgba(${r},${g},${b},${a})`;
 };

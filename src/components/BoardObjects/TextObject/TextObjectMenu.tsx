@@ -7,30 +7,12 @@ import OtherOption from "../Menu/MenuOptions/OtherOption";
 import TextObject from "@/types/BoardObjects/textObject";
 
 function TextObjectMenu({ textObject }: { textObject: TextObject }) {
-  const isOpen = false;
-  const toggleIsOpen = () => {};
   return (
     <BoardObjectMenu boardObject={textObject}>
-      <FontSizeOption
-        id={textObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
-      <FontStyleOption
-        id={textObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
-      <FontColorOption
-        id={textObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
-      <OtherOption
-        id={textObject.id}
-        isOpen={isOpen}
-        toggleIsOpen={toggleIsOpen}
-      />
+      <FontSizeOption />
+      <FontStyleOption />
+      <FontColorOption />
+      <OtherOption />
     </BoardObjectMenu>
   );
 }

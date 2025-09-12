@@ -2,14 +2,19 @@ import getID from "@/utils/id";
 import Point from "../point";
 import Size from "../size";
 import ImageObject from "./imageObject";
+import Color from "../color";
 
 export type Shape = "square" | "circle" | "arrow" | "check" | "star" | "heart";
 
+export default interface ShapeObject extends ImageObject {
+  backgroundColor: Color;
+}
+
 export function createShapeObject(
-  src: Shape,
+  src: string,
   position: Point,
   size: Size
-): ImageObject {
+): ShapeObject {
   return {
     id: getID(),
     position,
@@ -21,6 +26,7 @@ export function createShapeObject(
     isEditing: false,
     resizingCorner: null,
     src,
+    backgroundColor: { r: 0, g: 0, b: 0, a: 1 },
   };
 }
 

@@ -3,21 +3,25 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import { RgbaColorPicker } from "react-colorful";
-import {
-  setBackgroundColor,
-  setFontColor,
-} from "@/state/slices/boardObjectsSlice";
+import { setBackgroundColor } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
-import NoteObject from "@/types/BoardObjects/noteObject";
 
-function BackgroundColorOption({ id, isOpen, toggleIsOpen }) {
+function BackgroundColorOption({
+  id,
+  isOpen,
+  toggleIsOpen,
+}: {
+  id?: string;
+  isOpen?: boolean;
+  toggleIsOpen?: () => void;
+}) {
   const boardObjects: BoardObjects = useSelector(
     (state: RootState) => state.boardObjects
   );
-  const noteObject = boardObjects.objects[id] as NoteObject;
+  const boardObject = boardObjects.objects[id] as any;
   const dispatch = useDispatch();
 
-  const [color, setColor] = useState({ ...noteObject.fontColor });
+  const [color, setColor] = useState({ ...boardObject.backgroundColor });
 
   const handleOpen = (event) => {
     event.stopPropagation();
@@ -28,7 +32,7 @@ function BackgroundColorOption({ id, isOpen, toggleIsOpen }) {
   const handleChange = (newColor) => {
     setColor(newColor);
     dispatch(
-      setBackgroundColor({ id: noteObject.id, backgroundColor: newColor })
+      setBackgroundColor({ id: boardObject.id, backgroundColor: newColor })
     );
   };
 

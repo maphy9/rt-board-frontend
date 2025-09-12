@@ -5,7 +5,7 @@ import { SelectedTool } from "../toolbox";
 import { createImageObject } from "./imageObject";
 import { createNoteObject } from "./noteObject";
 import { createTextObject } from "./textObject";
-import { isShape } from "./shapeObject";
+import { createShapeObject, isShape, Shape } from "./shapeObject";
 
 export type BoardObjectType = "text" | "note" | "image" | "shape";
 export type ResizingCorner =
@@ -36,12 +36,12 @@ export async function createBoardObject(
     boardObject = createTextObject(position);
   } else if (selectedTool === "note") {
     boardObject = createNoteObject(position);
-  } else if (selectedTool === "image" || isShape(selectedTool)) {
-    let size = await getImageSize(src);
-    if (isShape(selectedTool)) {
-      size = scaleSize(size, 4);
-    }
+  } else if (selectedTool === "image") {
+    const size = await getImageSize(src);
     boardObject = createImageObject(src, position, size);
+  } else if (isShape(selectedTool)) {
+    const size = scaleSize(await getImageSize(src), 4);
+    boardObject = createShapeObject(src, position, size);
   }
   boardObject.position.x -= boardObject.size.width / 2;
   boardObject.position.y -= boardObject.size.height / 2;

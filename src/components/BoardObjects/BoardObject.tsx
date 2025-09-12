@@ -18,6 +18,9 @@ import ImageObjectComponent from "./ImageObject/ImageObject";
 import ImageObject from "@/types/BoardObjects/imageObject";
 import { toCameraSize } from "@/types/size";
 import ImageObjectMenu from "./ImageObject/ImageObjectMenu";
+import ShapeObjectComponent from "./ShapeObject/ShapeObject";
+import ShapeObjectMenu from "./ShapeObject/ShapeObjectMenu";
+import ShapeObject from "@/types/BoardObjects/shapeObject";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -80,6 +83,13 @@ const getObjectData = (boardObject: BoardObject) => {
     );
     objectMenuComponent = (
       <ImageObjectMenu imageObject={boardObject as ImageObject} />
+    );
+  } else if (boardObject.type === "shape") {
+    objectComponent = (
+      <ShapeObjectComponent shapeObject={boardObject as ShapeObject} />
+    );
+    objectMenuComponent = (
+      <ShapeObjectMenu shapeObject={boardObject as ShapeObject} />
     );
   }
 

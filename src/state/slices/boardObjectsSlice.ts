@@ -153,7 +153,7 @@ export const boardObjectsSlice = createSlice({
     },
     setBackgroundColor: (state, action) => {
       const { id, backgroundColor } = action.payload;
-      (state.objects[id] as NoteObject).backgroundColor = backgroundColor;
+      (state.objects[id] as any).backgroundColor = backgroundColor;
     },
   },
 });
