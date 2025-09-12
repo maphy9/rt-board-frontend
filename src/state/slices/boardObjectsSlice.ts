@@ -1,8 +1,7 @@
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
-import { createImageObject } from "@/types/BoardObjects/imageObject";
-import NoteObject, { createNoteObject } from "@/types/BoardObjects/noteObject";
-import TextObject, { createTextObject } from "@/types/BoardObjects/textObject";
+import NoteObject from "@/types/BoardObjects/noteObject";
+import TextObject from "@/types/BoardObjects/textObject";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
 import getID from "@/utils/id";
@@ -21,25 +20,9 @@ export const boardObjectsSlice = createSlice({
   initialState,
   reducers: {
     addObject: (state, action) => {
-      const { selectedTool, position } = action.payload;
-      let boardObject = null;
-      if (selectedTool === "text") {
-        boardObject = createTextObject(position);
-      } else if (selectedTool === "note") {
-        boardObject = createNoteObject(position);
-      }
-      boardObject.position.x -= boardObject.size.width / 2;
-      boardObject.position.y -= boardObject.size.height / 2;
-      state.objects[boardObject.id] = boardObject;
-      state.order.push(boardObject.id);
-    },
-    addImageObject: (state, action) => {
-      const { src, position, size } = action.payload;
-      const imageObject = createImageObject(src, position, size);
-      imageObject.position.x -= imageObject.size.width / 2;
-      imageObject.position.y -= imageObject.size.height / 2;
-      state.objects[imageObject.id] = imageObject;
-      state.order.push(imageObject.id);
+      const newObject = action.payload;
+      state.objects[newObject.id] = newObject;
+      state.order.push(newObject.id);
     },
     deleteSelected: (state) => {
       state.order = state.order.filter((id) => !(id in state.selected));
@@ -195,7 +178,6 @@ export const {
   bringToFront,
   bringToRear,
   setBackgroundColor,
-  addImageObject,
   deleteSelected,
 } = boardObjectsSlice.actions;
 

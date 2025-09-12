@@ -1,10 +1,10 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
-  addImageObject,
   addObject,
   clearSelection,
   dragSelected,
   resize,
+  selectObject,
   selectObjectsInRectangle,
   setResized,
 } from "@/state/slices/boardObjectsSlice";
@@ -18,15 +18,14 @@ import {
 } from "@/state/slices/inputSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
+import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { isShape } from "@/types/BoardObjects/shapeObject";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
-import { scaleSize } from "@/types/size";
 import Toolbox from "@/types/toolbox";
-import { getImageSize } from "@/utils/image";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function useBoardMouse() {
@@ -39,9 +38,10 @@ export default function useBoardMouse() {
   const { selectedTool } = toolbox;
   const dispatch = useDispatch();
 
-  function addSelectedObject() {
+  async function addNewBoardObject(src?: string) {
     const position = toRealPoint(input.mousePosition, camera);
-    dispatch(addObject({ selectedTool, position }));
+    const boardObject = await createBoardObject(selectedTool, position, src);
+    dispatch(addObject(boardObject));
     dispatch(setSelectedTool("cursor"));
   }
 
@@ -102,16 +102,14 @@ export default function useBoardMouse() {
 
     if (selectedTool === "image") {
       document.getElementById("image-uploader").click();
-    } else if (isShape(selectedTool)) {
-      const src = `${selectedTool}.svg`;
-      const position = toRealPoint(input.mousePosition, camera);
-      const size = scaleSize(await getImageSize(src), 4);
-      dispatch(addImageObject({ src, position, size }));
-      addImageObject({ src, position, size });
-    } else {
-      addSelectedObject();
+      return;
     }
 
+    let src = null;
+    if (isShape(selectedTool)) {
+      src = `${selectedTool}.svg`;
+    }
+    addNewBoardObject(src);
     dispatch(setSelectedTool("cursor"));
   };
 

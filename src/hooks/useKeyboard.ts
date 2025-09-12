@@ -1,14 +1,15 @@
 import { toRealPoint } from "@/types/point";
 import {
-  addImageObject,
+  addObject,
   clearSelection,
   deleteSelected,
+  selectObject,
 } from "@/state/slices/boardObjectsSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
-import { getImageSize } from "@/utils/image";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { createBoardObject } from "@/types/BoardObjects/boardObject";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -41,8 +42,8 @@ export default function useKeyboard() {
       const blob = await clipboardItem.getType(imageType);
       const src = URL.createObjectURL(blob);
       const position = toRealPoint(input.mousePosition, camera);
-      const size = await getImageSize(src);
-      dispatch(addImageObject({ src, position, size }));
+      const imageObject = await createBoardObject("image", position, src);
+      dispatch(addObject(imageObject));
     }
   }
 

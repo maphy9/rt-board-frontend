@@ -1,8 +1,13 @@
-import { addImageObject } from "@/state/slices/boardObjectsSlice";
+import {
+  addObject,
+  clearSelection,
+  selectObject,
+} from "@/state/slices/boardObjectsSlice";
+import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
+import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import Camera from "@/types/camera";
 import { toRealPoint } from "@/types/point";
-import { getImageSize } from "@/utils/image";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,8 +20,9 @@ function ImageUploader() {
     const file = event.target.files[0];
     const src = URL.createObjectURL(file);
     const position = toRealPoint(input.mousePosition, camera);
-    const size = await getImageSize(src);
-    dispatch(addImageObject({ src, position, size }));
+    const imageObject = await createBoardObject("image", position, src);
+    dispatch(addObject(imageObject));
+    dispatch(setSelectedTool("cursor"));
   };
 
   return (
