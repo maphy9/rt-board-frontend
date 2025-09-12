@@ -48,12 +48,17 @@ export default function useKeyboard() {
   }
 
   function handleKeyboard(event) {
+    console.dir(event);
+
     if (event.key === "Escape") {
       handleEscape();
       return;
     }
 
-    if (event.key === "Delete") {
+    if (
+      event.key === "Delete" ||
+      (event.key === "Backspace" && event.metaKey)
+    ) {
       dispatch(deleteSelected());
       return;
     }
