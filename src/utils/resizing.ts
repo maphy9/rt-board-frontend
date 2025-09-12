@@ -1,36 +1,34 @@
 import { OBJECT_RESIZER_SIZE } from "@/constants/boardObjectConstants";
-import { ResizingCorner } from "@/types/boardObject";
 import Point from "@/types/point";
 import Size from "@/types/size";
+import { addOffset } from "@/types/point";
+import BoardObject, { Corner } from "@/types/BoardObjects/boardObject";
 
-export function getResizerPosition(
+export function getCornerPosition(
   objectPosition: Point,
   objectSize: Size,
   resizerSize: number,
-  resizingCorner: ResizingCorner
+  corner: Corner
 ): Point {
   let position = { x: -OBJECT_RESIZER_SIZE, y: -OBJECT_RESIZER_SIZE };
-  if (resizingCorner === "top-left") {
+  if (corner === "top-left") {
     position.x = objectPosition.x - resizerSize / 2;
     position.y = objectPosition.y - resizerSize / 2;
   }
-  if (resizingCorner === "top-right") {
+  if (corner === "top-right") {
     position.x = objectPosition.x + objectSize.width - resizerSize / 2;
     position.y = objectPosition.y - resizerSize / 2;
   }
-  if (resizingCorner === "bottom-left") {
+  if (corner === "bottom-left") {
     position.x = objectPosition.x - resizerSize / 2;
     position.y = objectPosition.y + objectSize.height - resizerSize / 2;
   }
-  if (resizingCorner === "bottom-right") {
+  if (corner === "bottom-right") {
     position.x = objectPosition.x + objectSize.width - resizerSize / 2;
     position.y = objectPosition.y + objectSize.height - resizerSize / 2;
   }
   return position;
 }
-
-import { addOffset } from "@/types/point";
-import BoardObject from "@/types/boardObject";
 
 function resizeTopLeft(boardObject: BoardObject, dx: number, dy: number) {
   const { width, height } = boardObject.size;

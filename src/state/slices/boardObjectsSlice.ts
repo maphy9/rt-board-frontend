@@ -1,6 +1,5 @@
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
-import NoteObject from "@/types/BoardObjects/noteObject";
 import TextObject from "@/types/BoardObjects/textObject";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
@@ -101,8 +100,8 @@ export const boardObjectsSlice = createSlice({
       state.resized = resized;
     },
     setResizingCorner: (state, action) => {
-      const { id, resizingCorner } = action.payload;
-      state.objects[id].resizingCorner = resizingCorner;
+      const { id, corner } = action.payload;
+      state.objects[id].resizingCorner = corner;
     },
     resize: (state, action) => {
       const { dx, dy } = action.payload;

@@ -1,6 +1,7 @@
 import getID from "@/utils/id";
 import Point from "../point";
-import TextObject, { Color } from "./textObject";
+import TextObject from "./textObject";
+import Color from "../color";
 
 export default interface NoteObject extends TextObject {
   backgroundColor: Color;
@@ -21,6 +22,7 @@ export function createNoteObject(position: Point): NoteObject {
     fontColor: { r: 0, g: 0, b: 0, a: 1 },
     isEditing: false,
     resizingCorner: null,
+    rotatingCorner: null,
     backgroundColor: { r: 46, g: 103, b: 248, a: 1 },
   };
 }

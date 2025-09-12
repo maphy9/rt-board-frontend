@@ -6,7 +6,7 @@ import TextObjectComponent from "./TextObject/TextObject";
 import styles from "./styles.module.css";
 import useBoardObjectMouse from "@/hooks/useBoardObjectMouse";
 import { useSelector } from "react-redux";
-import BoardObjectResizers from "./BoardObjectResizers/BoardObjectResizers";
+import BoardObjectCorners from "./BoardObjectCorners/BoardObjectCorners";
 import { OBJECT_BORDER_RADIUS } from "@/constants/boardObjectConstants";
 import TextObjectMenu from "./TextObject/TextObjectMenu";
 import BoardObject from "@/types/BoardObjects/boardObject";
@@ -53,7 +53,7 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
       </div>
 
       {objectMenuComponent}
-      {<BoardObjectResizers boardObject={boardObject} />}
+      {<BoardObjectCorners boardObject={boardObject} />}
     </div>
   );
 }

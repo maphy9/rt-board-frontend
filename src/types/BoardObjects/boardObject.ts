@@ -8,11 +8,7 @@ import { createTextObject } from "./textObject";
 import { createShapeObject, isShape, Shape } from "./shapeObject";
 
 export type BoardObjectType = "text" | "note" | "image" | "shape";
-export type ResizingCorner =
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right";
+export type Corner = "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
 export default interface BoardObject {
   id: string;
@@ -20,7 +16,8 @@ export default interface BoardObject {
   size: Size;
   isEditing: boolean;
   isSelected: boolean;
-  resizingCorner: ResizingCorner | null;
+  resizingCorner: Corner | null;
+  rotatingCorner: Corner | null;
   type: BoardObjectType;
   minWidth: number;
   minHeight: number;
