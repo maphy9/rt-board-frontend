@@ -7,13 +7,7 @@ import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { clearSelection } from "@/state/slices/boardObjectsSlice";
 
-function Tool({
-  selectedTool,
-  iconPath,
-}: {
-  selectedTool: SelectedTool;
-  iconPath: string;
-}) {
+function Tool({ selectedTool }: { selectedTool: SelectedTool }) {
   const toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool: selectedToolGlobal } = toolbox;
   const dispatch = useDispatch();
@@ -36,8 +30,8 @@ function Tool({
         style={
           {
             backgroundColor: isSelected ? "rgb(46, 103, 248)" : "black",
-            WebkitMaskImage: `url(${iconPath})`,
-            maskImage: `url(${iconPath})`,
+            WebkitMaskImage: `url(${selectedTool}.svg)`,
+            maskImage: `url(${selectedTool}.svg)`,
           } as any
         }
       />

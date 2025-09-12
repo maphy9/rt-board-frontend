@@ -1,5 +1,6 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
+  addImageObject,
   addObject,
   clearSelection,
   dragSelected,
@@ -18,11 +19,13 @@ import {
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
+import { isShape } from "@/types/BoardObjects/shapeObject";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
 import Toolbox from "@/types/toolbox";
+import { getImageSize } from "@/utils/image";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function useBoardMouse() {
@@ -90,7 +93,7 @@ export default function useBoardMouse() {
     }
   };
 
-  const handleSelectedTool = (event) => {
+  const handleSelectedTool = async (event) => {
     if (selectedTool === "cursor") {
       startSelecting(event);
       return;
@@ -98,11 +101,19 @@ export default function useBoardMouse() {
 
     if (selectedTool === "image") {
       document.getElementById("image-uploader").click();
-      dispatch(setSelectedTool("cursor"));
-      return;
+    } else if (isShape(selectedTool)) {
+      const src = `${selectedTool}.svg`;
+      const position = toRealPoint(input.mousePosition, camera);
+      const size = await getImageSize(src);
+      size.width <<= 2;
+      size.height <<= 2;
+      dispatch(addImageObject({ src, position, size }));
+      addImageObject({ src, position, size });
+    } else {
+      addSelectedObject();
     }
 
-    addSelectedObject();
+    dispatch(setSelectedTool("cursor"));
   };
 
   const handleMouseDown = (event) => {

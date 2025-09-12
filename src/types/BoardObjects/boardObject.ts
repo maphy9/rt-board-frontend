@@ -1,7 +1,7 @@
 import Point from "../point";
 import Size from "../size";
 
-export type BoardObjectType = "text" | "note" | "image";
+export type BoardObjectType = "text" | "note" | "image" | "shape";
 export type ResizingCorner =
   | "top-left"
   | "top-right"

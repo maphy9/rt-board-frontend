@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./styles.module.css";
 import Tool from "./Tool";
 import useUniversalInput from "@/hooks/useUniversalInput";
+import ShapeTool from "./ShapeTools";
 
 function Toolbar() {
   const { stopPropagation } = useUniversalInput();
@@ -12,10 +13,11 @@ function Toolbar() {
       onMouseUp={stopPropagation}
       className={styles.toolbar}
     >
-      <Tool selectedTool="cursor" iconPath="cursor.svg" />
-      <Tool selectedTool="text" iconPath="text.svg" />
-      <Tool selectedTool="note" iconPath="note.svg" />
-      <Tool selectedTool="image" iconPath="image.svg" />
+      <Tool selectedTool="cursor" />
+      <Tool selectedTool="text" />
+      <Tool selectedTool="note" />
+      <Tool selectedTool="image" />
+      <ShapeTool />
     </div>
   );
 }

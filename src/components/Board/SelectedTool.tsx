@@ -10,7 +10,6 @@ function SelectedToolComponent() {
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
 
-  const selectedToolIcon = getSelectedToolIcon(selectedTool);
   const position = input.mousePosition;
 
   return selectedTool === "cursor" ? (
@@ -22,26 +21,10 @@ function SelectedToolComponent() {
         top: position.y,
         left: position.x,
       }}
-      src={selectedToolIcon}
+      src={`${selectedTool}.svg`}
       draggable="false"
     />
   );
 }
 
 export default SelectedToolComponent;
-
-function getSelectedToolIcon(selectedTool: SelectedTool) {
-  let selectedToolIcon = "";
-  switch (selectedTool) {
-    case "text":
-      selectedToolIcon = "text.svg";
-      break;
-    case "note":
-      selectedToolIcon = "note.svg";
-      break;
-    case "image":
-      selectedToolIcon = "image.svg";
-      break;
-  }
-  return selectedToolIcon;
-}
