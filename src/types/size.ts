@@ -12,7 +12,9 @@ export function toCameraSize(size: Size, camera: Camera): Size {
 }
 
 export function toRealSize(size: Size, camera: Camera): Size {
-  const width = size.width * camera.zoom;
-  const height = size.height * camera.zoom;
-  return { width, height };
+  return scaleSize(size, camera.zoom);
+}
+
+export function scaleSize(size: Size, scaleFactor: number): Size {
+  return { width: size.width * scaleFactor, height: size.height * scaleFactor };
 }

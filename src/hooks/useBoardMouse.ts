@@ -24,6 +24,7 @@ import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
+import { scaleSize } from "@/types/size";
 import Toolbox from "@/types/toolbox";
 import { getImageSize } from "@/utils/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -104,9 +105,7 @@ export default function useBoardMouse() {
     } else if (isShape(selectedTool)) {
       const src = `${selectedTool}.svg`;
       const position = toRealPoint(input.mousePosition, camera);
-      const size = await getImageSize(src);
-      size.width <<= 2;
-      size.height <<= 2;
+      const size = scaleSize(await getImageSize(src), 4);
       dispatch(addImageObject({ src, position, size }));
       addImageObject({ src, position, size });
     } else {
