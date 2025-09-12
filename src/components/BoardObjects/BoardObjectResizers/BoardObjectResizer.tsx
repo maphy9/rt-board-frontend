@@ -1,6 +1,6 @@
 import React from "react";
 import { RootState } from "@/state/store";
-import BoardObject, { ResizingCorner } from "@/types/boardObject";
+import BoardObject, { ResizingCorner } from "@/types/BoardObjects/boardObject";
 import Camera, { scaleToCamera } from "@/types/camera";
 import { toCameraPoint } from "@/types/point";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +28,10 @@ function BoardObjectResizer({
 
   const objectPosition = toCameraPoint(boardObject.position, camera);
   const objectSize = toCameraSize(boardObject.size, camera);
-  const resizerSize = scaleToCamera(OBJECT_RESIZER_SIZE, camera);
+  const resizerSize = Math.max(
+    scaleToCamera(OBJECT_RESIZER_SIZE, camera),
+    OBJECT_RESIZER_SIZE
+  );
   const resizerBorderRadius = scaleToCamera(
     OBJECT_RESIZER_BORDER_RADIUS,
     camera
