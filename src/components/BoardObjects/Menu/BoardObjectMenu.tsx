@@ -1,6 +1,6 @@
 import React, { Children, useEffect, useState } from "react";
 import { toCameraPoint } from "@/types/point";
-import Camera from "@/types/camera";
+import Camera, { scaleToCamera } from "@/types/camera";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import {
@@ -25,8 +25,8 @@ function BoardObjectMenu({
     (state: RootState) => state.boardObjects
   );
   const input: Input = useSelector((state: RootState) => state.input);
-
   const camera: Camera = useSelector((state: RootState) => state.camera);
+
   const position = toCameraPoint(
     {
       x: boardObject.position.x,
@@ -34,7 +34,13 @@ function BoardObjectMenu({
     },
     camera
   );
-  position.y -= OBJECT_MENU_OPTION_SIZE + OBJECT_MENU_MARGIN;
+
+  if (Math.abs(boardObject.rotationAngle) <= 90) {
+    position.y -= OBJECT_MENU_OPTION_SIZE + OBJECT_MENU_MARGIN;
+  } else {
+    position.y +=
+      scaleToCamera(boardObject.size.height, camera) + OBJECT_MENU_MARGIN;
+  }
 
   const { stopPropagation } = useUniversalInput();
 

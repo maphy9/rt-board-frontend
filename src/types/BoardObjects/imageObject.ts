@@ -22,7 +22,8 @@ export function createImageObject(
     type: "image",
     isEditing: false,
     resizingCorner: null,
-    rotatingCorner: null,
+    rotatingPoint: null,
+    rotationAngle: 0,
     src,
   };
 }

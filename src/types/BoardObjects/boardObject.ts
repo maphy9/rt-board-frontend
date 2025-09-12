@@ -17,7 +17,8 @@ export default interface BoardObject {
   isEditing: boolean;
   isSelected: boolean;
   resizingCorner: Corner | null;
-  rotatingCorner: Corner | null;
+  rotatingPoint: Point | null;
+  rotationAngle: number;
   type: BoardObjectType;
   minWidth: number;
   minHeight: number;

@@ -7,3 +7,7 @@ export default interface Camera {
 export function scaleToCamera(x: number, camera: Camera): number {
   return x / camera.zoom;
 }
+
+export function scaleToReal(x: number, camera: Camera): number {
+  return x * camera.zoom;
+}

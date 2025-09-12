@@ -25,12 +25,12 @@ function BoardObjectCorner({
 
   const objectPosition = toCameraPoint(boardObject.position, camera);
   const objectSize = toCameraSize(boardObject.size, camera);
-  const resizerSize = Math.max(
+  const size = Math.max(
     scaleToCamera(OBJECT_RESIZER_SIZE, camera),
     OBJECT_RESIZER_SIZE
   );
 
-  const handleResizerMouseDown = (event) => {
+  const handleMouseDown = (event) => {
     event.stopPropagation();
 
     dispatch(setResizingCorner({ id: boardObject.id, corner }));
@@ -39,23 +39,18 @@ function BoardObjectCorner({
 
   const resizerCursor = getResizerCursor(corner);
 
-  const resizerPosition = getCornerPosition(
-    objectPosition,
-    objectSize,
-    resizerSize,
-    corner
-  );
+  const position = getCornerPosition(objectPosition, objectSize, size, corner);
 
   return (
     <div
-      onMouseDown={handleResizerMouseDown}
+      onMouseDown={handleMouseDown}
       className={styles.boardObjectResizer}
       style={{
-        top: resizerPosition.y,
-        left: resizerPosition.x,
-        width: resizerSize,
-        height: resizerSize,
-        borderRadius: resizerSize,
+        top: position.y,
+        left: position.x,
+        width: size,
+        height: size,
+        borderRadius: size,
         cursor: resizerCursor,
       }}
     />

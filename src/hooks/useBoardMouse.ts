@@ -4,9 +4,10 @@ import {
   clearSelection,
   dragSelected,
   resize,
-  selectObject,
+  rotate,
   selectObjectsInRectangle,
   setResized,
+  setRotatingPoint,
 } from "@/state/slices/boardObjectsSlice";
 import { panCamera, zoomCamera } from "@/state/slices/cameraSlice";
 import {
@@ -88,6 +89,11 @@ export default function useBoardMouse() {
       return;
     }
 
+    if (boardObjects.rotated !== null) {
+      dispatch(rotate(toRealPoint(input.mousePosition, camera)));
+      return;
+    }
+
     if (input.isDragging) {
       dispatch(dragSelected({ dx, dy }));
       return;
@@ -141,6 +147,13 @@ export default function useBoardMouse() {
 
     if (boardObjects.resized !== null) {
       dispatch(setResized(null));
+      return;
+    }
+
+    if (boardObjects.rotated !== null) {
+      dispatch(
+        setRotatingPoint({ id: boardObjects.rotated, rotatingPoint: null })
+      );
       return;
     }
 

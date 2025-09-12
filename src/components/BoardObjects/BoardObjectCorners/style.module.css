@@ -2,9 +2,3 @@
   position: absolute;
   background-color: black;
 }
-
-.boardObjectRotate {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.297);
-  cursor: url("rotateCursor.svg"), auto;
-}

@@ -5,4 +5,5 @@ export default interface BoardObjects {
   order: string[];
   selected: Record<string, boolean>;
   resized: string | null;
+  rotated: string | null;
 }

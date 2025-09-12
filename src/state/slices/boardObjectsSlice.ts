@@ -1,10 +1,11 @@
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
-import { addOffset } from "@/types/point";
+import { addOffset, rotateAround } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
 import getID from "@/utils/id";
 import { resizeBoardObject } from "@/utils/resizing";
+import { angleBetweenTwoPoints } from "@/utils/rotation";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: BoardObjects = {
@@ -12,6 +13,7 @@ const initialState: BoardObjects = {
   order: [],
   selected: {},
   resized: null,
+  rotated: null,
 };
 
 export const boardObjectsSlice = createSlice({
@@ -154,6 +156,24 @@ export const boardObjectsSlice = createSlice({
       const { id, backgroundColor } = action.payload;
       (state.objects[id] as any).backgroundColor = backgroundColor;
     },
+    setRotatingPoint: (state, action) => {
+      const { id, rotatingPoint } = action.payload;
+      if (rotatingPoint === null) {
+        state.rotated = null;
+      } else {
+        state.rotated = id;
+      }
+      state.objects[id].rotatingPoint = rotatingPoint;
+    },
+    rotate: (state, action) => {
+      const boardObject = state.objects[state.rotated];
+      const mousePosition = action.payload;
+
+      boardObject.rotationAngle = angleBetweenTwoPoints(
+        mousePosition,
+        boardObject.rotatingPoint
+      );
+    },
   },
 });
 
@@ -178,6 +198,8 @@ export const {
   bringToRear,
   setBackgroundColor,
   deleteSelected,
+  setRotatingPoint,
+  rotate,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

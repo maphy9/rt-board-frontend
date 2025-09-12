@@ -12,20 +12,20 @@ export function getCornerPosition(
 ): Point {
   let position = { x: -OBJECT_RESIZER_SIZE, y: -OBJECT_RESIZER_SIZE };
   if (corner === "top-left") {
-    position.x = objectPosition.x - resizerSize / 2;
-    position.y = objectPosition.y - resizerSize / 2;
+    position.x = -resizerSize / 2;
+    position.y = -resizerSize / 2;
   }
   if (corner === "top-right") {
-    position.x = objectPosition.x + objectSize.width - resizerSize / 2;
-    position.y = objectPosition.y - resizerSize / 2;
+    position.x = objectSize.width - resizerSize / 2;
+    position.y = -resizerSize / 2;
   }
   if (corner === "bottom-left") {
-    position.x = objectPosition.x - resizerSize / 2;
-    position.y = objectPosition.y + objectSize.height - resizerSize / 2;
+    position.x = -resizerSize / 2;
+    position.y = objectSize.height - resizerSize / 2;
   }
   if (corner === "bottom-right") {
-    position.x = objectPosition.x + objectSize.width - resizerSize / 2;
-    position.y = objectPosition.y + objectSize.height - resizerSize / 2;
+    position.x = objectSize.width - resizerSize / 2;
+    position.y = objectSize.height - resizerSize / 2;
   }
   return position;
 }

@@ -32,7 +32,8 @@ export function createTextObject(position: Point): TextObject {
     fontColor: { r: 0, g: 0, b: 0, a: 1 },
     isEditing: false,
     resizingCorner: null,
-    rotatingCorner: null,
+    rotationAngle: 0,
+    rotatingPoint: null,
   };
 }
 

@@ -2,6 +2,8 @@ import {
   clearSelection,
   selectObject,
   setIsEditing,
+  setResized,
+  setRotatingPoint,
   unselectObject,
 } from "@/state/slices/boardObjectsSlice";
 import { setIsDragging, setIsPanning } from "@/state/slices/inputSlice";
@@ -67,7 +69,21 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       return;
     }
 
-    if (event.button !== 0 || !isPressed.current) {
+    if (event.button !== 0) {
+      return;
+    }
+
+    if (boardObject.resizingCorner !== null) {
+      dispatch(setResized(null));
+      return;
+    }
+
+    if (boardObject.rotatingPoint !== null) {
+      dispatch(setRotatingPoint({ id: boardObject.id, rotatingPoint: null }));
+      return;
+    }
+
+    if (!isPressed.current) {
       return;
     }
 

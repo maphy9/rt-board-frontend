@@ -1,6 +1,6 @@
 import { RootState } from "@/state/store";
 import Camera, { scaleToCamera } from "@/types/camera";
-import { toCameraPoint } from "@/types/point";
+import { addOffset, toCameraPoint } from "@/types/point";
 import React from "react";
 import TextObjectComponent from "./TextObject/TextObject";
 import styles from "./styles.module.css";
@@ -21,6 +21,7 @@ import ImageObjectMenu from "./ImageObject/ImageObjectMenu";
 import ShapeObjectComponent from "./ShapeObject/ShapeObject";
 import ShapeObjectMenu from "./ShapeObject/ShapeObjectMenu";
 import ShapeObject from "@/types/BoardObjects/shapeObject";
+import BoardObjectRotate from "./BoardObjectRotate/BoardObjectRotate";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -46,14 +47,19 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
           width: size.width,
           height: size.height,
           outline: boardObject.isSelected ? "1px solid black" : "",
+          transformOrigin: "50% 50%",
+          transform: `rotate(${boardObject.rotationAngle}deg)`,
           borderRadius: `${borderRadius}px`,
         }}
       >
         {objectComponent}
+
+        <BoardObjectCorners boardObject={boardObject} />
+
+        <BoardObjectRotate boardObject={boardObject} />
       </div>
 
       {objectMenuComponent}
-      {<BoardObjectCorners boardObject={boardObject} />}
     </div>
   );
 }

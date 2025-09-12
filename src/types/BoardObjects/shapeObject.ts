@@ -25,7 +25,8 @@ export function createShapeObject(
     type: "shape",
     isEditing: false,
     resizingCorner: null,
-    rotatingCorner: null,
+    rotatingPoint: null,
+    rotationAngle: 0,
     src,
     backgroundColor: { r: 0, g: 0, b: 0, a: 1 },
   };

@@ -22,7 +22,8 @@ export function createNoteObject(position: Point): NoteObject {
     fontColor: { r: 0, g: 0, b: 0, a: 1 },
     isEditing: false,
     resizingCorner: null,
-    rotatingCorner: null,
+    rotationAngle: 0,
+    rotatingPoint: null,
     backgroundColor: { r: 46, g: 103, b: 248, a: 1 },
   };
 }
