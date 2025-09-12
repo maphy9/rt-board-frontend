@@ -57,12 +57,10 @@ export default function useKeyboard() {
       return;
     }
 
-    if (event.key === "v" && event.ctrlKey) {
+    if (event.key === "v" && (event.ctrlKey || event.metaKey)) {
       handlePaste();
       return;
     }
-
-    // console.dir(event);
   }
 
   useEffect(() => {
