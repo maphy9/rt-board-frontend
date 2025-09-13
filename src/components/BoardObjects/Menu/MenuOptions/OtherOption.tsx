@@ -99,27 +99,33 @@ function OtherOption({
           <div className={styles.dropdownOptions}>
             <div className={styles.dropdownOption} onClick={handleDuplicate}>
               <span>Duplicate</span>
+              <img src="duplicate.svg" />
             </div>
             <div className={styles.dropdownOption} onClick={handleDelete}>
               <span>Delete</span>
+              <img src="delete.svg" />
             </div>
             <div className={styles.dropdownOption} onClick={handleBringToFront}>
               <span>Bring to the front</span>
+              <img src="bringToFront.svg" />
             </div>
             <div className={styles.dropdownOption} onClick={handleBringToRear}>
               <span>Bring to the rear</span>
+              <img src="bringToRear.svg" />
             </div>
             <div
               className={styles.dropdownOption}
               onClick={handleFlipHorizontally}
             >
               <span>Flip horizontally</span>
+              <img src="flip.svg" />
             </div>
             <div
               className={styles.dropdownOption}
               onClick={handleFlipVertically}
             >
               <span>Flip vertically</span>
+              <img src="flip.svg" style={{ transform: "rotate(90deg)" }} />
             </div>
           </div>
         </div>
