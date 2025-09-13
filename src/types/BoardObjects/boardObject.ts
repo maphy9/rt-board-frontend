@@ -22,6 +22,8 @@ export default interface BoardObject {
   type: BoardObjectType;
   minWidth: number;
   minHeight: number;
+  isFlippedHorizontally: boolean;
+  isFlippedVertically: boolean;
 }
 
 export async function createBoardObject(

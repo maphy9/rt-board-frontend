@@ -34,6 +34,8 @@ export function createTextObject(position: Point): TextObject {
     resizingCorner: null,
     rotationAngle: 0,
     rotatingPoint: null,
+    isFlippedHorizontally: false,
+    isFlippedVertically: false,
   };
 }
 

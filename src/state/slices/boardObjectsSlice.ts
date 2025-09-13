@@ -174,6 +174,18 @@ export const boardObjectsSlice = createSlice({
         boardObject.rotatingPoint
       );
     },
+    toggleIsFlippedHorizontally: (state, action) => {
+      const id = action.payload;
+
+      state.objects[id].isFlippedHorizontally =
+        !state.objects[id].isFlippedHorizontally;
+    },
+    toggleIsFlippedVertically: (state, action) => {
+      const id = action.payload;
+
+      state.objects[id].isFlippedVertically =
+        !state.objects[id].isFlippedVertically;
+    },
   },
 });
 
@@ -200,6 +212,8 @@ export const {
   deleteSelected,
   setRotatingPoint,
   rotate,
+  toggleIsFlippedHorizontally,
+  toggleIsFlippedVertically,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

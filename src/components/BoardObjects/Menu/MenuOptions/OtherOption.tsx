@@ -8,6 +8,8 @@ import {
   bringToRear,
   deleteObject,
   addCopy,
+  toggleIsFlippedVertically,
+  toggleIsFlippedHorizontally,
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 
@@ -56,6 +58,18 @@ function OtherOption({
     toggleIsOpen();
   };
 
+  const handleFlipHorizontally = () => {
+    dispatch(toggleIsFlippedHorizontally(id));
+
+    toggleIsOpen();
+  };
+
+  const handleFlipVertically = () => {
+    dispatch(toggleIsFlippedVertically(id));
+
+    toggleIsOpen();
+  };
+
   const { stopPropagation } = useUniversalInput();
 
   return (
@@ -94,6 +108,18 @@ function OtherOption({
             </div>
             <div className={styles.dropdownOption} onClick={handleBringToRear}>
               <span>Bring to the rear</span>
+            </div>
+            <div
+              className={styles.dropdownOption}
+              onClick={handleFlipHorizontally}
+            >
+              <span>Flip horizontally</span>
+            </div>
+            <div
+              className={styles.dropdownOption}
+              onClick={handleFlipVertically}
+            >
+              <span>Flip vertically</span>
             </div>
           </div>
         </div>

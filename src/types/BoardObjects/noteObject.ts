@@ -25,5 +25,7 @@ export function createNoteObject(position: Point): NoteObject {
     rotationAngle: 0,
     rotatingPoint: null,
     backgroundColor: { r: 46, g: 103, b: 248, a: 1 },
+    isFlippedHorizontally: false,
+    isFlippedVertically: false,
   };
 }

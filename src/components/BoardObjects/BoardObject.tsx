@@ -44,15 +44,23 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
         style={{
           top: position.y,
           left: position.x,
-          width: size.width,
-          height: size.height,
           outline: boardObject.isSelected ? "1px solid black" : "",
           transformOrigin: "50% 50%",
           transform: `rotate(${boardObject.rotationAngle}deg)`,
           borderRadius: `${borderRadius}px`,
         }}
       >
-        {objectComponent}
+        <div
+          style={{
+            width: size.width,
+            height: size.height,
+            transform: `scaleX(${
+              boardObject.isFlippedHorizontally ? -1 : 1
+            }) scaleY(${boardObject.isFlippedVertically ? -1 : 1})`,
+          }}
+        >
+          {objectComponent}
+        </div>
 
         <BoardObjectCorners boardObject={boardObject} />
 

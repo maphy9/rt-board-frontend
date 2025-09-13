@@ -25,5 +25,7 @@ export function createImageObject(
     rotatingPoint: null,
     rotationAngle: 0,
     src,
+    isFlippedHorizontally: false,
+    isFlippedVertically: false,
   };
 }
