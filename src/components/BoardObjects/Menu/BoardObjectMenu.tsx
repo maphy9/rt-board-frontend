@@ -47,7 +47,9 @@ function BoardObjectMenu({
   const showMenu =
     boardObject.isSelected &&
     Object.keys(boardObjects.selected).length === 1 &&
-    !input.isDragging;
+    !input.isDragging &&
+    boardObject.resizingCorner === null &&
+    boardObject.rotatingPoint === null;
 
   const numberOfOptions = children.length;
   const [isOpen, setIsOpen] = useState(new Array(numberOfOptions).fill(false));

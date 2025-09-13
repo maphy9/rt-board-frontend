@@ -14,6 +14,8 @@ import BoardObjectComponents from "./BoardObjects";
 import SelectionRectangle from "./SelectionRectangle";
 import SelectedToolComponent from "./SelectedTool";
 import ImageUploader from "./ImageUploader";
+import ResizeInfo from "./ResizeInfo";
+import RotateInfo from "./RotateInfo";
 
 function Board() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -45,6 +47,10 @@ function Board() {
       <SelectedToolComponent />
 
       <ImageUploader />
+
+      <ResizeInfo />
+
+      <RotateInfo />
     </div>
   );
 }

@@ -20,3 +20,9 @@
   height: 32px;
   z-index: 3;
 }
+
+.extraInfo {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
