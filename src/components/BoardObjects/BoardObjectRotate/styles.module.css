@@ -1,5 +1,5 @@
 .boardObjectRotate {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.523);
   cursor: url("rotateCursor.svg"), auto;
+  opacity: 0.5;
 }

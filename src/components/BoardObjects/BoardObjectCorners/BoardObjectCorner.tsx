@@ -12,6 +12,8 @@ import {
   setResizingCorner,
 } from "@/state/slices/boardObjectsSlice";
 import { getCornerPosition } from "@/utils/resizing";
+import useTheme from "@/hooks/useTheme";
+import { getCssColor } from "@/types/color";
 
 function BoardObjectCorner({
   boardObject,
@@ -23,11 +25,15 @@ function BoardObjectCorner({
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
 
+  const { theme } = useTheme();
+
   const objectSize = toCameraSize(boardObject.size, camera);
   const size = Math.max(
     scaleToCamera(OBJECT_RESIZER_SIZE, camera),
     OBJECT_RESIZER_SIZE
   );
+  const resizerCursor = getResizerCursor(corner);
+  const position = getCornerPosition(objectSize, size, corner);
 
   const handleMouseDown = (event) => {
     event.stopPropagation();
@@ -36,15 +42,13 @@ function BoardObjectCorner({
     dispatch(setResized(boardObject.id));
   };
 
-  const resizerCursor = getResizerCursor(corner);
-
-  const position = getCornerPosition(objectSize, size, corner);
-
   return (
     <div
       onMouseDown={handleMouseDown}
       className={styles.boardObjectResizer}
       style={{
+        border: `1px solid ${getCssColor(theme.secondary)}`,
+        backgroundColor: getCssColor(theme.primary),
         top: position.y,
         left: position.x,
         width: size,

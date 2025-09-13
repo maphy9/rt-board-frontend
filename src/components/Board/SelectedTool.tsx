@@ -4,11 +4,15 @@ import Toolbox, { SelectedTool } from "@/types/toolbox";
 import React from "react";
 import { useSelector } from "react-redux";
 import styles from "./styles.module.css";
+import { getCssColor } from "@/types/color";
+import useTheme from "@/hooks/useTheme";
 
 function SelectedToolComponent() {
   const input: Input = useSelector((state: RootState) => state.input);
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
+
+  const { theme } = useTheme();
 
   const position = input.mousePosition;
 
@@ -20,8 +24,10 @@ function SelectedToolComponent() {
       style={{
         top: position.y,
         left: position.x,
+        backgroundColor: getCssColor(theme.secondary),
+        WebkitMaskImage: `url(${selectedTool}.svg)`,
+        maskImage: `url(${selectedTool}.svg)`,
       }}
-      src={`${selectedTool}.svg`}
       draggable="false"
     />
   );

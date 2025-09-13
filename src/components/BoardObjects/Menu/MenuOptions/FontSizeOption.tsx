@@ -6,6 +6,8 @@ import styles from "./styles.module.css";
 import { setFontSize } from "@/state/slices/boardObjectsSlice";
 import TextObject from "@/types/BoardObjects/textObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
+import { getCssColor } from "@/types/color";
+import useTheme from "@/hooks/useTheme";
 
 function FontSizeOption({
   id,
@@ -21,6 +23,8 @@ function FontSizeOption({
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
 
   const [inputValue, setInputValue] = useState<string>(
     textObject.fontSize + ""
@@ -53,12 +57,25 @@ function FontSizeOption({
   const { stopPropagation } = useUniversalInput();
 
   return (
-    <div className={styles.optionContainer}>
+    <div
+      className={styles.optionContainer}
+      style={
+        {
+          "--primary": getCssColor(theme.primary),
+          "--onPrimary": getCssColor(theme.onPrimary),
+          "--secondary": getCssColor(theme.secondary),
+          "--onSecondary": getCssColor(theme.onSecondary),
+          "--surface": getCssColor(theme.surface),
+        } as React.CSSProperties
+      }
+    >
       <img
         className={styles.optionIcon}
         style={
           {
-            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            backgroundColor: isOpen
+              ? getCssColor(theme.surface)
+              : getCssColor(theme.secondary),
             WebkitMaskImage: "url(fontSize.svg)",
             maskImage: "url(fontSize.svg)",
           } as any

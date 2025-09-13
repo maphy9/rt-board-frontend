@@ -3,11 +3,15 @@ import styles from "./styles.module.css";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import Tool from "./Tool";
-import { isShape, Shape } from "@/types/BoardObjects/shapeObject";
+import { isShape } from "@/types/BoardObjects/shapeObject";
+import { getCssColor } from "@/types/color";
+import useTheme from "@/hooks/useTheme";
 
 function ShapeTool() {
   const toolbox = useSelector((state: RootState) => state.toolbox);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { theme } = useTheme();
 
   const handleClick = () => {
     setIsOpen((prev) => !prev);
@@ -25,9 +29,11 @@ function ShapeTool() {
         className={styles.toolIcon}
         style={
           {
+            backgroundColor: isSelected
+              ? getCssColor(theme.surface)
+              : getCssColor(theme.secondary),
             maskImage: "url(shape.svg)",
             WebkitMaskImage: "url(shape.svg)",
-            backgroundColor: isSelected ? "rgb(46, 103, 248)" : "black",
           } as any
         }
       />

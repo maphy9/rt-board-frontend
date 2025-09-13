@@ -22,9 +22,13 @@ import ShapeObjectComponent from "./ShapeObject/ShapeObject";
 import ShapeObjectMenu from "./ShapeObject/ShapeObjectMenu";
 import ShapeObject from "@/types/BoardObjects/shapeObject";
 import BoardObjectRotate from "./BoardObjectRotate/BoardObjectRotate";
+import useTheme from "@/hooks/useTheme";
+import { getCssColor } from "@/types/color";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
+
+  const { theme } = useTheme();
 
   const { handleMouseUp, handleMouseDown, handleMouseMove } =
     useBoardObjectMouse(boardObject);
@@ -44,7 +48,9 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
         style={{
           top: position.y,
           left: position.x,
-          outline: boardObject.isSelected ? "1px solid black" : "",
+          outline: boardObject.isSelected
+            ? `1px solid ${getCssColor(theme.secondary)}`
+            : "",
           transformOrigin: "50% 50%",
           transform: `rotate(${boardObject.rotationAngle}deg)`,
           borderRadius: `${borderRadius}px`,
@@ -57,6 +63,7 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
             transform: `scaleX(${
               boardObject.isFlippedHorizontally ? -1 : 1
             }) scaleY(${boardObject.isFlippedVertically ? -1 : 1})`,
+            borderRadius: `${borderRadius}px`,
           }}
         >
           {objectComponent}

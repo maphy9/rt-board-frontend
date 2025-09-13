@@ -13,6 +13,8 @@ import Input from "@/types/input";
 import MenuOption from "./MenuOption";
 import BoardObject from "@/types/BoardObjects/boardObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
+import { getCssColor } from "@/types/color";
+import useTheme from "@/hooks/useTheme";
 
 function BoardObjectMenu({
   boardObject,
@@ -26,6 +28,8 @@ function BoardObjectMenu({
   );
   const input: Input = useSelector((state: RootState) => state.input);
   const camera: Camera = useSelector((state: RootState) => state.camera);
+
+  const { theme } = useTheme();
 
   const position = toCameraPoint(
     {
@@ -76,6 +80,8 @@ function BoardObjectMenu({
       onMouseDown={stopPropagation}
       onMouseUp={stopPropagation}
       style={{
+        border: `1px solid ${getCssColor(theme.secondary)}`,
+        backgroundColor: getCssColor(theme.primary),
         top: position.y,
         left: position.x,
       }}

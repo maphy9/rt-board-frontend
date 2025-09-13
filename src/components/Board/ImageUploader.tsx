@@ -1,3 +1,4 @@
+import useTheme from "@/hooks/useTheme";
 import {
   addObject,
   clearSelection,
@@ -16,11 +17,13 @@ function ImageUploader() {
   const input = useSelector((state: RootState) => state.input);
   const dispatch = useDispatch();
 
+  const { theme } = useTheme();
+
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     const src = URL.createObjectURL(file);
     const position = toRealPoint(input.mousePosition, camera);
-    const imageObject = await createBoardObject("image", position, src);
+    const imageObject = await createBoardObject("image", position, theme, src);
     dispatch(addObject(imageObject));
     dispatch(setSelectedTool("cursor"));
   };

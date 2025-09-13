@@ -10,6 +10,7 @@ import { RootState } from "@/state/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
+import useTheme from "./useTheme";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -19,6 +20,8 @@ export default function useKeyboard() {
   const camera = useSelector((state: RootState) => state.camera);
   const input = useSelector((state: RootState) => state.input);
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
 
   function handleEscape() {
     dispatch(clearSelection());
@@ -42,7 +45,12 @@ export default function useKeyboard() {
       const blob = await clipboardItem.getType(imageType);
       const src = URL.createObjectURL(blob);
       const position = toRealPoint(input.mousePosition, camera);
-      const imageObject = await createBoardObject("image", position, src);
+      const imageObject = await createBoardObject(
+        "image",
+        position,
+        theme,
+        src
+      );
       dispatch(addObject(imageObject));
     }
   }

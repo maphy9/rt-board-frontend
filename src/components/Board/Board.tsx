@@ -16,9 +16,13 @@ import SelectedToolComponent from "./SelectedTool";
 import ImageUploader from "./ImageUploader";
 import ResizeInfo from "./ResizeInfo";
 import RotateInfo from "./RotateInfo";
+import useTheme from "@/hooks/useTheme";
+import { getCssColor } from "@/types/color";
 
 function Board() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
+
+  const { theme } = useTheme();
 
   const { handleMouseMove, handleMouseDown, handleMouseUp, handleWheel } =
     useBoardMouse();
@@ -31,7 +35,11 @@ function Board() {
     <div
       className={styles.board}
       style={{
-        backgroundImage: `radial-gradient(gray ${backgroundDotSize}px, transparent ${backgroundDotSize}px)`,
+        backgroundColor: getCssColor(theme.primary),
+        backgroundImage: `radial-gradient(${getCssColor({
+          ...theme.secondary,
+          a: 0.5,
+        })} ${backgroundDotSize}px, transparent ${backgroundDotSize}px)`,
         backgroundSize: `${backgroundDotGap}px ${backgroundDotGap}px`,
         backgroundPosition: `${backgroundPosition.x}px ${backgroundPosition.y}px`,
       }}

@@ -12,6 +12,8 @@ import {
   toggleIsFlippedHorizontally,
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
+import useTheme from "@/hooks/useTheme";
+import { getCssColor } from "@/types/color";
 
 function OtherOption({
   id,
@@ -27,6 +29,8 @@ function OtherOption({
   );
   const boardObject = boardObjects.objects[id];
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
 
   const handleOpen = (event) => {
     event.stopPropagation();
@@ -73,12 +77,25 @@ function OtherOption({
   const { stopPropagation } = useUniversalInput();
 
   return (
-    <div className={styles.optionContainer}>
+    <div
+      className={styles.optionContainer}
+      style={
+        {
+          "--primary": getCssColor(theme.primary),
+          "--onPrimary": getCssColor(theme.onPrimary),
+          "--secondary": getCssColor(theme.secondary),
+          "--onSecondary": getCssColor(theme.onSecondary),
+          "--surface": getCssColor(theme.surface),
+        } as React.CSSProperties
+      }
+    >
       <img
         className={styles.optionIcon}
         style={
           {
-            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            backgroundColor: isOpen
+              ? getCssColor(theme.surface)
+              : getCssColor(theme.secondary),
             WebkitMaskImage: "url(dots.svg)",
             maskImage: "url(dots.svg)",
           } as any
@@ -99,33 +116,70 @@ function OtherOption({
           <div className={styles.dropdownOptions}>
             <div className={styles.dropdownOption} onClick={handleDuplicate}>
               <span>Duplicate</span>
-              <img src="duplicate.svg" />
+              <img
+                className={styles.otherOptionsIcon}
+                style={{
+                  WebkitMaskImage: "url(duplicate.svg)",
+                  maskImage: "url(duplicate.svg)",
+                }}
+              />
             </div>
             <div className={styles.dropdownOption} onClick={handleDelete}>
               <span>Delete</span>
-              <img src="delete.svg" />
+              <img
+                className={styles.otherOptionsIcon}
+                style={{
+                  WebkitMaskImage: "url(delete.svg)",
+                  maskImage: "url(delete.svg)",
+                }}
+              />
             </div>
             <div className={styles.dropdownOption} onClick={handleBringToFront}>
               <span>Bring to the front</span>
-              <img src="bringToFront.svg" />
+              <img
+                className={styles.otherOptionsIcon}
+                style={{
+                  WebkitMaskImage: "url(bringToFront.svg)",
+                  maskImage: "url(bringToFront.svg)",
+                }}
+              />
             </div>
             <div className={styles.dropdownOption} onClick={handleBringToRear}>
               <span>Bring to the rear</span>
-              <img src="bringToRear.svg" />
+              <img
+                className={styles.otherOptionsIcon}
+                style={{
+                  WebkitMaskImage: "url(bringToRear.svg)",
+                  maskImage: "url(bringToRear.svg)",
+                }}
+              />
             </div>
             <div
               className={styles.dropdownOption}
               onClick={handleFlipHorizontally}
             >
               <span>Flip horizontally</span>
-              <img src="flip.svg" />
+              <img
+                className={styles.otherOptionsIcon}
+                style={{
+                  WebkitMaskImage: "url(flip.svg)",
+                  maskImage: "url(flip.svg)",
+                }}
+              />
             </div>
             <div
               className={styles.dropdownOption}
               onClick={handleFlipVertically}
             >
               <span>Flip vertically</span>
-              <img src="flip.svg" style={{ transform: "rotate(90deg)" }} />
+              <img
+                className={styles.otherOptionsIcon}
+                style={{
+                  transform: "rotate(90deg)",
+                  WebkitMaskImage: "url(flip.svg)",
+                  maskImage: "url(flip.svg)",
+                }}
+              />
             </div>
           </div>
         </div>

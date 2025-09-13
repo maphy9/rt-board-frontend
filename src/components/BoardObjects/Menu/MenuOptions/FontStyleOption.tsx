@@ -6,6 +6,8 @@ import styles from "./styles.module.css";
 import { setFontStyle } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
+import { getCssColor } from "@/types/color";
+import useTheme from "@/hooks/useTheme";
 
 function FontStyleOption({
   id,
@@ -21,6 +23,8 @@ function FontStyleOption({
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
+
+  const { theme } = useTheme();
 
   const handleOpen = (event) => {
     event.stopPropagation();
@@ -40,12 +44,25 @@ function FontStyleOption({
   const { stopPropagation } = useUniversalInput();
 
   return (
-    <div className={styles.optionContainer}>
+    <div
+      className={styles.optionContainer}
+      style={
+        {
+          "--primary": getCssColor(theme.primary),
+          "--onPrimary": getCssColor(theme.onPrimary),
+          "--secondary": getCssColor(theme.secondary),
+          "--onSecondary": getCssColor(theme.onSecondary),
+          "--surface": getCssColor(theme.surface),
+        } as React.CSSProperties
+      }
+    >
       <img
         className={styles.optionIcon}
         style={
           {
-            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            backgroundColor: isOpen
+              ? getCssColor(theme.surface)
+              : getCssColor(theme.secondary),
             WebkitMaskImage: "url(fontStyle.svg)",
             maskImage: "url(fontStyle.svg)",
           } as any

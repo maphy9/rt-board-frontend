@@ -6,6 +6,8 @@ import { RgbaColorPicker } from "react-colorful";
 import { setFontColor } from "@/state/slices/boardObjectsSlice";
 import TextObject from "@/types/BoardObjects/textObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
+import { getCssColor } from "@/types/color";
+import useTheme from "@/hooks/useTheme";
 
 function FontColorOption({
   id,
@@ -22,6 +24,8 @@ function FontColorOption({
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
 
+  const { theme } = useTheme();
+
   const [color, setColor] = useState({ ...textObject.fontColor });
 
   const handleOpen = (event) => {
@@ -36,12 +40,25 @@ function FontColorOption({
   };
 
   return (
-    <div className={styles.optionContainer}>
+    <div
+      className={styles.optionContainer}
+      style={
+        {
+          "--primary": getCssColor(theme.primary),
+          "--onPrimary": getCssColor(theme.onPrimary),
+          "--secondary": getCssColor(theme.secondary),
+          "--onSecondary": getCssColor(theme.onSecondary),
+          "--surface": getCssColor(theme.surface),
+        } as React.CSSProperties
+      }
+    >
       <img
         className={styles.optionIcon}
         style={
           {
-            backgroundColor: isOpen ? "rgb(46, 103, 248)" : "black",
+            backgroundColor: isOpen
+              ? getCssColor(theme.surface)
+              : getCssColor(theme.secondary),
             WebkitMaskImage: "url(fontColor.svg)",
             maskImage: "url(fontColor.svg)",
           } as any
