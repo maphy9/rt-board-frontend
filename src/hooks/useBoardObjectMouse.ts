@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function useBoardObjectMouse(boardObject: BoardObject) {
   const dispatch = useDispatch();
+  const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const input: Input = useSelector((state: RootState) => state.input);
   const isPressed = useRef(false);
 
@@ -78,8 +79,10 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       return;
     }
 
-    if (boardObject.rotatingPoint !== null) {
-      dispatch(setRotatingPoint({ id: boardObject.id, rotatingPoint: null }));
+    if (boardObjects.rotated !== null) {
+      dispatch(
+        setRotatingPoint({ id: boardObjects.rotated, rotatingPoint: null })
+      );
       return;
     }
 
