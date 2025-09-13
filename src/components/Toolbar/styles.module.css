@@ -32,6 +32,11 @@
 .toolIcon {
   width: calc(100% - 4px);
   height: calc(100% - 4px);
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   -webkit-mask-size: cover;
   mask-size: cover;
 }
