@@ -1,11 +1,12 @@
+import { degreeToRadian } from "@/utils/rotation";
 import { OBJECT_RESIZER_SIZE } from "@/constants/boardObjectConstants";
-import Point from "@/types/point";
+import Point, { getCenter } from "@/types/point";
 import Size from "@/types/size";
 import { addOffset } from "@/types/point";
 import BoardObject, { Corner } from "@/types/BoardObjects/boardObject";
+import { radianToDegree } from "./rotation";
 
 export function getCornerPosition(
-  objectPosition: Point,
   objectSize: Size,
   resizerSize: number,
   corner: Corner
@@ -30,6 +31,13 @@ export function getCornerPosition(
   return position;
 }
 
+function getAdjustedPosition(newCenter: Point, newSize: Size): Point {
+  return {
+    x: newCenter.x - newSize.width / 2,
+    y: newCenter.y - newSize.height / 2,
+  };
+}
+
 function resizeTopLeft(boardObject: BoardObject, dx: number, dy: number) {
   const { width, height } = boardObject.size;
   const { minWidth, minHeight } = boardObject;
@@ -42,7 +50,26 @@ function resizeTopLeft(boardObject: BoardObject, dx: number, dy: number) {
     width: endPosition.x - newPosition.x,
     height: endPosition.y - newPosition.y,
   };
-  return { position: newPosition, size: newSize };
+
+  const radians = degreeToRadian(boardObject.rotationAngle);
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+
+  const brRelativeX = boardObject.size.width / 2;
+  const brRelativeY = boardObject.size.height / 2;
+
+  const center = getCenter(startPosition, boardObject.size);
+  const brWorldX = center.x + brRelativeX * cos - brRelativeY * sin;
+  const brWorldY = center.y + brRelativeX * sin + brRelativeY * cos;
+
+  const newBrRelativeX = newSize.width / 2;
+  const newBrRelativeY = newSize.height / 2;
+  center.x = brWorldX - (newBrRelativeX * cos - newBrRelativeY * sin);
+  center.y = brWorldY - (newBrRelativeX * sin + newBrRelativeY * cos);
+
+  const adjustedPosition = getAdjustedPosition(center, newSize);
+
+  return { position: adjustedPosition, size: newSize };
 }
 
 function resizeTopRight(boardObject: BoardObject, dx: number, dy: number) {
@@ -57,7 +84,26 @@ function resizeTopRight(boardObject: BoardObject, dx: number, dy: number) {
     height: startPosition.y + height - newPosition.y,
   };
   newPosition.x = startPosition.x;
-  return { position: newPosition, size: newSize };
+
+  const radians = degreeToRadian(boardObject.rotationAngle);
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+
+  const blRelativeX = -boardObject.size.width / 2;
+  const blRelativeY = boardObject.size.height / 2;
+
+  const center = getCenter(startPosition, boardObject.size);
+  const blWorldX = center.x + blRelativeX * cos - blRelativeY * sin;
+  const blWorldY = center.y + blRelativeX * sin + blRelativeY * cos;
+
+  const newBlRelativeX = -newSize.width / 2;
+  const newBlRelativeY = newSize.height / 2;
+  center.x = blWorldX - (newBlRelativeX * cos - newBlRelativeY * sin);
+  center.y = blWorldY - (newBlRelativeX * sin + newBlRelativeY * cos);
+
+  const adjustedPosition = getAdjustedPosition(center, newSize);
+
+  return { position: adjustedPosition, size: newSize };
 }
 
 function resizeBottomLeft(boardObject: BoardObject, dx: number, dy: number) {
@@ -72,7 +118,26 @@ function resizeBottomLeft(boardObject: BoardObject, dx: number, dy: number) {
     height: newPosition.y - startPosition.y,
   };
   newPosition.y = startPosition.y;
-  return { position: newPosition, size: newSize };
+
+  const radians = degreeToRadian(boardObject.rotationAngle);
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+
+  const trRelativeX = boardObject.size.width / 2;
+  const trRelativeY = -boardObject.size.height / 2;
+
+  const center = getCenter(startPosition, boardObject.size);
+  const trWorldX = center.x + trRelativeX * cos - trRelativeY * sin;
+  const trWorldY = center.y + trRelativeX * sin + trRelativeY * cos;
+
+  const newTrRelativeX = newSize.width / 2;
+  const newTrRelativeY = -newSize.height / 2;
+  center.x = trWorldX - (newTrRelativeX * cos - newTrRelativeY * sin);
+  center.y = trWorldY - (newTrRelativeX * sin + newTrRelativeY * cos);
+
+  const adjustedPosition = getAdjustedPosition(center, newSize);
+
+  return { position: adjustedPosition, size: newSize };
 }
 
 function resizeBottomRight(boardObject: BoardObject, dx: number, dy: number) {
@@ -89,7 +154,34 @@ function resizeBottomRight(boardObject: BoardObject, dx: number, dy: number) {
     width: newPosition.x - startPosition.x,
     height: newPosition.y - startPosition.y,
   };
-  return { position: startPosition, size: newSize };
+
+  const radians = degreeToRadian(boardObject.rotationAngle);
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+
+  const tlRelativeX = -boardObject.size.width / 2;
+  const tlRelativeY = -boardObject.size.height / 2;
+
+  const center = getCenter(startPosition, boardObject.size);
+  const tlWorldX = center.x + tlRelativeX * cos - tlRelativeY * sin;
+  const tlWorldY = center.y + tlRelativeX * sin + tlRelativeY * cos;
+
+  const newTlRelativeX = -newSize.width / 2;
+  const newTlRelativeY = -newSize.height / 2;
+  center.x = tlWorldX - (newTlRelativeX * cos - newTlRelativeY * sin);
+  center.y = tlWorldY - (newTlRelativeX * sin + newTlRelativeY * cos);
+
+  const adjustedPosition = getAdjustedPosition(center, newSize);
+
+  return { position: adjustedPosition, size: newSize };
+}
+
+function getRelativeDelta(a: number, dx: number, dy: number) {
+  const signY = dy < 0 ? 1 : -1;
+  const d = Math.sqrt(dx ** 2 + dy ** 2);
+  const b = signY * radianToDegree(Math.acos(dx / d));
+  const g = degreeToRadian(b + a);
+  return { dx: Math.cos(g) * d, dy: Math.sin(g) * d };
 }
 
 export function resizeBoardObject(
@@ -97,18 +189,27 @@ export function resizeBoardObject(
   dx: number,
   dy: number
 ) {
-  const resizingCorner = boardObject.resizingCorner;
-
-  if (resizingCorner === "top-left") {
+  if (dx == 0 && dy == 0) {
     return resizeTopLeft(boardObject, dx, dy);
   }
+  const resizingCorner = boardObject.resizingCorner;
+
+  const { dx: relDx, dy: relDy } = getRelativeDelta(
+    boardObject.rotationAngle,
+    -dx,
+    -dy
+  );
+
+  if (resizingCorner === "top-left") {
+    return resizeTopLeft(boardObject, -relDx, relDy);
+  }
   if (resizingCorner === "top-right") {
-    return resizeTopRight(boardObject, dx, dy);
+    return resizeTopRight(boardObject, -relDx, relDy);
   }
   if (resizingCorner === "bottom-left") {
-    return resizeBottomLeft(boardObject, dx, dy);
+    return resizeBottomLeft(boardObject, -relDx, relDy);
   }
   if (resizingCorner === "bottom-right") {
-    return resizeBottomRight(boardObject, dx, dy);
+    return resizeBottomRight(boardObject, -relDx, relDy);
   }
 }

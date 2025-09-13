@@ -23,7 +23,6 @@ function BoardObjectCorner({
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
 
-  const objectPosition = toCameraPoint(boardObject.position, camera);
   const objectSize = toCameraSize(boardObject.size, camera);
   const size = Math.max(
     scaleToCamera(OBJECT_RESIZER_SIZE, camera),
@@ -39,7 +38,7 @@ function BoardObjectCorner({
 
   const resizerCursor = getResizerCursor(corner);
 
-  const position = getCornerPosition(objectPosition, objectSize, size, corner);
+  const position = getCornerPosition(objectSize, size, corner);
 
   return (
     <div

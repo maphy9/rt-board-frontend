@@ -1,5 +1,6 @@
 import { degreeToRadian } from "@/utils/rotation";
 import Camera from "./camera";
+import Size from "./size";
 
 export default interface Point {
   x: number;
@@ -41,4 +42,10 @@ export function rotateAround(p: Point, o: Point, angle: number): Point {
 
 export function distanceBetween(p1: Point, p2: Point) {
   return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+}
+
+export function getCenter(startPosition: Point, size: Size): Point {
+  const x = startPosition.x + size.width / 2;
+  const y = startPosition.y + size.height / 2;
+  return { x, y };
 }
