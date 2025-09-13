@@ -6,11 +6,15 @@ import {
   setRotatingPoint,
   unselectObject,
 } from "@/state/slices/boardObjectsSlice";
-import { setIsDragging, setIsPanning } from "@/state/slices/inputSlice";
+import {
+  setIsDragging,
+  setIsPanning,
+  setPressed,
+} from "@/state/slices/inputSlice";
 import { RootState } from "@/state/store";
 import BoardObject from "@/types/BoardObjects/boardObject";
 import Input from "@/types/input";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function useBoardObjectMouse(boardObject: BoardObject) {
@@ -18,6 +22,10 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const input: Input = useSelector((state: RootState) => state.input);
   const isPressed = useRef(false);
+
+  useEffect(() => {
+    isPressed.current = input.pressed === boardObject.id;
+  }, [input.pressed]);
 
   const handleMouseMove = (event) => {
     if (isPressed.current) {
@@ -44,7 +52,7 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       return;
     }
 
-    isPressed.current = true;
+    dispatch(setPressed(boardObject.id));
   };
 
   function selectOnlyOne() {
@@ -86,13 +94,13 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       return;
     }
 
-    if (!isPressed.current) {
+    dispatch(setPressed(null));
+    if (input.isDragging) {
+      dispatch(setIsDragging(false));
       return;
     }
 
-    isPressed.current = false;
-    if (input.isDragging) {
-      dispatch(setIsDragging(false));
+    if (!isPressed.current) {
       return;
     }
 

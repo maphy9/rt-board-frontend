@@ -72,7 +72,7 @@ function BoardObjectMenu({
     if (!boardObject.isSelected) {
       setIsOpen((prev) => new Array(prev.length).fill(false));
     }
-  }, [boardObject]);
+  }, [boardObject.isSelected]);
 
   return showMenu ? (
     <div

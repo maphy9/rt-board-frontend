@@ -79,5 +79,5 @@ export default function useKeyboard() {
     document.addEventListener("keydown", handleKeyboard);
 
     return () => document.removeEventListener("keydown", handleKeyboard);
-  });
+  }, []);
 }

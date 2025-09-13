@@ -6,4 +6,5 @@ export default interface Input {
   isDragging: boolean;
   isSelecting: boolean;
   selectionStart: Point;
+  pressed: string | null;
 }

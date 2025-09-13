@@ -7,6 +7,7 @@ const initialState: Input = {
   isDragging: false,
   isSelecting: false,
   selectionStart: { x: 0, y: 0 },
+  pressed: null,
 };
 
 export const inputSlice = createSlice({
@@ -30,6 +31,9 @@ export const inputSlice = createSlice({
       const { x, y } = action.payload;
       state.selectionStart = { x, y };
     },
+    setPressed: (state, action) => {
+      state.pressed = action.payload;
+    },
   },
 });
 
@@ -39,5 +43,6 @@ export const {
   setIsPanning,
   setIsSelecting,
   setSelectionStart,
+  setPressed,
 } = inputSlice.actions;
 export default inputSlice.reducer;
