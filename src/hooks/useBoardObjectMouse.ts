@@ -28,16 +28,19 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
   }, [input.pressed]);
 
   const handleMouseMove = (event) => {
-    if (isPressed.current) {
-      if (!boardObject.isSelected) {
-        if (!event.shiftKey) {
-          dispatch(clearSelection());
-        }
-
-        dispatch(selectObject(boardObject.id));
-      }
-      dispatch(setIsDragging(true));
+    if (!isPressed.current) {
+      return;
     }
+
+    if (!boardObject.isSelected) {
+      if (!event.shiftKey) {
+        dispatch(clearSelection());
+      }
+
+      dispatch(selectObject(boardObject.id));
+    }
+
+    dispatch(setIsDragging(true));
   };
 
   const handleMouseDown = (event) => {
@@ -82,7 +85,7 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       return;
     }
 
-    if (boardObject.resizingCorner !== null) {
+    if (boardObjects.resized !== null) {
       dispatch(setResized(null));
       return;
     }
