@@ -53,6 +53,7 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
           transformOrigin: "50% 50%",
           transform: `rotate(${boardObject.rotationAngle}deg)`,
           borderRadius: `${borderRadius}px`,
+          zIndex: boardObject.isSelected ? 1 : 0,
         }}
       >
         <div
@@ -63,6 +64,7 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
               boardObject.isFlippedHorizontally ? -1 : 1
             }) scaleY(${boardObject.isFlippedVertically ? -1 : 1})`,
             borderRadius: `${borderRadius}px`,
+            opacity: boardObject.isSelected ? 0.85 : 1,
           }}
         >
           {objectComponent}
