@@ -6,7 +6,6 @@ import { createImageObject } from "./imageObject";
 import NoteObject, { createNoteObject } from "./noteObject";
 import TextObject, { createTextObject } from "./textObject";
 import ShapeObject, { createShapeObject, isShape, Shape } from "./shapeObject";
-import useTheme from "@/hooks/useTheme";
 import Theme from "../theme";
 
 export type BoardObjectType = "text" | "note" | "image" | "shape";

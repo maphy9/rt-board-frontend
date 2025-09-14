@@ -14,14 +14,20 @@ import {
 import { RootState } from "@/state/store";
 import BoardObject from "@/types/BoardObjects/boardObject";
 import Input from "@/types/input";
+import Toolbox from "@/types/toolbox";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useBoardMouse from "./useBoardMouse";
 
 export default function useBoardObjectMouse(boardObject: BoardObject) {
   const dispatch = useDispatch();
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const input: Input = useSelector((state: RootState) => state.input);
+  const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
+  const { selectedTool } = toolbox;
   const isPressed = useRef(false);
+
+  const { handleSelectedTool } = useBoardMouse();
 
   useEffect(() => {
     isPressed.current = input.pressed === boardObject.id;
@@ -52,6 +58,11 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
     }
 
     if (event.button !== 0) {
+      return;
+    }
+
+    if (selectedTool !== "cursor") {
+      handleSelectedTool();
       return;
     }
 

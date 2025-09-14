@@ -5,6 +5,7 @@ import {
   dragSelected,
   resize,
   rotate,
+  selectObject,
   selectObjectsInRectangle,
   setResized,
   setRotatingPoint,
@@ -107,12 +108,7 @@ export default function useBoardMouse() {
     }
   };
 
-  const handleSelectedTool = async (event) => {
-    if (selectedTool === "cursor") {
-      startSelecting(event);
-      return;
-    }
-
+  const handleSelectedTool = async () => {
     if (selectedTool === "image") {
       document.getElementById("image-uploader").click();
       return;
@@ -132,9 +128,16 @@ export default function useBoardMouse() {
       return;
     }
 
-    if (event.button === 0) {
-      handleSelectedTool(event);
+    if (event.button !== 0) {
+      return;
     }
+
+    if (selectedTool === "cursor") {
+      startSelecting(event);
+      return;
+    }
+
+    handleSelectedTool();
   };
 
   const handleMouseUp = (event) => {
@@ -192,5 +195,6 @@ export default function useBoardMouse() {
     handleMouseDown,
     handleMouseUp,
     handleWheel,
+    handleSelectedTool,
   };
 }
