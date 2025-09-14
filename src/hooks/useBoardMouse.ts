@@ -26,9 +26,9 @@ import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
+import Theme from "@/types/theme";
 import Toolbox from "@/types/toolbox";
 import { useDispatch, useSelector } from "react-redux";
-import useTheme from "./useTheme";
 
 export default function useBoardMouse() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -40,7 +40,7 @@ export default function useBoardMouse() {
   const { selectedTool } = toolbox;
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   async function addNewBoardObject(src?: string) {
     const position = toRealPoint(input.mousePosition, camera);

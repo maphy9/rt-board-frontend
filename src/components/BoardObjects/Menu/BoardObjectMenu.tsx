@@ -14,7 +14,7 @@ import MenuOption from "./MenuOption";
 import BoardObject from "@/types/BoardObjects/boardObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
 
 function BoardObjectMenu({
   boardObject,
@@ -29,7 +29,7 @@ function BoardObjectMenu({
   const input: Input = useSelector((state: RootState) => state.input);
   const camera: Camera = useSelector((state: RootState) => state.camera);
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const position = toCameraPoint(
     {

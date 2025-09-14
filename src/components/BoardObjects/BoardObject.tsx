@@ -1,6 +1,6 @@
 import { RootState } from "@/state/store";
 import Camera, { scaleToCamera } from "@/types/camera";
-import { addOffset, toCameraPoint } from "@/types/point";
+import { toCameraPoint } from "@/types/point";
 import React from "react";
 import TextObjectComponent from "./TextObject/TextObject";
 import styles from "./styles.module.css";
@@ -22,13 +22,13 @@ import ShapeObjectComponent from "./ShapeObject/ShapeObject";
 import ShapeObjectMenu from "./ShapeObject/ShapeObjectMenu";
 import ShapeObject from "@/types/BoardObjects/shapeObject";
 import BoardObjectRotate from "./BoardObjectRotate/BoardObjectRotate";
-import useTheme from "@/hooks/useTheme";
 import { getCssColor } from "@/types/color";
+import Theme from "@/types/theme";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const { handleMouseUp, handleMouseDown, handleMouseMove } =
     useBoardObjectMouse(boardObject);

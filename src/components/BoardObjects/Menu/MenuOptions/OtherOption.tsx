@@ -12,8 +12,8 @@ import {
   toggleIsFlippedHorizontally,
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
-import useTheme from "@/hooks/useTheme";
 import { getCssColor } from "@/types/color";
+import Theme from "@/types/theme";
 
 function OtherOption({
   id,
@@ -30,7 +30,7 @@ function OtherOption({
   const boardObject = boardObjects.objects[id];
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const handleOpen = (event) => {
     event.stopPropagation();

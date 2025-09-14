@@ -7,14 +7,14 @@ import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { clearSelection } from "@/state/slices/boardObjectsSlice";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
 
 function Tool({ selectedTool }: { selectedTool: SelectedTool }) {
   const toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool: selectedToolGlobal } = toolbox;
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const handleClick = () => {
     dispatch(clearSelection());

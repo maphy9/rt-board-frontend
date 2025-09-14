@@ -1,14 +1,10 @@
-import useTheme from "@/hooks/useTheme";
-import {
-  addObject,
-  clearSelection,
-  selectObject,
-} from "@/state/slices/boardObjectsSlice";
+import { addObject } from "@/state/slices/boardObjectsSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import Camera from "@/types/camera";
 import { toRealPoint } from "@/types/point";
+import Theme from "@/types/theme";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,7 +13,7 @@ function ImageUploader() {
   const input = useSelector((state: RootState) => state.input);
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];

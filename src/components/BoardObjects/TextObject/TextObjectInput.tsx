@@ -9,13 +9,13 @@ import { RootState } from "@/state/store";
 import { toCameraSize } from "@/types/size";
 import { setText } from "@/state/slices/boardObjectsSlice";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
 
 function TextObjectInput({ textObject }: { textObject: TextObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const size = toCameraSize(textObject.size, camera);
   const fontSize = scaleToCamera(textObject.fontSize, camera);

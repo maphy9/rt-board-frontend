@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import BoardObject from "@/types/BoardObjects/boardObject";
 import Input from "@/types/input";
-import Camera, { scaleToCamera, scaleToReal } from "@/types/camera";
-import { addOffset, toCameraPoint, toRealPoint } from "@/types/point";
+import Camera, { scaleToCamera } from "@/types/camera";
+import { addOffset } from "@/types/point";
 import { OBJECT_ROTATE_SIZE } from "@/constants/boardObjectConstants";
 import { setRotatingPoint } from "@/state/slices/boardObjectsSlice";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
 
 function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
   const boardObjects: BoardObjects = useSelector(
@@ -20,7 +20,7 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const size = Math.max(
     scaleToCamera(OBJECT_ROTATE_SIZE, camera),

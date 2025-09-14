@@ -6,7 +6,7 @@ import { RgbaColorPicker } from "react-colorful";
 import { setBackgroundColor } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
 
 function BackgroundColorOption({
   id,
@@ -23,7 +23,7 @@ function BackgroundColorOption({
   const boardObject = boardObjects.objects[id] as any;
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const [color, setColor] = useState({ ...boardObject.backgroundColor });
 

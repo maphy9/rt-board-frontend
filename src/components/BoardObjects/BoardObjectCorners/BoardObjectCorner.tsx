@@ -2,7 +2,6 @@ import React from "react";
 import { RootState } from "@/state/store";
 import BoardObject, { Corner } from "@/types/BoardObjects/boardObject";
 import Camera, { scaleToCamera } from "@/types/camera";
-import { toCameraPoint } from "@/types/point";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./style.module.css";
 import { toCameraSize } from "@/types/size";
@@ -12,8 +11,8 @@ import {
   setResizingCorner,
 } from "@/state/slices/boardObjectsSlice";
 import { getCornerPosition } from "@/utils/resizing";
-import useTheme from "@/hooks/useTheme";
 import { getCssColor } from "@/types/color";
+import Theme from "@/types/theme";
 
 function BoardObjectCorner({
   boardObject,
@@ -25,7 +24,7 @@ function BoardObjectCorner({
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const objectSize = toCameraSize(boardObject.size, camera);
   const size = Math.max(

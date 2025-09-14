@@ -5,14 +5,14 @@ import React from "react";
 import { useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
 
 function SelectedToolComponent() {
   const input: Input = useSelector((state: RootState) => state.input);
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const position = input.mousePosition;
 

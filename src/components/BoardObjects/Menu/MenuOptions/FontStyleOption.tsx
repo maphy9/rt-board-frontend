@@ -7,7 +7,7 @@ import { setFontStyle } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
 
 function FontStyleOption({
   id,
@@ -24,7 +24,7 @@ function FontStyleOption({
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
 
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   const handleOpen = (event) => {
     event.stopPropagation();

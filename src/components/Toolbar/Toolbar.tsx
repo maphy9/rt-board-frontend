@@ -4,11 +4,13 @@ import Tool from "./Tool";
 import useUniversalInput from "@/hooks/useUniversalInput";
 import ShapeTool from "./ShapeTools";
 import { getCssColor } from "@/types/color";
-import useTheme from "@/hooks/useTheme";
+import Theme from "@/types/theme";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 
 function Toolbar() {
   const { stopPropagation } = useUniversalInput();
-  const { theme } = useTheme();
+  const theme: Theme = useSelector((state: RootState) => state.theme);
 
   return (
     <div

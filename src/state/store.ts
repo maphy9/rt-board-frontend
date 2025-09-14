@@ -3,6 +3,7 @@ import cameraReducer from "@/state/slices/cameraSlice";
 import boardObjectsReducer from "@/state/slices/boardObjectsSlice";
 import inputReducer from "@/state/slices/inputSlice";
 import toolboxReducer from "@/state/slices/toolboxSlice";
+import themeReducer from "@/state/slices/themeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     boardObjects: boardObjectsReducer,
     input: inputReducer,
     toolbox: toolboxReducer,
+    theme: themeReducer,
   },
 });
 
