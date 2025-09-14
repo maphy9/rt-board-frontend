@@ -7,7 +7,6 @@ import { setFontSize } from "@/state/slices/boardObjectsSlice";
 import TextObject from "@/types/BoardObjects/textObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function FontSizeOption({
   id,
@@ -24,7 +23,7 @@ function FontSizeOption({
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const [inputValue, setInputValue] = useState<string>(
     textObject.fontSize + ""

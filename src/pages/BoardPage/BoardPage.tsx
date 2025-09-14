@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import Toolbar from "@/components/Toolbar/Toolbar";
 import Board from "@/components/Board/Board";
 import useKeyboard from "@/hooks/useKeyboard";
+import BoardMenu from "@/components/BoardMenu/BoardMenu";
 
 function BoardPage() {
   useKeyboard();
@@ -12,6 +13,8 @@ function BoardPage() {
       <Toolbar />
 
       <Board />
+
+      <BoardMenu />
     </div>
   );
 }

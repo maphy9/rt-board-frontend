@@ -4,7 +4,7 @@ import { RootState } from "@/state/store";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import Camera from "@/types/camera";
 import { toRealPoint } from "@/types/point";
-import Theme from "@/types/theme";
+
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ function ImageUploader() {
   const input = useSelector((state: RootState) => state.input);
   const dispatch = useDispatch();
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];

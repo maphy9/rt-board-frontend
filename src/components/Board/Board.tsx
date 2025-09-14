@@ -17,11 +17,10 @@ import ImageUploader from "./ImageUploader";
 import ResizeInfo from "./ResizeInfo";
 import RotateInfo from "./RotateInfo";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function Board() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const { handleMouseMove, handleMouseDown, handleMouseUp, handleWheel } =
     useBoardMouse();

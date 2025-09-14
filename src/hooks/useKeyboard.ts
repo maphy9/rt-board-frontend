@@ -3,14 +3,12 @@ import {
   addObject,
   clearSelection,
   deleteSelected,
-  selectObject,
 } from "@/state/slices/boardObjectsSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
-import Theme from "@/types/theme";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -21,7 +19,7 @@ export default function useKeyboard() {
   const input = useSelector((state: RootState) => state.input);
   const dispatch = useDispatch();
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   function handleEscape() {
     dispatch(clearSelection());

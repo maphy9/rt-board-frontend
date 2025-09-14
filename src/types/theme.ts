@@ -10,7 +10,7 @@ export default interface Theme {
 
 export const lightTheme: Theme = {
   primary: rgba(255, 255, 255),
-  onPrimary: rgba(200, 200, 200),
+  onPrimary: rgba(218, 223, 227),
   secondary: rgba(0, 0, 0),
   onSecondary: rgba(40, 40, 40),
   surface: rgba(0, 191, 255),

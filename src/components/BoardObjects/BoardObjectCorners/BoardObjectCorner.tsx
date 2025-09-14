@@ -12,7 +12,6 @@ import {
 } from "@/state/slices/boardObjectsSlice";
 import { getCornerPosition } from "@/utils/resizing";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function BoardObjectCorner({
   boardObject,
@@ -24,7 +23,7 @@ function BoardObjectCorner({
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const objectSize = toCameraSize(boardObject.size, camera);
   const size = Math.max(

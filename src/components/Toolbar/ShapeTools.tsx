@@ -5,13 +5,12 @@ import { RootState } from "@/state/store";
 import Tool from "./Tool";
 import { isShape } from "@/types/BoardObjects/shapeObject";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function ShapeTool() {
   const toolbox = useSelector((state: RootState) => state.toolbox);
   const [isOpen, setIsOpen] = useState(false);
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const handleClick = () => {
     setIsOpen((prev) => !prev);

@@ -1,0 +1,79 @@
+.boardMenu {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background-color: var(--onPrimary);
+  box-shadow: 0px 0px 6px 0px var(--secondaryShadow);
+  padding: 6px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+  overflow: visible;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.boardMenuIcon {
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+
+.boardMenuOptions {
+  position: absolute;
+  right: 12px;
+  top: 72px;
+  background-color: var(--onPrimary);
+  box-shadow: 0px 0px 6px 0px var(--secondaryShadow);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+  overflow: visible;
+  cursor: pointer;
+}
+
+.boardMenuOptions > * {
+  padding: 6px;
+  width: calc(100% - 12px);
+  display: flex;
+  gap: 8px;
+}
+
+.boardMenuOptions > *:hover {
+  background-color: var(--secondaryShadow);
+}
+
+.themeChanger {
+  display: flex;
+  justify-content: space-between;
+  color: var(--secondary);
+  align-items: center;
+}
+
+.boardMenuOptionIcon {
+  background-color: var(--secondary);
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  width: 24px;
+  height: 24px;
+}

@@ -7,6 +7,8 @@
   outline: none;
   font-family: "Open Sans", sans-serif !important;
   overflow: hidden;
+  transition: color 0.5s;
+  transition: background-color 0.25s;
 }
 
 html,
@@ -14,4 +16,12 @@ body,
 #root {
   min-height: 100vh;
   min-width: 100vw;
+}
+
+span {
+  flex: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

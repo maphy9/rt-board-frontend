@@ -4,13 +4,12 @@ import { useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import BoardObject, { Corner } from "@/types/BoardObjects/boardObject";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function RotateInfo() {
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const input = useSelector((state: RootState) => state.input);
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const isVisible = boardObjects.rotated !== null;
   const boardObject: BoardObject | null = isVisible

@@ -1,36 +1,32 @@
 import React from "react";
 import styles from "./styles.module.css";
-import Tool from "./Tool";
-import useUniversalInput from "@/hooks/useUniversalInput";
-import ShapeTool from "./ShapeTools";
-import { getCssColor } from "@/types/color";
+
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import useUniversalInput from "@/hooks/useUniversalInput";
+import { getCssColor } from "@/types/color";
+import ThemeChanger from "./ThemeChanger";
 
-function Toolbar() {
-  const { stopPropagation } = useUniversalInput();
+function BoardMenuOptions() {
   const { theme } = useSelector((state: RootState) => state.theme);
+
+  const { stopPropagation } = useUniversalInput();
 
   return (
     <div
       onMouseDown={stopPropagation}
       onMouseUp={stopPropagation}
-      className={styles.toolbar}
       style={
         {
-          "--primary": getCssColor(theme.primary),
           "--onPrimary": getCssColor(theme.onPrimary),
           "--secondaryShadow": getCssColor({ ...theme.secondary, a: 0.15 }),
         } as any
       }
+      className={styles.boardMenuOptions}
     >
-      <Tool selectedTool="cursor" />
-      <Tool selectedTool="text" />
-      <Tool selectedTool="note" />
-      <Tool selectedTool="image" />
-      <ShapeTool />
+      <ThemeChanger />
     </div>
   );
 }
 
-export default Toolbar;
+export default BoardMenuOptions;

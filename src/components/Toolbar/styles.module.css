@@ -3,7 +3,7 @@
   left: 12px;
   top: 50%;
   transform: translate(0, -50%);
-  background-color: var(--primary);
+  background-color: var(--onPrimary);
   box-shadow: 0px 0px 6px 0px var(--secondaryShadow);
   padding: 6px;
   border-radius: 3px;

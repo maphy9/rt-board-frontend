@@ -13,7 +13,6 @@ import {
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function OtherOption({
   id,
@@ -30,7 +29,7 @@ function OtherOption({
   const boardObject = boardObjects.objects[id];
   const dispatch = useDispatch();
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const handleOpen = (event) => {
     event.stopPropagation();

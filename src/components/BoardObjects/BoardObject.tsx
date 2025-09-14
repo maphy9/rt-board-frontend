@@ -23,12 +23,11 @@ import ShapeObjectMenu from "./ShapeObject/ShapeObjectMenu";
 import ShapeObject from "@/types/BoardObjects/shapeObject";
 import BoardObjectRotate from "./BoardObjectRotate/BoardObjectRotate";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const { handleMouseUp, handleMouseDown, handleMouseMove } =
     useBoardObjectMouse(boardObject);

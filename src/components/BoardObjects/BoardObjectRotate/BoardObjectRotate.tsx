@@ -10,7 +10,6 @@ import { addOffset } from "@/types/point";
 import { OBJECT_ROTATE_SIZE } from "@/constants/boardObjectConstants";
 import { setRotatingPoint } from "@/state/slices/boardObjectsSlice";
 import { getCssColor } from "@/types/color";
-import Theme from "@/types/theme";
 
 function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
   const boardObjects: BoardObjects = useSelector(
@@ -20,7 +19,7 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
 
-  const theme: Theme = useSelector((state: RootState) => state.theme);
+  const { theme } = useSelector((state: RootState) => state.theme);
 
   const size = Math.max(
     scaleToCamera(OBJECT_ROTATE_SIZE, camera),
