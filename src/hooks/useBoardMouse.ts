@@ -108,7 +108,7 @@ export default function useBoardMouse() {
     }
   };
 
-  const handleSelectedTool = async () => {
+  const handleSelectedTool = () => {
     if (selectedTool === "image") {
       document.getElementById("image-uploader").click();
       return;

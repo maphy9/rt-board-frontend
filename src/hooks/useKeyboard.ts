@@ -6,7 +6,7 @@ import {
 } from "@/state/slices/boardObjectsSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
 
@@ -17,9 +17,13 @@ function getType(types: readonly string[], type: string) {
 export default function useKeyboard() {
   const camera = useSelector((state: RootState) => state.camera);
   const input = useSelector((state: RootState) => state.input);
+  const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
 
-  const { theme } = useSelector((state: RootState) => state.theme);
+  const mousePosition = useRef(input.mousePosition);
+  useEffect(() => {
+    mousePosition.current = input.mousePosition;
+  }, [input.mousePosition]);
 
   function handleEscape() {
     dispatch(clearSelection());
@@ -42,7 +46,7 @@ export default function useKeyboard() {
     if (imageType !== undefined) {
       const blob = await clipboardItem.getType(imageType);
       const src = URL.createObjectURL(blob);
-      const position = toRealPoint(input.mousePosition, camera);
+      const position = toRealPoint(mousePosition.current, camera);
       const imageObject = await createBoardObject(
         "image",
         position,
