@@ -1,16 +1,23 @@
-import { toRealPoint } from "@/types/point";
+import { addOffset, toRealPoint } from "@/types/point";
 import {
   addObject,
   clearSelection,
   deleteSelected,
+  selectObject,
 } from "@/state/slices/boardObjectsSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBoardObject } from "@/types/BoardObjects/boardObject";
+import {
+  boardObjectCleanCopy,
+  createBoardObject,
+} from "@/types/BoardObjects/boardObject";
 import { addHistoryItem } from "@/state/slices/historySlice";
 import useHistory from "./useHistory";
+import { copyObjectToClipboard } from "@/utils/clipboard";
+import getID from "@/utils/id";
+import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -45,6 +52,13 @@ export default function useKeyboard() {
   }
 
   async function handlePaste() {
+    for (const id in boardObjectsRef.current.selected) {
+      const boardObject = boardObjectsRef.current.objects[id];
+      if (boardObject.isEditing) {
+        return;
+      }
+    }
+
     const clipboardItems = await navigator.clipboard.read();
     if (clipboardItems.length === 0) {
       return;
@@ -52,7 +66,36 @@ export default function useKeyboard() {
 
     const clipboardItem = clipboardItems[0];
 
-    if (getType(clipboardItem.types, "text/plain")) {
+    const textType = getType(clipboardItem.types, "text/plain");
+    if (textType !== undefined) {
+      const blob = await clipboardItem.getType(textType);
+      const text = await blob.text();
+      const json = JSON.parse(text);
+
+      if (json["__customType"] !== "boardObjects") {
+        return;
+      }
+
+      const objects = json["data"];
+      const copies = [];
+      for (const object of objects) {
+        const copy = {
+          ...JSON.parse(JSON.stringify(object)),
+          id: getID(),
+          isSelected: false,
+          isEdited: false,
+          position: addOffset(object.position, OBJECT_COPY_MARGIN),
+        };
+        dispatch(addObject(copy));
+        copies.push(copy);
+      }
+
+      dispatch(addHistoryItem({ type: "add", data: copies }));
+      dispatch(clearSelection());
+      for (const copy of copies) {
+        dispatch(selectObject(copy.id));
+      }
+
       return;
     }
 
@@ -70,6 +113,26 @@ export default function useKeyboard() {
       dispatch(addObject(imageObject));
       dispatch(addHistoryItem({ type: "add", data: [imageObject] }));
     }
+  }
+
+  function handleCopy(event) {
+    const boardObjects = boardObjectsRef.current;
+
+    const selectedObjects = [];
+    for (const id in boardObjects.selected) {
+      const boardObject = boardObjects.objects[id];
+      if (boardObject.isEditing) {
+        return;
+      }
+      selectedObjects.push(boardObject);
+    }
+
+    if (selectedObjects.length === 0) {
+      return;
+    }
+
+    event.preventDefault();
+    copyObjectToClipboard(selectedObjects);
   }
 
   function handleKeyboard(event) {
@@ -109,6 +172,11 @@ export default function useKeyboard() {
 
     if (event.key === "y" && (event.ctrlKey || event.metaKey)) {
       historyRef.current.handleGoToFuture();
+      return;
+    }
+
+    if (event.key === "c" && (event.ctrlKey || event.metaKey)) {
+      handleCopy(event);
       return;
     }
   }
