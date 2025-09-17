@@ -53,3 +53,13 @@ export async function createBoardObject(
   boardObject.position.y -= boardObject.size.height / 2;
   return boardObject;
 }
+
+export function boardObjectCleanCopy(boardObject: BoardObject): BoardObject {
+  return {
+    ...boardObject,
+    isSelected: false,
+    isEditing: false,
+    resizingCorner: null,
+    rotatingPoint: null,
+  };
+}

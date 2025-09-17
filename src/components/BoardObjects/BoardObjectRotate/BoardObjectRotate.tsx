@@ -10,6 +10,7 @@ import { addOffset } from "@/types/point";
 import { OBJECT_ROTATE_SIZE } from "@/constants/boardObjectConstants";
 import { setRotatingPoint } from "@/state/slices/boardObjectsSlice";
 import { getCssColor } from "@/types/color";
+import useUniversalInput from "@/hooks/useUniversalInput";
 
 function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
   const boardObjects: BoardObjects = useSelector(
@@ -18,7 +19,7 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
   const input: Input = useSelector((state: RootState) => state.input);
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
-
+  const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
 
   const size = Math.max(
@@ -38,7 +39,7 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
     !input.isDragging;
 
   const handleMouseDown = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     const rotatingPoint = addOffset(boardObject.position, {
       x: boardObject.size.width / 2,

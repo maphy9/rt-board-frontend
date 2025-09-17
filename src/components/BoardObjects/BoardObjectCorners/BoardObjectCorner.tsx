@@ -12,6 +12,7 @@ import {
 } from "@/state/slices/boardObjectsSlice";
 import { getCornerPosition } from "@/utils/resizing";
 import { getCssColor } from "@/types/color";
+import useUniversalInput from "@/hooks/useUniversalInput";
 
 function BoardObjectCorner({
   boardObject,
@@ -22,8 +23,8 @@ function BoardObjectCorner({
 }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
   const dispatch = useDispatch();
-
   const { theme } = useSelector((state: RootState) => state.theme);
+  const { stopPropagationAndEdit } = useUniversalInput();
 
   const objectSize = toCameraSize(boardObject.size, camera);
   const size = Math.max(
@@ -34,7 +35,7 @@ function BoardObjectCorner({
   const position = getCornerPosition(objectSize, size, corner);
 
   const handleMouseDown = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     dispatch(setResizingCorner({ id: boardObject.id, corner }));
     dispatch(setResized(boardObject.id));

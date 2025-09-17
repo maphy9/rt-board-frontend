@@ -3,10 +3,15 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import { RgbaColorPicker } from "react-colorful";
-import { setFontColor } from "@/state/slices/boardObjectsSlice";
+import {
+  setFontColor,
+  setOldObjectState,
+} from "@/state/slices/boardObjectsSlice";
 import TextObject from "@/types/BoardObjects/textObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
+import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
+import useUniversalInput from "@/hooks/useUniversalInput";
 
 function FontColorOption({
   id,
@@ -22,19 +27,24 @@ function FontColorOption({
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
-
   const { theme } = useSelector((state: RootState) => state.theme);
+  const { stopPropagationAndEdit } = useUniversalInput();
 
   const [color, setColor] = useState({ ...textObject.fontColor });
 
   const handleOpen = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     toggleIsOpen();
   };
 
   const handleChange = (newColor) => {
     setColor(newColor);
+
+    if (boardObjects.oldObjectState === null) {
+      dispatch(setOldObjectState(boardObjectCleanCopy(textObject)));
+    }
+
     dispatch(setFontColor({ id: textObject.id, fontColor: newColor }));
   };
 
@@ -70,7 +80,11 @@ function FontColorOption({
       ) : (
         <div className={styles.colorPickerContainer}>
           <span className={styles.optionDescription}>Font color</span>
-          <RgbaColorPicker color={color} onChange={handleChange} />
+          <RgbaColorPicker
+            color={color}
+            onChange={handleChange}
+            onMouseUp={stopPropagationAndEdit}
+          />
         </div>
       )}
     </div>

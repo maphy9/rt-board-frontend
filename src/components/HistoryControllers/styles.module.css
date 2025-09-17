@@ -1,14 +1,12 @@
-.toolbar {
+.historyControllers {
   position: absolute;
   left: 12px;
-  top: 50%;
-  transform: translate(0, -50%);
+  top: 12px;
   background-color: var(--onPrimary);
   box-shadow: 0px 0px 6px 0px var(--secondaryShadow);
   padding: 6px;
   border-radius: 3px;
   display: flex;
-  flex-direction: column;
   gap: 8px;
   justify-content: center;
   align-items: center;
@@ -16,24 +14,24 @@
   overflow: visible;
 }
 
-.tool {
+.historyController {
   width: 44px;
   height: 44px;
   border-radius: 3px;
   padding: 2px;
   transition: all 0.25s ease-out;
   overflow: visible;
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
-.tool:hover {
+.historyController:hover {
   box-shadow: 0px 0px 6px 0px var(--secondaryShadow);
 }
 
-.toolIcon {
+.historyControllerIcon {
   width: calc(100% - 4px);
   height: calc(100% - 4px);
   -webkit-user-drag: none;
@@ -43,20 +41,7 @@
   -ms-user-select: none;
   -webkit-mask-size: cover;
   mask-size: cover;
-}
-
-.shapeTools {
-  position: absolute;
-  bottom: 0;
-  left: 66px;
-  background-color: var(--primary);
-  box-shadow: 0px 0px 6px 0px var(--secondaryShadow);
-  padding: 6px;
-  border-radius: 3px;
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  justify-content: center;
-  align-items: center;
-  z-index: 4;
+  background-color: var(--secondary);
+  mask-image: url("arrow.svg");
+  -webkit-mask-image: url("arrow.svg");
 }

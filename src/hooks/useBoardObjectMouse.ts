@@ -1,9 +1,7 @@
+import { toRealPoint } from "@/types/point";
 import {
   clearSelection,
   selectObject,
-  setIsEditing,
-  setResized,
-  setRotatingPoint,
   unselectObject,
 } from "@/state/slices/boardObjectsSlice";
 import {
@@ -18,15 +16,19 @@ import Toolbox from "@/types/toolbox";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useBoardMouse from "./useBoardMouse";
+import Camera from "@/types/camera";
+import useUniversalInput from "./useUniversalInput";
 
 export default function useBoardObjectMouse(boardObject: BoardObject) {
   const dispatch = useDispatch();
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const input: Input = useSelector((state: RootState) => state.input);
+  const camera: Camera = useSelector((state: RootState) => state.camera);
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
   const isPressed = useRef(false);
 
+  const { handleStopDragging, stopPropagationAndEdit } = useUniversalInput();
   const { handleSelectedTool } = useBoardMouse();
 
   useEffect(() => {
@@ -46,11 +48,18 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
       dispatch(selectObject(boardObject.id));
     }
 
-    dispatch(setIsDragging(true));
+    if (!input.isDragging) {
+      dispatch(
+        setIsDragging({
+          isDragging: true,
+          position: toRealPoint(input.mousePosition, camera),
+        })
+      );
+    }
   };
 
   const handleMouseDown = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     if (event.button === 1) {
       dispatch(setIsPanning(true));
@@ -69,13 +78,6 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
     dispatch(setPressed(boardObject.id));
   };
 
-  function selectOnlyOne() {
-    const { id, isEditing } = boardObject;
-    dispatch(clearSelection());
-    dispatch(selectObject(boardObject.id));
-    dispatch(setIsEditing({ id, isEditing }));
-  }
-
   function toggleSelection() {
     if (boardObject.isSelected) {
       dispatch(unselectObject(boardObject.id));
@@ -85,7 +87,7 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
   }
 
   const handleMouseUp = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     if (event.button === 1) {
       dispatch(setIsPanning(false));
@@ -97,20 +99,16 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
     }
 
     if (boardObjects.resized !== null) {
-      dispatch(setResized(null));
       return;
     }
 
     if (boardObjects.rotated !== null) {
-      dispatch(
-        setRotatingPoint({ id: boardObjects.rotated, rotatingPoint: null })
-      );
       return;
     }
 
     dispatch(setPressed(null));
     if (input.isDragging) {
-      dispatch(setIsDragging(false));
+      handleStopDragging();
       return;
     }
 
@@ -119,7 +117,8 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
     }
 
     if (!event.shiftKey) {
-      selectOnlyOne();
+      dispatch(clearSelection());
+      dispatch(selectObject(boardObject.id));
       return;
     }
 

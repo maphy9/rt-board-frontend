@@ -1,9 +1,8 @@
-import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
+import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
-import { addOffset, rotateAround } from "@/types/point";
+import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
-import getID from "@/utils/id";
 import { resizeBoardObject } from "@/utils/resizing";
 import { angleBetweenTwoPoints } from "@/utils/rotation";
 import { createSlice } from "@reduxjs/toolkit";
@@ -14,6 +13,7 @@ const initialState: BoardObjects = {
   selected: {},
   resized: null,
   rotated: null,
+  oldObjectState: null,
 };
 
 export const boardObjectsSlice = createSlice({
@@ -28,10 +28,6 @@ export const boardObjectsSlice = createSlice({
     deleteSelected: (state) => {
       state.order = state.order.filter((id) => !(id in state.selected));
       for (const id in state.selected) {
-        const object = state.objects[id];
-        if (object.type === "image") {
-          URL.revokeObjectURL(object.src);
-        }
         delete state.objects[id];
       }
       state.selected = {};
@@ -94,12 +90,14 @@ export const boardObjectsSlice = createSlice({
       (state.objects[id] as TextObject).text = text;
     },
     setResized: (state, action) => {
-      const resized = action.payload;
-      if (resized === null) {
-        const boardObject = state.objects[state.resized];
-        boardObject.resizingCorner = null;
+      const id = action.payload;
+      if (id === null) {
+        const _id = state.resized.id;
+        state.objects[_id].resizingCorner = null;
+        state.resized = null;
+      } else {
+        state.resized = boardObjectCleanCopy(state.objects[id]);
       }
-      state.resized = resized;
     },
     setResizingCorner: (state, action) => {
       const { id, corner } = action.payload;
@@ -107,10 +105,10 @@ export const boardObjectsSlice = createSlice({
     },
     resize: (state, action) => {
       const { dx, dy } = action.payload;
-      const boardObject = state.objects[state.resized];
-      const { position, size } = resizeBoardObject(boardObject, dx, dy);
-      boardObject.position = position;
-      boardObject.size = size;
+      const _id = state.resized.id;
+      const { position, size } = resizeBoardObject(state.objects[_id], dx, dy);
+      state.objects[_id].position = position;
+      state.objects[_id].size = size;
     },
     setFontSize: (state, action) => {
       const { id, fontSize } = action.payload;
@@ -130,27 +128,8 @@ export const boardObjectsSlice = createSlice({
       delete state.selected[id];
       state.order = state.order.filter((_id) => _id !== id);
     },
-    addCopy: (state, action) => {
-      const boardObject = action.payload;
-      const copy = {
-        ...JSON.parse(JSON.stringify(boardObject)),
-        id: getID(),
-        isSelected: false,
-        isEdited: false,
-        position: addOffset(boardObject.position, OBJECT_COPY_MARGIN),
-      };
-      state.objects[copy.id] = copy;
-      state.order.push(copy.id);
-    },
-    bringToFront: (state, action) => {
-      const id = action.payload;
-      state.order = state.order.filter((_id) => _id !== id);
-      state.order.push(id);
-    },
-    bringToRear: (state, action) => {
-      const id = action.payload;
-      state.order = state.order.filter((_id) => _id !== id);
-      state.order.unshift(id);
+    changeOrder: (state, action) => {
+      state.order = action.payload;
     },
     setBackgroundColor: (state, action) => {
       const { id, backgroundColor } = action.payload;
@@ -161,12 +140,13 @@ export const boardObjectsSlice = createSlice({
       if (rotatingPoint === null) {
         state.rotated = null;
       } else {
-        state.rotated = id;
+        state.rotated = boardObjectCleanCopy(state.objects[id]);
       }
       state.objects[id].rotatingPoint = rotatingPoint;
     },
     rotate: (state, action) => {
-      const boardObject = state.objects[state.rotated];
+      const _id = state.rotated.id;
+      const boardObject = state.objects[_id];
       const mousePosition = action.payload;
 
       boardObject.rotationAngle = angleBetweenTwoPoints(
@@ -185,6 +165,14 @@ export const boardObjectsSlice = createSlice({
 
       state.objects[id].isFlippedVertically =
         !state.objects[id].isFlippedVertically;
+    },
+    setProperties: (state, action) => {
+      const object = action.payload;
+      const id = object.id;
+      state.objects[id] = object;
+    },
+    setOldObjectState: (state, action) => {
+      state.oldObjectState = action.payload;
     },
   },
 });
@@ -205,15 +193,15 @@ export const {
   setFontStyle,
   setFontColor,
   deleteObject,
-  addCopy,
-  bringToFront,
-  bringToRear,
+  changeOrder,
   setBackgroundColor,
   deleteSelected,
   setRotatingPoint,
   rotate,
   toggleIsFlippedHorizontally,
   toggleIsFlippedVertically,
+  setProperties,
+  setOldObjectState,
 } = boardObjectsSlice.actions;
 
 export default boardObjectsSlice.reducer;

@@ -7,6 +7,8 @@ import { setFontStyle } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
 import { getCssColor } from "@/types/color";
+import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
+import { addHistoryItem } from "@/state/slices/historySlice";
 
 function FontStyleOption({
   id,
@@ -22,11 +24,11 @@ function FontStyleOption({
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
-
+  const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
 
   const handleOpen = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     toggleIsOpen();
   };
@@ -35,12 +37,14 @@ function FontStyleOption({
     if (textObject.fontStyle === newFontStyle) {
       newFontStyle = "normal";
     }
+
+    const oldState = boardObjectCleanCopy(textObject);
+    const data = [
+      { old: oldState, new: { ...oldState, fontStyle: newFontStyle } },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data }));
     dispatch(setFontStyle({ id: textObject.id, fontStyle: newFontStyle }));
-
-    toggleIsOpen();
   };
-
-  const { stopPropagation } = useUniversalInput();
 
   return (
     <div
@@ -74,8 +78,8 @@ function FontStyleOption({
       ) : (
         <div
           className={styles.dropdown}
-          onMouseDown={stopPropagation}
-          onMouseUp={stopPropagation}
+          onMouseDown={stopPropagationAndEdit}
+          onMouseUp={stopPropagationAndEdit}
         >
           <span className={styles.optionDescription}>Font style</span>
 

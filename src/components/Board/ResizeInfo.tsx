@@ -14,7 +14,7 @@ function ResizeInfo() {
 
   const isVisible = boardObjects.resized !== null;
   const boardObject: BoardObject | null = isVisible
-    ? boardObjects.objects[boardObjects.resized]
+    ? boardObjects.objects[boardObjects.resized.id]
     : null;
 
   const position = getPosition(

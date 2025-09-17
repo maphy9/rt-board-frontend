@@ -1,12 +1,17 @@
 import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
-import { setFontSize } from "@/state/slices/boardObjectsSlice";
+import {
+  setFontSize,
+  setOldObjectState,
+} from "@/state/slices/boardObjectsSlice";
 import TextObject from "@/types/BoardObjects/textObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
+import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
+import { addHistoryItem } from "@/state/slices/historySlice";
 
 function FontSizeOption({
   id,
@@ -22,15 +27,15 @@ function FontSizeOption({
   );
   const textObject = boardObjects.objects[id] as TextObject;
   const dispatch = useDispatch();
-
   const { theme } = useSelector((state: RootState) => state.theme);
+  const { stopPropagationAndEdit, handleStopEdit } = useUniversalInput();
 
   const [inputValue, setInputValue] = useState<string>(
     textObject.fontSize + ""
   );
 
   const handleOpen = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     toggleIsOpen();
   };
@@ -43,17 +48,27 @@ function FontSizeOption({
       return;
     }
     newFontSize = Math.max(1, newFontSize);
+
+    if (boardObjects.oldObjectState === null) {
+      dispatch(setOldObjectState(boardObjectCleanCopy(textObject)));
+    }
+
     dispatch(setFontSize({ id: textObject.id, fontSize: newFontSize }));
   };
 
   const _setFontSize = (newFontSize) => {
+    if (newFontSize === textObject.fontSize) {
+      return;
+    }
+
     setInputValue(newFontSize + "");
+    const oldState = boardObjectCleanCopy(textObject);
+    const data = [
+      { old: oldState, new: { ...oldState, fontSize: newFontSize } },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data }));
     dispatch(setFontSize({ id: textObject.id, fontSize: newFontSize }));
-
-    toggleIsOpen();
   };
-
-  const { stopPropagation } = useUniversalInput();
 
   return (
     <div
@@ -87,8 +102,8 @@ function FontSizeOption({
       ) : (
         <div
           className={styles.dropdown}
-          onMouseDown={stopPropagation}
-          onMouseUp={stopPropagation}
+          onMouseDown={stopPropagationAndEdit}
+          onMouseUp={stopPropagationAndEdit}
         >
           <span className={styles.optionDescription}>Background color</span>
 
@@ -129,6 +144,7 @@ function FontSizeOption({
               className={styles.dropdownInput}
               value={inputValue}
               onChange={handleChange}
+              onBlur={handleStopEdit}
             />
           </div>
         </div>

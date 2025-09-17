@@ -6,6 +6,7 @@ import useKeyboard from "@/hooks/useKeyboard";
 import BoardMenu from "@/components/BoardMenu/BoardMenu";
 import { useDispatch } from "react-redux";
 import { setTheme } from "@/state/slices/themeSlice";
+import HistoryControllers from "@/components/HistoryControllers/HistoryControllers";
 
 function BoardPage() {
   useKeyboard();
@@ -18,6 +19,8 @@ function BoardPage() {
 
   return (
     <div className={styles.boardPage}>
+      <HistoryControllers />
+
       <Toolbar />
 
       <Board />

@@ -5,14 +5,11 @@ import {
   dragSelected,
   resize,
   rotate,
-  selectObject,
   selectObjectsInRectangle,
-  setResized,
-  setRotatingPoint,
 } from "@/state/slices/boardObjectsSlice";
 import { panCamera, zoomCamera } from "@/state/slices/cameraSlice";
+import { addHistoryItem } from "@/state/slices/historySlice";
 import {
-  setIsDragging,
   setIsPanning,
   setIsSelecting,
   setMousePosition,
@@ -29,6 +26,7 @@ import { getOffset, toRealPoint } from "@/types/point";
 import { createRectangle } from "@/types/rectangle";
 import Toolbox from "@/types/toolbox";
 import { useDispatch, useSelector } from "react-redux";
+import useUniversalInput from "./useUniversalInput";
 
 export default function useBoardMouse() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -39,7 +37,8 @@ export default function useBoardMouse() {
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
   const dispatch = useDispatch();
-
+  const { handleStopDragging, stopPropagationAndEdit, handleStopRotate } =
+    useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
 
   async function addNewBoardObject(src?: string) {
@@ -51,6 +50,7 @@ export default function useBoardMouse() {
       src
     );
     dispatch(addObject(boardObject));
+    dispatch(addHistoryItem({ type: "add", data: [boardObject] }));
     dispatch(setSelectedTool("cursor"));
   }
 
@@ -123,6 +123,8 @@ export default function useBoardMouse() {
   };
 
   const handleMouseDown = (event) => {
+    stopPropagationAndEdit(event);
+
     if (event.button === 1) {
       dispatch(setIsPanning(true));
       return;
@@ -141,6 +143,8 @@ export default function useBoardMouse() {
   };
 
   const handleMouseUp = (event) => {
+    stopPropagationAndEdit(event);
+
     if (event.button === 1) {
       dispatch(setIsPanning(false));
       return;
@@ -156,23 +160,18 @@ export default function useBoardMouse() {
     }
 
     if (boardObjects.resized !== null) {
-      dispatch(setResized(null));
       return;
     }
 
     if (boardObjects.rotated !== null) {
-      dispatch(
-        setRotatingPoint({ id: boardObjects.rotated, rotatingPoint: null })
-      );
       return;
     }
 
     if (!input.isDragging) {
       dispatch(clearSelection());
-      return;
+    } else {
+      handleStopDragging();
     }
-
-    dispatch(setIsDragging(false));
   };
 
   function scaleZoom(zoom: number, zoomFactor: number): number {

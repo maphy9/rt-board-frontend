@@ -4,6 +4,7 @@ import boardObjectsReducer from "@/state/slices/boardObjectsSlice";
 import inputReducer from "@/state/slices/inputSlice";
 import toolboxReducer from "@/state/slices/toolboxSlice";
 import themeReducer from "@/state/slices/themeSlice";
+import historyReducer from "@/state/slices/historySlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     input: inputReducer,
     toolbox: toolboxReducer,
     theme: themeReducer,
+    history: historyReducer,
   },
 });
 

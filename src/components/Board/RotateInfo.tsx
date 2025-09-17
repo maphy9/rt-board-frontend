@@ -13,7 +13,7 @@ function RotateInfo() {
 
   const isVisible = boardObjects.rotated !== null;
   const boardObject: BoardObject | null = isVisible
-    ? boardObjects.objects[boardObjects.rotated]
+    ? boardObjects.objects[boardObjects.rotated.id]
     : null;
 
   return isVisible ? (

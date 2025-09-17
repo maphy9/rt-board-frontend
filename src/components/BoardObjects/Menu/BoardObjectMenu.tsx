@@ -45,7 +45,7 @@ function BoardObjectMenu({
       scaleToCamera(boardObject.size.height, camera) + OBJECT_MENU_MARGIN;
   }
 
-  const { stopPropagation } = useUniversalInput();
+  const { stopPropagationAndEdit } = useUniversalInput();
 
   const showMenu =
     boardObject.isSelected &&
@@ -76,8 +76,8 @@ function BoardObjectMenu({
   return showMenu ? (
     <div
       className={styles.boardObjectMenu}
-      onMouseDown={stopPropagation}
-      onMouseUp={stopPropagation}
+      onMouseDown={stopPropagationAndEdit}
+      onMouseUp={stopPropagationAndEdit}
       style={{
         border: `1px solid ${getCssColor(theme.secondary)}`,
         backgroundColor: getCssColor(theme.primary),

@@ -8,6 +8,7 @@ const initialState: Input = {
   isSelecting: false,
   selectionStart: { x: 0, y: 0 },
   pressed: null,
+  draggingStart: null,
 };
 
 export const inputSlice = createSlice({
@@ -22,7 +23,9 @@ export const inputSlice = createSlice({
       state.isPanning = action.payload;
     },
     setIsDragging: (state, action) => {
-      state.isDragging = action.payload;
+      const { isDragging, position } = action.payload;
+      state.isDragging = isDragging;
+      state.draggingStart = position;
     },
     setIsSelecting: (state, action) => {
       state.isSelecting = action.payload;

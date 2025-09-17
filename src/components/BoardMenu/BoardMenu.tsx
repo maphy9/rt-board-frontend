@@ -10,7 +10,7 @@ import BoardMenuOptions from "./BoardMenuOptions";
 function BoardMenu() {
   const { theme } = useSelector((state: RootState) => state.theme);
 
-  const { stopPropagation } = useUniversalInput();
+  const { stopPropagation, stopPropagationAndEdit } = useUniversalInput();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,7 +19,7 @@ function BoardMenu() {
       <div
         onClick={() => setIsOpen((prev) => !prev)}
         onMouseDown={stopPropagation}
-        onMouseUp={stopPropagation}
+        onMouseUp={stopPropagationAndEdit}
         style={
           {
             "--onPrimary": getCssColor(theme.onPrimary),

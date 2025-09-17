@@ -4,15 +4,19 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import {
-  bringToFront,
-  bringToRear,
   deleteObject,
-  addCopy,
   toggleIsFlippedVertically,
   toggleIsFlippedHorizontally,
+  changeOrder,
+  addObject,
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
+import { addHistoryItem } from "@/state/slices/historySlice";
+import getID from "@/utils/id";
+import { addOffset } from "@/types/point";
+import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
+import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
 
 function OtherOption({
   id,
@@ -28,52 +32,102 @@ function OtherOption({
   );
   const boardObject = boardObjects.objects[id];
   const dispatch = useDispatch();
-
+  const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
 
   const handleOpen = (event) => {
-    event.stopPropagation();
+    stopPropagationAndEdit(event);
 
     toggleIsOpen();
   };
 
   const handleDelete = () => {
+    dispatch(
+      addHistoryItem({
+        type: "delete",
+        data: [{ ...boardObject, isSelected: false, isEditing: false }],
+      })
+    );
     dispatch(deleteObject(id));
 
     toggleIsOpen();
   };
 
   const handleDuplicate = () => {
-    dispatch(addCopy(boardObject));
+    const copy = {
+      ...JSON.parse(JSON.stringify(boardObject)),
+      id: getID(),
+      isSelected: false,
+      isEdited: false,
+      position: addOffset(boardObject.position, OBJECT_COPY_MARGIN),
+    };
+    dispatch(addObject(copy));
+    dispatch(addHistoryItem({ type: "add", data: [copy] }));
 
     toggleIsOpen();
   };
 
   const handleBringToFront = () => {
-    dispatch(bringToFront(id));
+    const newOrder = boardObjects.order.filter((_id) => _id !== id);
+    newOrder.push(id);
+    dispatch(
+      addHistoryItem({
+        type: "changeOrder",
+        data: { old: boardObjects.order, new: newOrder },
+      })
+    );
+    dispatch(changeOrder(newOrder));
 
     toggleIsOpen();
   };
 
   const handleBringToRear = () => {
-    dispatch(bringToRear(id));
+    const newOrder = boardObjects.order.filter((_id) => _id !== id);
+    newOrder.unshift(id);
+    dispatch(
+      addHistoryItem({
+        type: "changeOrder",
+        data: { old: boardObjects.order, new: newOrder },
+      })
+    );
+    dispatch(changeOrder(id));
 
     toggleIsOpen();
   };
 
   const handleFlipHorizontally = () => {
+    const oldState = boardObjectCleanCopy(boardObject);
+    const data = [
+      {
+        old: oldState,
+        new: {
+          ...oldState,
+          isFlippedHorizontally: !oldState.isFlippedHorizontally,
+        },
+      },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data }));
     dispatch(toggleIsFlippedHorizontally(id));
 
     toggleIsOpen();
   };
 
   const handleFlipVertically = () => {
+    const oldState = boardObjectCleanCopy(boardObject);
+    const data = [
+      {
+        old: oldState,
+        new: {
+          ...oldState,
+          isFlippedVertically: !oldState.isFlippedVertically,
+        },
+      },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data }));
     dispatch(toggleIsFlippedVertically(id));
 
     toggleIsOpen();
   };
-
-  const { stopPropagation } = useUniversalInput();
 
   return (
     <div
@@ -107,8 +161,8 @@ function OtherOption({
       ) : (
         <div
           className={styles.dropdown}
-          onMouseDown={stopPropagation}
-          onMouseUp={stopPropagation}
+          onMouseDown={stopPropagationAndEdit}
+          onMouseUp={stopPropagationAndEdit}
         >
           <span className={styles.optionDescription}>Other options</span>
 

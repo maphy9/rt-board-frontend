@@ -9,6 +9,8 @@ import { RootState } from "@/state/store";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
+import { addHistoryItem } from "@/state/slices/historySlice";
+import useHistory from "./useHistory";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -17,13 +19,25 @@ function getType(types: readonly string[], type: string) {
 export default function useKeyboard() {
   const camera = useSelector((state: RootState) => state.camera);
   const input = useSelector((state: RootState) => state.input);
+  const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
 
+  const { handleGoToFuture, handleGoToPast } = useHistory();
+
+  const historyRef = useRef({ handleGoToPast, handleGoToFuture });
+  useEffect(() => {
+    historyRef.current = { handleGoToPast, handleGoToFuture };
+  }, [handleGoToPast, handleGoToFuture]);
+
+  const cameraRef = useRef(camera);
   const mousePosition = useRef(input.mousePosition);
+  const boardObjectsRef = useRef(boardObjects);
   useEffect(() => {
     mousePosition.current = input.mousePosition;
-  }, [input.mousePosition]);
+    boardObjectsRef.current = boardObjects;
+    cameraRef.current = camera;
+  }, [input.mousePosition, boardObjects, camera]);
 
   function handleEscape() {
     dispatch(clearSelection());
@@ -46,7 +60,7 @@ export default function useKeyboard() {
     if (imageType !== undefined) {
       const blob = await clipboardItem.getType(imageType);
       const src = URL.createObjectURL(blob);
-      const position = toRealPoint(mousePosition.current, camera);
+      const position = toRealPoint(mousePosition.current, cameraRef.current);
       const imageObject = await createBoardObject(
         "image",
         position,
@@ -54,6 +68,7 @@ export default function useKeyboard() {
         src
       );
       dispatch(addObject(imageObject));
+      dispatch(addHistoryItem({ type: "add", data: [imageObject] }));
     }
   }
 
@@ -67,12 +82,33 @@ export default function useKeyboard() {
       event.key === "Delete" ||
       (event.key === "Backspace" && event.metaKey)
     ) {
+      const selectedObjectIds = Object.keys(boardObjectsRef.current.selected);
+      if (selectedObjectIds.length === 0) {
+        return;
+      }
+      const selectedObjects = selectedObjectIds.map((id) => ({
+        ...boardObjectsRef.current.objects[id],
+        isSelected: false,
+        isEditing: false,
+      }));
+      dispatch(addHistoryItem({ type: "delete", data: selectedObjects }));
       dispatch(deleteSelected());
+
       return;
     }
 
     if (event.key === "v" && (event.ctrlKey || event.metaKey)) {
       handlePaste();
+      return;
+    }
+
+    if (event.key === "z" && (event.ctrlKey || event.metaKey)) {
+      historyRef.current.handleGoToPast();
+      return;
+    }
+
+    if (event.key === "y" && (event.ctrlKey || event.metaKey)) {
+      historyRef.current.handleGoToFuture();
       return;
     }
   }

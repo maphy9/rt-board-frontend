@@ -10,12 +10,12 @@ import ThemeChanger from "./ThemeChanger";
 function BoardMenuOptions() {
   const { theme } = useSelector((state: RootState) => state.theme);
 
-  const { stopPropagation } = useUniversalInput();
+  const { stopPropagation, stopPropagationAndEdit } = useUniversalInput();
 
   return (
     <div
       onMouseDown={stopPropagation}
-      onMouseUp={stopPropagation}
+      onMouseUp={stopPropagationAndEdit}
       style={
         {
           "--onPrimary": getCssColor(theme.onPrimary),

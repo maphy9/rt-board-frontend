@@ -8,13 +8,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 
 function Toolbar() {
-  const { stopPropagation } = useUniversalInput();
+  const { stopPropagation, stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
 
   return (
     <div
       onMouseDown={stopPropagation}
-      onMouseUp={stopPropagation}
+      onMouseUp={stopPropagationAndEdit}
       className={styles.toolbar}
       style={
         {

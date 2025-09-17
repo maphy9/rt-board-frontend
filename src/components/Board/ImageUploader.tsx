@@ -1,4 +1,5 @@
 import { addObject } from "@/state/slices/boardObjectsSlice";
+import { addHistoryItem } from "@/state/slices/historySlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
@@ -21,6 +22,7 @@ function ImageUploader() {
     const position = toRealPoint(input.mousePosition, camera);
     const imageObject = await createBoardObject("image", position, theme, src);
     dispatch(addObject(imageObject));
+    dispatch(addHistoryItem({ type: "add", data: [imageObject] }));
     dispatch(setSelectedTool("cursor"));
   };
 

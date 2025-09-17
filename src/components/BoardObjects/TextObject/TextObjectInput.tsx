@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./styles.module.css";
 import useEditEvents from "@/hooks/useEditEvents";
 import TextObject, { getFontStyle } from "@/types/BoardObjects/textObject";
 import useUniversalInput from "@/hooks/useUniversalInput";
 import Camera, { scaleToCamera } from "@/types/camera";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { toCameraSize } from "@/types/size";
-import { setText } from "@/state/slices/boardObjectsSlice";
 import { getCssColor } from "@/types/color";
+import { useSelector } from "react-redux";
 
 function TextObjectInput({ textObject }: { textObject: TextObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
-  const dispatch = useDispatch();
 
   const { theme } = useSelector((state: RootState) => state.theme);
 
@@ -22,20 +20,22 @@ function TextObjectInput({ textObject }: { textObject: TextObject }) {
   const fontColor = getCssColor(textObject.fontColor);
 
   const { handleBlur } = useEditEvents(textObject);
-  const { stopPropagation } = useUniversalInput();
+  const { stopPropagation, stopPropagationAndEdit } = useUniversalInput();
+
+  const [newText, setNewText] = useState(textObject.text);
 
   const handleChange = (event) => {
     const text = event.target.value;
-    dispatch(setText({ id: textObject.id, text }));
+    setNewText(text);
   };
 
   return (
     <input
       autoFocus
       className={styles.textObjectInput}
-      onBlur={handleBlur}
-      onMouseDown={stopPropagation}
-      onMouseUp={stopPropagation}
+      onBlur={() => handleBlur(newText)}
+      onMouseDown={stopPropagationAndEdit}
+      onMouseUp={stopPropagationAndEdit}
       onMouseMove={stopPropagation}
       style={{
         width: size.width,
@@ -45,7 +45,7 @@ function TextObjectInput({ textObject }: { textObject: TextObject }) {
         ...fontStyle,
         backgroundColor: getCssColor({ ...theme.secondary, a: 0.5 }),
       }}
-      value={textObject.text}
+      value={newText}
       onChange={handleChange}
     />
   );
