@@ -11,7 +11,7 @@ function ShapeObjectComponent({ shapeObject }: { shapeObject: ShapeObject }) {
         WebkitMaskImage: `url(${shapeObject.src})`,
         maskImage: `url(${shapeObject.src})`,
       }}
-      className={styles.imageObject}
+      className={styles.shapeObject}
     />
   );
 }

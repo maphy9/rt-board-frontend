@@ -73,22 +73,44 @@ function BoardObjectMenu({
     }
   }, [boardObject.isSelected]);
 
-  return showMenu ? (
-    <div
-      className={styles.boardObjectMenu}
-      onMouseDown={stopPropagationAndEdit}
-      onMouseUp={stopPropagationAndEdit}
-      style={{
-        border: `1px solid ${getCssColor(theme.secondary)}`,
-        backgroundColor: getCssColor(theme.primary),
-        transform: `translate(${position.x}px, ${position.y}px)`,
-        willChange: "transform",
-      }}
-    >
-      {...options}
-    </div>
-  ) : (
-    <></>
+  const handleClickToOpenOthers = () => {
+    if (boardObject.isEditing) {
+      return;
+    }
+
+    setIsOpen((prev) => {
+      const newState = new Array(prev.length).fill(false);
+      newState[prev.length - 1] = true;
+      return newState;
+    });
+  };
+
+  return (
+    <>
+      <div
+        id={`${boardObject.id}openOthers`}
+        onClick={handleClickToOpenOthers}
+        style={{ display: "none" }}
+      />
+
+      {showMenu ? (
+        <div
+          className={styles.boardObjectMenu}
+          onMouseDown={stopPropagationAndEdit}
+          onMouseUp={stopPropagationAndEdit}
+          style={{
+            border: `1px solid ${getCssColor(theme.secondary)}`,
+            backgroundColor: getCssColor(theme.primary),
+            transform: `translate(${position.x}px, ${position.y}px)`,
+            willChange: "transform",
+          }}
+        >
+          {...options}
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 

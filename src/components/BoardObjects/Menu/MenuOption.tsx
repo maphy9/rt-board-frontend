@@ -4,13 +4,11 @@ function MenuOption({ id, isOpen, setIsOpen, index, children }) {
   const isThisOpen = isOpen[index];
 
   const toggleIsOpen = () => {
-    setIsOpen((prev) => new Array(prev.length).fill(false));
-    if (!isThisOpen) {
-      setIsOpen((prev) => {
-        prev[index] = true;
-        return prev;
-      });
-    }
+    setIsOpen((prev) => {
+      const newState = new Array(prev.length).fill(false);
+      newState[index] = !isThisOpen;
+      return newState;
+    });
   };
 
   return React.cloneElement(children, {

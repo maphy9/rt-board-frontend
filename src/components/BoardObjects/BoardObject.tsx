@@ -23,13 +23,12 @@ import ShapeObjectMenu from "./ShapeObject/ShapeObjectMenu";
 import ShapeObject from "@/types/BoardObjects/shapeObject";
 import BoardObjectRotate from "./BoardObjectRotate/BoardObjectRotate";
 import { getCssColor } from "@/types/color";
+import useUniversalInput from "@/hooks/useUniversalInput";
 
 function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   const camera: Camera = useSelector((state: RootState) => state.camera);
-
   const { theme } = useSelector((state: RootState) => state.theme);
-
-  const { handleMouseUp, handleMouseDown, handleMouseMove } =
+  const { handleContextMenu, handleMouseUp, handleMouseDown, handleMouseMove } =
     useBoardObjectMouse(boardObject);
 
   const size = toCameraSize(boardObject.size, camera);
@@ -43,6 +42,7 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
         onMouseMove={handleMouseMove}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onContextMenu={handleContextMenu}
         className={styles.boardObject}
         style={{
           transform: `translate(${position.x}px, ${position.y}px) rotate(${boardObject.rotationAngle}deg)`,

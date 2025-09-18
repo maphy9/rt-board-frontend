@@ -125,9 +125,26 @@ export default function useBoardObjectMouse(boardObject: BoardObject) {
     toggleSelection();
   };
 
+  const handleContextMenu = (event) => {
+    if (boardObject.isEditing) {
+      return;
+    }
+
+    event.preventDefault();
+
+    dispatch(clearSelection());
+    dispatch(selectObject(boardObject.id));
+
+    const helperElement = document.getElementById(
+      `${boardObject.id}openOthers`
+    );
+    helperElement.click();
+  };
+
   return {
     handleMouseMove,
     handleMouseDown,
     handleMouseUp,
+    handleContextMenu,
   };
 }

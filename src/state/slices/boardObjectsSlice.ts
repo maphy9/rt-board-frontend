@@ -92,6 +92,9 @@ export const boardObjectsSlice = createSlice({
     setResized: (state, action) => {
       const id = action.payload;
       if (id === null) {
+        if (state.resized === null) {
+          return;
+        }
         const _id = state.resized.id;
         state.objects[_id].resizingCorner = null;
         state.resized = null;
@@ -105,6 +108,9 @@ export const boardObjectsSlice = createSlice({
     },
     resize: (state, action) => {
       const { dx, dy } = action.payload;
+      if (state.resized === null) {
+        return;
+      }
       const _id = state.resized.id;
       const { position, size } = resizeBoardObject(state.objects[_id], dx, dy);
       state.objects[_id].position = position;
@@ -145,6 +151,9 @@ export const boardObjectsSlice = createSlice({
       state.objects[id].rotatingPoint = rotatingPoint;
     },
     rotate: (state, action) => {
+      if (state.rotated === null) {
+        return;
+      }
       const _id = state.rotated.id;
       const boardObject = state.objects[_id];
       const mousePosition = action.payload;

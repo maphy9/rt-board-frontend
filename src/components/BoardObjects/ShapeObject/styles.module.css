@@ -1,7 +1,7 @@
-.imageObject {
+.shapeObject {
   width: 100%;
   height: 100%;
-  background-size: contain;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   overflow: hidden;
@@ -10,8 +10,8 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  -webkit-mask-size: contain;
-  mask-size: contain;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   mask-position: center;

@@ -90,7 +90,7 @@ function OtherOption({
         data: { old: boardObjects.order, new: newOrder },
       })
     );
-    dispatch(changeOrder(id));
+    dispatch(changeOrder(newOrder));
 
     toggleIsOpen();
   };
