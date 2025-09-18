@@ -26,8 +26,8 @@ function ResizeInfo() {
     <div
       className={styles.extraInfo}
       style={{
-        left: position.x,
-        top: position.y,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        willChange: "transform",
         color: getCssColor(theme.secondary),
       }}
     >

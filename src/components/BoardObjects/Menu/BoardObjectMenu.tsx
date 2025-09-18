@@ -81,8 +81,8 @@ function BoardObjectMenu({
       style={{
         border: `1px solid ${getCssColor(theme.secondary)}`,
         backgroundColor: getCssColor(theme.primary),
-        top: position.y,
-        left: position.x,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        willChange: "transform",
       }}
     >
       {...options}

@@ -8,7 +8,7 @@ import {
   getRectangleSize,
   toCameraRectangle,
 } from "@/types/rectangle";
-import { toRealPoint } from "@/types/point";
+import { toCameraPoint, toRealPoint } from "@/types/point";
 import Camera from "@/types/camera";
 
 function SelectionRectangle() {
@@ -20,16 +20,17 @@ function SelectionRectangle() {
     toRealPoint(input.mousePosition, camera)
   );
   const selectionRectangle = toCameraRectangle(realSelectionRectangle, camera);
-  const selectionSize = getRectangleSize(selectionRectangle);
+  const size = getRectangleSize(selectionRectangle);
+  const position = toCameraPoint(realSelectionRectangle.start, camera);
 
   return input.isSelecting ? (
     <div
       className={styles.selectionRectangle}
       style={{
-        top: selectionRectangle.start.y,
-        left: selectionRectangle.start.x,
-        width: selectionSize.width,
-        height: selectionSize.height,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        willChange: "transform",
+        width: size.width,
+        height: size.height,
       }}
     />
   ) : (

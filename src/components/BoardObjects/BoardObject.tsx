@@ -45,13 +45,12 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
         onMouseUp={handleMouseUp}
         className={styles.boardObject}
         style={{
-          top: position.y,
-          left: position.x,
+          transform: `translate(${position.x}px, ${position.y}px) rotate(${boardObject.rotationAngle}deg)`,
+          willChange: "transform",
           outline: boardObject.isSelected
             ? `1px solid ${getCssColor(theme.secondary)}`
             : "",
           transformOrigin: "50% 50%",
-          transform: `rotate(${boardObject.rotationAngle}deg)`,
           borderRadius: `${borderRadius}px`,
         }}
       >

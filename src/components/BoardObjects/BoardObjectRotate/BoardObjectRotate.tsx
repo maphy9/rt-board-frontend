@@ -29,7 +29,7 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
 
   const position = {
     x: (scaleToCamera(boardObject.size.width, camera) - size) / 2,
-    y: scaleToCamera(boardObject.size.height + 30, camera),
+    y: scaleToCamera(30, camera),
   };
 
   const canRotate =
@@ -55,8 +55,8 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
       style={{
         border: `1px solid ${getCssColor(theme.secondary)}`,
         backgroundColor: getCssColor(theme.primary),
-        top: position.y,
-        left: position.x,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        willChange: "transform",
         width: size,
         height: size,
         borderRadius: size,

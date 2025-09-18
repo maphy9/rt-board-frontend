@@ -27,6 +27,7 @@ import { createRectangle } from "@/types/rectangle";
 import Toolbox from "@/types/toolbox";
 import { useDispatch, useSelector } from "react-redux";
 import useUniversalInput from "./useUniversalInput";
+import { useRef } from "react";
 
 export default function useBoardMouse() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -83,29 +84,27 @@ export default function useBoardMouse() {
     return { newX, newY, dx, dy };
   }
 
+  const ticking = useRef(false);
   const handleMouseMove = (event) => {
-    const { newX, newY, dx, dy } = getMouseData(event);
-    dispatch(setMousePosition({ x: newX, y: newY }));
+    if (ticking.current) return;
+    ticking.current = true;
 
-    if (input.isPanning) {
-      dispatch(panCamera({ dx, dy }));
-      return;
-    }
+    requestAnimationFrame(() => {
+      const { newX, newY, dx, dy } = getMouseData(event);
+      dispatch(setMousePosition({ x: newX, y: newY }));
 
-    if (boardObjects.resized !== null) {
-      dispatch(resize({ dx, dy }));
-      return;
-    }
+      if (input.isPanning) {
+        dispatch(panCamera({ dx, dy }));
+      } else if (boardObjects.resized !== null) {
+        dispatch(resize({ dx, dy }));
+      } else if (boardObjects.rotated !== null) {
+        dispatch(rotate(toRealPoint(input.mousePosition, camera)));
+      } else if (input.isDragging) {
+        dispatch(dragSelected({ dx, dy }));
+      }
 
-    if (boardObjects.rotated !== null) {
-      dispatch(rotate(toRealPoint(input.mousePosition, camera)));
-      return;
-    }
-
-    if (input.isDragging) {
-      dispatch(dragSelected({ dx, dy }));
-      return;
-    }
+      ticking.current = false;
+    });
   };
 
   const handleSelectedTool = () => {

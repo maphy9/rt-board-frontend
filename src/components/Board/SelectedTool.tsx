@@ -21,8 +21,8 @@ function SelectedToolComponent() {
     <img
       className={styles.selectedTool}
       style={{
-        top: position.y,
-        left: position.x,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        willChange: "transform",
         backgroundColor: getCssColor(theme.secondary),
         WebkitMaskImage: `url(${selectedTool}.svg)`,
         maskImage: `url(${selectedTool}.svg)`,

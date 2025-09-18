@@ -13,6 +13,7 @@ import {
 import { getCornerPosition } from "@/utils/resizing";
 import { getCssColor } from "@/types/color";
 import useUniversalInput from "@/hooks/useUniversalInput";
+import { addOffset } from "@/types/point";
 
 function BoardObjectCorner({
   boardObject,
@@ -33,10 +34,8 @@ function BoardObjectCorner({
   );
   const resizerCursor = getResizerCursor(corner);
   const position = getCornerPosition(objectSize, size, corner);
-
   const handleMouseDown = (event) => {
     stopPropagationAndEdit(event);
-
     dispatch(setResizingCorner({ id: boardObject.id, corner }));
     dispatch(setResized(boardObject.id));
   };
@@ -48,8 +47,8 @@ function BoardObjectCorner({
       style={{
         border: `1px solid ${getCssColor(theme.secondary)}`,
         backgroundColor: getCssColor(theme.primary),
-        top: position.y,
-        left: position.x,
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        willChange: "transform",
         width: size,
         height: size,
         borderRadius: size,
