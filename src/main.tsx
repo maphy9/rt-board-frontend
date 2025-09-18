@@ -6,8 +6,20 @@ import { store } from "@/state/store";
 import React from "react";
 import "@/index.css";
 import BoardPage from "./pages/BoardPage/BoardPage";
+import App from "./App";
 
-const router = createBrowserRouter([{ path: "/", element: <BoardPage /> }]);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "",
+        element: <BoardPage />,
+      },
+    ],
+  },
+]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
