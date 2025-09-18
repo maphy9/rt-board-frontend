@@ -42,6 +42,4 @@
   -webkit-mask-size: cover;
   mask-size: cover;
   background-color: var(--secondary);
-  mask-image: url("arrow.svg");
-  -webkit-mask-image: url("arrow.svg");
 }

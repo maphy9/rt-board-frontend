@@ -26,16 +26,25 @@ function HistoryControllers() {
     >
       <div className={styles.historyController} onClick={handleGoToPast}>
         <img
-          style={{ transform: "scaleX(-1)", opacity: hasPast() ? 1 : 0.5 }}
+          style={{
+            transform: "scaleX(-1)",
+            opacity: hasPast() ? 1 : 0.5,
+            maskImage: "url(arrow.svg)",
+            WebkitMaskImage: "url(arrow.svg)",
+          }}
           className={styles.historyControllerIcon}
         />
       </div>
 
       <div className={styles.historyController} onClick={handleGoToFuture}>
         <img
-          style={{
-            opacity: hasFuture() ? 1 : 0.5,
-          }}
+          style={
+            {
+              opacity: hasFuture() ? 1 : 0.5,
+              maskImage: "url(arrow.svg)",
+              WebkitMaskImage: "url(arrow.svg)",
+            } as any
+          }
           className={styles.historyControllerIcon}
         />
       </div>
