@@ -9,7 +9,7 @@ function TextObjectComponent({ textObject }: { textObject: TextObject }) {
 
   return (
     <div className={styles.textObject} onDoubleClick={handleDoubleClick}>
-      <TextObjectContent textObject={textObject} />
+      <TextObjectContent id={textObject.id} />
     </div>
   );
 }

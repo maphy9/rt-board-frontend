@@ -17,7 +17,7 @@ function NoteObjectComponent({ noteObject }: { noteObject: NoteObject }) {
         backgroundColor,
       }}
     >
-      <TextObjectContent textObject={noteObject} />
+      <TextObjectContent id={noteObject.id} />
     </div>
   );
 }

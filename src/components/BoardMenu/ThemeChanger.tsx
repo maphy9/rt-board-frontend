@@ -9,7 +9,6 @@ import { setTheme } from "@/state/slices/themeSlice";
 function ThemeChanger() {
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
-
   const isLight = theme === lightTheme;
 
   const handleClick = () => {

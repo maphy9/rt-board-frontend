@@ -9,9 +9,7 @@ import BoardMenuOptions from "./BoardMenuOptions";
 
 function BoardMenu() {
   const { theme } = useSelector((state: RootState) => state.theme);
-
   const { stopPropagation, stopPropagationAndEdit } = useUniversalInput();
-
   const [isOpen, setIsOpen] = useState(false);
 
   return (

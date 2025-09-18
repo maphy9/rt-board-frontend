@@ -10,9 +10,7 @@ function SelectedToolComponent() {
   const input: Input = useSelector((state: RootState) => state.input);
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
-
   const { theme } = useSelector((state: RootState) => state.theme);
-
   const position = input.mousePosition;
 
   return selectedTool === "cursor" ? (

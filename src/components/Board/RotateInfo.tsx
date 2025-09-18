@@ -2,7 +2,7 @@ import { RootState } from "@/state/store";
 import React from "react";
 import { useSelector } from "react-redux";
 import styles from "./styles.module.css";
-import BoardObject, { Corner } from "@/types/BoardObjects/boardObject";
+import BoardObject from "@/types/BoardObjects/boardObject";
 import { getCssColor } from "@/types/color";
 
 function RotateInfo() {
