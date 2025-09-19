@@ -10,3 +10,11 @@
   user-select: none;
   overflow: visible;
 }
+.controlsWrapper {
+  position: absolute;
+  z-index: 1;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

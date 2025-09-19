@@ -1,5 +1,4 @@
 import { degreeToRadian } from "@/utils/rotation";
-import { OBJECT_RESIZER_SIZE } from "@/constants/boardObjectConstants";
 import Point, { getCenter } from "@/types/point";
 import Size from "@/types/size";
 import { addOffset } from "@/types/point";
@@ -7,28 +6,41 @@ import BoardObject, { Corner } from "@/types/BoardObjects/boardObject";
 import { radianToDegree } from "./rotation";
 
 export function getCornerPosition(
-  objectSize: Size,
+  boardObject: BoardObject,
   resizerSize: number,
   corner: Corner
-): Point {
-  let position = { x: -OBJECT_RESIZER_SIZE, y: -OBJECT_RESIZER_SIZE };
+) {
+  let position = { x: -resizerSize / 2, y: -resizerSize / 2 };
+  let realOrigin = { x: resizerSize / 2, y: resizerSize / 2 };
   if (corner === "top-left") {
-    position.x = -resizerSize / 2;
-    position.y = -resizerSize / 2 - objectSize.height;
+    realOrigin = addOffset(realOrigin, {
+      x: boardObject.size.width / 2,
+      y: boardObject.size.height / 2,
+    });
+  } else if (corner === "top-right") {
+    position = addOffset(position, { x: boardObject.size.width, y: 0 });
+    realOrigin = addOffset(realOrigin, {
+      x: -boardObject.size.width / 2,
+      y: boardObject.size.height / 2,
+    });
+  } else if (corner === "bottom-left") {
+    position = addOffset(position, { x: 0, y: boardObject.size.height });
+    realOrigin = addOffset(realOrigin, {
+      x: boardObject.size.width / 2,
+      y: -boardObject.size.height / 2,
+    });
+  } else if (corner === "bottom-right") {
+    position = addOffset(position, {
+      x: boardObject.size.width,
+      y: boardObject.size.height,
+    });
+    realOrigin = addOffset(realOrigin, {
+      x: -boardObject.size.width / 2,
+      y: -boardObject.size.height / 2,
+    });
   }
-  if (corner === "top-right") {
-    position.x = objectSize.width - resizerSize / 2;
-    position.y = -resizerSize / 2 - objectSize.height;
-  }
-  if (corner === "bottom-left") {
-    position.x = -resizerSize / 2;
-    position.y = -resizerSize / 2;
-  }
-  if (corner === "bottom-right") {
-    position.x = objectSize.width - resizerSize / 2;
-    position.y = -resizerSize / 2;
-  }
-  return position;
+  const realPosition = addOffset(position, boardObject.position);
+  return { realPosition, realOrigin };
 }
 
 function getAdjustedPosition(newCenter: Point, newSize: Size): Point {

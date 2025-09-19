@@ -2,4 +2,9 @@
   position: absolute;
   cursor: all-scroll;
   opacity: 0.5;
+  z-index: 1;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }

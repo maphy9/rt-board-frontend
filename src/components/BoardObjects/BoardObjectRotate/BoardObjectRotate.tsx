@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import BoardObject from "@/types/BoardObjects/boardObject";
 import Input from "@/types/input";
-import Camera, { scaleToCamera } from "@/types/camera";
-import { addOffset } from "@/types/point";
+import Camera, { scaleToCamera, scaleToReal } from "@/types/camera";
+import { addOffset, toCameraPoint } from "@/types/point";
 import { OBJECT_ROTATE_SIZE } from "@/constants/boardObjectConstants";
 import { setRotatingPoint } from "@/state/slices/boardObjectsSlice";
 import { getCssColor } from "@/types/color";
@@ -26,10 +26,18 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
     scaleToCamera(OBJECT_ROTATE_SIZE, camera),
     OBJECT_ROTATE_SIZE
   );
-
-  const position = {
-    x: (scaleToCamera(boardObject.size.width, camera) - size) / 2,
-    y: scaleToCamera(30, camera),
+  const realSize = scaleToReal(size, camera);
+  const realPosition = addOffset(
+    {
+      x: (boardObject.size.width - realSize) / 2,
+      y: boardObject.size.height + 30,
+    },
+    boardObject.position
+  );
+  const position = toCameraPoint(realPosition, camera);
+  const origin = {
+    x: scaleToCamera(realSize / 2, camera),
+    y: scaleToCamera(-30 - boardObject.size.height / 2, camera),
   };
 
   const canRotate =
@@ -55,7 +63,8 @@ function BoardObjectRotate({ boardObject }: { boardObject: BoardObject }) {
       style={{
         border: `1px solid ${getCssColor(theme.secondary)}`,
         backgroundColor: getCssColor(theme.primary),
-        transform: `translate(${position.x}px, ${position.y}px)`,
+        transform: `translate(${position.x}px, ${position.y}px) rotate(${boardObject.rotationAngle}deg)`,
+        transformOrigin: `50% ${origin.y}px`,
         willChange: "transform",
         width: size,
         height: size,

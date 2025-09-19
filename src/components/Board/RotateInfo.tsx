@@ -22,6 +22,7 @@ function RotateInfo() {
 
   return isVisible ? (
     <div
+      draggable="false"
       className={styles.extraInfo}
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,

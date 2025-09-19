@@ -45,32 +45,27 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
         onContextMenu={handleContextMenu}
         className={styles.boardObject}
         style={{
-          transform: `translate(${position.x}px, ${position.y}px) rotate(${boardObject.rotationAngle}deg)`,
+          transform: `translate(${position.x}px, ${position.y}px) rotate(${
+            boardObject.rotationAngle
+          }deg) scaleX(${boardObject.isFlippedHorizontally ? -1 : 1}) scaleY(${
+            boardObject.isFlippedVertically ? -1 : 1
+          })`,
           willChange: "transform",
           outline: boardObject.isSelected
             ? `1px solid ${getCssColor(theme.secondary)}`
             : "",
           transformOrigin: "50% 50%",
           borderRadius: `${borderRadius}px`,
+          width: size.width,
+          height: size.height,
         }}
       >
-        <div
-          style={{
-            width: size.width,
-            height: size.height,
-            transform: `scaleX(${
-              boardObject.isFlippedHorizontally ? -1 : 1
-            }) scaleY(${boardObject.isFlippedVertically ? -1 : 1})`,
-            borderRadius: `${borderRadius}px`,
-          }}
-        >
-          {objectComponent}
-        </div>
-
-        <BoardObjectCorners boardObject={boardObject} />
-
-        <BoardObjectRotate boardObject={boardObject} />
+        {objectComponent}
       </div>
+
+      <BoardObjectCorners boardObject={boardObject} />
+
+      <BoardObjectRotate boardObject={boardObject} />
 
       {objectMenuComponent}
     </div>
