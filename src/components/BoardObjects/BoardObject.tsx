@@ -39,6 +39,21 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
   return (
     <div className={styles.boardObjectContainer}>
       <div
+        className={styles.boardObjectBorder}
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px) rotate(${boardObject.rotationAngle}deg)`,
+          willChange: "transform",
+          outline: boardObject.isSelected
+            ? `1px solid ${getCssColor(theme.secondary)}`
+            : "",
+          transformOrigin: "50% 50%",
+          borderRadius: `${borderRadius}px`,
+          width: size.width,
+          height: size.height,
+        }}
+      />
+
+      <div
         onMouseMove={handleMouseMove}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
@@ -51,9 +66,6 @@ function BoardObjectComponent({ boardObject }: { boardObject: BoardObject }) {
             boardObject.isFlippedVertically ? -1 : 1
           })`,
           willChange: "transform",
-          outline: boardObject.isSelected
-            ? `1px solid ${getCssColor(theme.secondary)}`
-            : "",
           transformOrigin: "50% 50%",
           borderRadius: `${borderRadius}px`,
           width: size.width,

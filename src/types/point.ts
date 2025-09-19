@@ -31,15 +31,6 @@ export function addOffset(p: Point, offset: Point): Point {
   return { x, y };
 }
 
-export function rotateAround(p: Point, o: Point, angle: number): Point {
-  const radian = degreeToRadian(angle);
-  const x =
-    (p.x - o.x) * Math.cos(radian) - (p.y - o.y) * Math.sin(radian) + o.x;
-  const y =
-    (p.x - o.x) * Math.sin(radian) + (p.y - o.y) * Math.cos(radian) + o.y;
-  return { x, y };
-}
-
 export function distanceBetween(p1: Point, p2: Point) {
   return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
 }

@@ -5,9 +5,10 @@
 .boardObject {
   position: absolute;
   cursor: pointer;
-  -webkit-user-select: none;
-  -ms-user-select: none;
   user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   overflow: visible;
 }
 .controlsWrapper {
@@ -17,4 +18,14 @@
   -webkit-user-drag: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+.boardObjectBorder {
+  position: absolute;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  z-index: 1;
+  pointer-events: none;
 }
