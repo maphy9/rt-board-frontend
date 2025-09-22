@@ -5,20 +5,23 @@ import Board from "@/components/Board/Board";
 import useKeyboard from "@/hooks/useKeyboard";
 import BoardMenu from "@/components/BoardMenu/BoardMenu";
 import HistoryControllers from "@/components/HistoryControllers/HistoryControllers";
+import { WebSocketProvider } from "@/context/websocketContext";
 
 function BoardPage() {
   useKeyboard();
 
   return (
-    <div className={styles.boardPage}>
-      <HistoryControllers />
+    <WebSocketProvider>
+      <div className={styles.boardPage}>
+        <HistoryControllers />
 
-      <Toolbar />
+        <Toolbar />
 
-      <Board />
+        <Board />
 
-      <BoardMenu />
-    </div>
+        <BoardMenu />
+      </div>
+    </WebSocketProvider>
   );
 }
 
