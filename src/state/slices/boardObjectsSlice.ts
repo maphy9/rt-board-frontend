@@ -3,7 +3,6 @@ import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
-import { resizeBoardObject } from "@/utils/resizing";
 import { angleBetweenTwoPoints } from "@/utils/rotation";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -90,31 +89,26 @@ export const boardObjectsSlice = createSlice({
       (state.objects[id] as TextObject).text = text;
     },
     setResized: (state, action) => {
-      const id = action.payload;
-      if (id === null) {
+      const data = action.payload;
+      if (data == null) {
         if (state.resized === null) {
           return;
         }
-        const _id = state.resized.id;
-        state.objects[_id].resizingCorner = null;
+        const id = state.resized.id;
+        state.objects[id].resizingCorner = null;
         state.resized = null;
-      } else {
-        state.resized = boardObjectCleanCopy(state.objects[id]);
-      }
-    },
-    setResizingCorner: (state, action) => {
-      const { id, corner } = action.payload;
-      state.objects[id].resizingCorner = corner;
-    },
-    resize: (state, action) => {
-      const { dx, dy } = action.payload;
-      if (state.resized === null) {
         return;
       }
-      const _id = state.resized.id;
-      const { position, size } = resizeBoardObject(state.objects[_id], dx, dy);
-      state.objects[_id].position = position;
-      state.objects[_id].size = size;
+
+      const { id, corner } = data;
+      state.resized = state.objects[id];
+      state.resized.resizingCorner = corner;
+    },
+    resizeObject: (state, action) => {
+      const { id, position, size } = action.payload;
+      const boardObject = state.objects[id];
+      boardObject.position = position;
+      boardObject.size = size;
     },
     setFontSize: (state, action) => {
       const { id, fontSize } = action.payload;
@@ -196,8 +190,7 @@ export const {
   setIsEditing,
   setText,
   setResized,
-  setResizingCorner,
-  resize,
+  resizeObject,
   setFontSize,
   setFontStyle,
   setFontColor,

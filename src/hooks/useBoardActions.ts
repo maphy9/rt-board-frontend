@@ -1,6 +1,7 @@
 import {
   addObject,
   changePosition,
+  resizeObject,
   setText,
 } from "@/state/slices/boardObjectsSlice";
 import { addHistoryItem } from "@/state/slices/historySlice";
@@ -10,6 +11,7 @@ import BoardObject, {
 import { useDispatch, useSelector } from "react-redux";
 import useWebSocket from "./useWebSocket";
 import { RootState } from "@/state/store";
+import { resizeBoardObject } from "@/utils/resizing";
 
 export default function useBoardActions() {
   const dispatch = useDispatch();
@@ -44,9 +46,19 @@ export default function useBoardActions() {
     sendWebSocketMessage("change-text", data);
   };
 
+  const changeSize = (dx, dy) => {
+    const resized = boardObjects.resized;
+    const boardObject = boardObjects.objects[resized.id];
+    const { position, size } = resizeBoardObject(boardObject, dx, dy);
+    const data = { id: boardObject.id, position, size };
+    dispatch(resizeObject(data));
+    sendWebSocketMessage("change-size", data);
+  };
+
   return {
     addNewObject,
     changeSelectedPosition,
     changeText,
+    changeSize,
   };
 }

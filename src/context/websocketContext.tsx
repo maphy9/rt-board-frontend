@@ -1,6 +1,7 @@
 import {
   addObject,
   changePosition,
+  resizeObject,
   setText,
 } from "@/state/slices/boardObjectsSlice";
 import React, { createContext, useEffect, useState } from "react";
@@ -26,6 +27,10 @@ export const WebSocketProvider = ({ children }) => {
     dispatch(setText(data));
   };
 
+  const handleChangeSizeEvent = (data) => {
+    dispatch(resizeObject(data));
+  };
+
   useEffect(() => {
     const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
     setWebsocket(socket);
@@ -44,6 +49,9 @@ export const WebSocketProvider = ({ children }) => {
           break;
         case "change-text":
           handleChangeTextEvent(data);
+          break;
+        case "change-size":
+          handleChangeSizeEvent(data);
           break;
       }
     };

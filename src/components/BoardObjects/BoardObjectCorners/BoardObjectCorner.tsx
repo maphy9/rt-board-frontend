@@ -4,12 +4,8 @@ import BoardObject, { Corner } from "@/types/BoardObjects/boardObject";
 import Camera, { scaleToCamera, scaleToReal } from "@/types/camera";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./style.module.css";
-import { toCameraSize } from "@/types/size";
 import { OBJECT_RESIZER_SIZE } from "@/constants/boardObjectConstants";
-import {
-  setResized,
-  setResizingCorner,
-} from "@/state/slices/boardObjectsSlice";
+import { setResized } from "@/state/slices/boardObjectsSlice";
 import { getCornerPosition } from "@/utils/resizing";
 import { getCssColor } from "@/types/color";
 import useUniversalInput from "@/hooks/useUniversalInput";
@@ -45,8 +41,7 @@ function BoardObjectCorner({
   };
   const handleMouseDown = (event) => {
     stopPropagationAndEdit(event);
-    dispatch(setResizingCorner({ id: boardObject.id, corner }));
-    dispatch(setResized(boardObject.id));
+    dispatch(setResized({ id: boardObject.id, corner }));
   };
 
   return (

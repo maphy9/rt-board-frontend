@@ -1,8 +1,6 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
   clearSelection,
-  dragSelected,
-  resize,
   rotate,
   selectObjectsInRectangle,
 } from "@/state/slices/boardObjectsSlice";
@@ -39,7 +37,8 @@ export default function useBoardMouse() {
   const dispatch = useDispatch();
   const { handleStopDragging, stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
-  const { addNewObject, changeSelectedPosition } = useBoardActions();
+  const { addNewObject, changeSelectedPosition, changeSize } =
+    useBoardActions();
 
   async function addNewBoardObject(src?: string) {
     const position = toRealPoint(input.mousePosition, camera);
@@ -95,7 +94,7 @@ export default function useBoardMouse() {
       if (input.isPanning) {
         dispatch(panCamera({ dx, dy }));
       } else if (boardObjects.resized !== null) {
-        dispatch(resize({ dx, dy }));
+        changeSize(dx, dy);
       } else if (boardObjects.rotated !== null) {
         dispatch(rotate(toRealPoint(input.mousePosition, camera)));
       } else if (input.isDragging) {
