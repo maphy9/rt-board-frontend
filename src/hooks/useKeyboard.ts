@@ -9,15 +9,14 @@ import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  boardObjectCleanCopy,
-  createBoardObject,
-} from "@/types/BoardObjects/boardObject";
+import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import { addHistoryItem } from "@/state/slices/historySlice";
 import useHistory from "./useHistory";
 import { copyObjectToClipboard } from "@/utils/clipboard";
 import getID from "@/utils/id";
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
+import useWebSocket from "./useWebSocket";
+import useBoardActions from "./useBoardActions";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -29,6 +28,8 @@ export default function useKeyboard() {
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
+  const { sendWebSocketMessage } = useWebSocket();
+  const { addNewObject } = useBoardActions();
 
   const { handleGoToFuture, handleGoToPast } = useHistory();
 
@@ -91,6 +92,8 @@ export default function useKeyboard() {
       }
 
       dispatch(addHistoryItem({ type: "add", data: copies }));
+      sendWebSocketMessage("add", copies);
+
       dispatch(clearSelection());
       for (const copy of copies) {
         dispatch(selectObject(copy.id));
@@ -110,8 +113,8 @@ export default function useKeyboard() {
         theme,
         src
       );
-      dispatch(addObject(imageObject));
-      dispatch(addHistoryItem({ type: "add", data: [imageObject] }));
+
+      addNewObject(imageObject);
     }
   }
 

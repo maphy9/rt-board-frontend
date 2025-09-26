@@ -7,10 +7,12 @@ import {
 import { goToFuture, goToPast } from "@/state/slices/historySlice";
 import { RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
+import useWebSocket from "./useWebSocket";
 
 export default function useHistory() {
   const history = useSelector((state: RootState) => state.history);
   const dispatch = useDispatch();
+  const { sendWebSocketMessage } = useWebSocket();
 
   const hasPast = () => history.historyIndex > 0;
 
@@ -25,6 +27,7 @@ export default function useHistory() {
     if (historyItem.type === "add") {
       for (const boardObject of historyItem.data) {
         dispatch(addObject(boardObject));
+        sendWebSocketMessage("add", [boardObject]);
       }
     } else if (historyItem.type === "delete") {
       for (const boardObject of historyItem.data) {
@@ -55,6 +58,7 @@ export default function useHistory() {
     } else if (historyItem.type === "delete") {
       for (const boardObject of historyItem.data) {
         dispatch(addObject(boardObject));
+        sendWebSocketMessage("add", [boardObject]);
       }
     } else if (historyItem.type === "changeOrder") {
       const { old: oldOrder } = historyItem.data;

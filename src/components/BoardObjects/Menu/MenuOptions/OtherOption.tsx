@@ -8,7 +8,6 @@ import {
   toggleIsFlippedVertically,
   toggleIsFlippedHorizontally,
   changeOrder,
-  addObject,
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
@@ -17,6 +16,7 @@ import getID from "@/utils/id";
 import { addOffset } from "@/types/point";
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
+import useBoardActions from "@/hooks/useBoardActions";
 
 function OtherOption({
   id,
@@ -34,6 +34,7 @@ function OtherOption({
   const dispatch = useDispatch();
   const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
+  const { addNewObject } = useBoardActions();
 
   const handleOpen = (event) => {
     stopPropagationAndEdit(event);
@@ -61,9 +62,8 @@ function OtherOption({
       isEdited: false,
       position: addOffset(boardObject.position, OBJECT_COPY_MARGIN),
     };
-    dispatch(addObject(copy));
-    dispatch(addHistoryItem({ type: "add", data: [copy] }));
 
+    addNewObject(copy);
     toggleIsOpen();
   };
 

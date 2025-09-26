@@ -1,5 +1,4 @@
-import { addObject } from "@/state/slices/boardObjectsSlice";
-import { addHistoryItem } from "@/state/slices/historySlice";
+import useBoardActions from "@/hooks/useBoardActions";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
@@ -14,6 +13,7 @@ function ImageUploader() {
   const input = useSelector((state: RootState) => state.input);
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
+  const { addNewObject } = useBoardActions();
 
   const handleImageUpload = useCallback(
     async (event) => {
@@ -26,8 +26,7 @@ function ImageUploader() {
         theme,
         src
       );
-      dispatch(addObject(imageObject));
-      dispatch(addHistoryItem({ type: "add", data: [imageObject] }));
+      addNewObject(imageObject);
       dispatch(setSelectedTool("cursor"));
     },
     [input.mousePosition, theme]

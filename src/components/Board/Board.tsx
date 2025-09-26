@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { RootState } from "@/state/store";
 import { useSelector } from "react-redux";
 import Camera, { scaleToCamera } from "@/types/camera";
@@ -17,7 +17,7 @@ import ImageUploader from "./ImageUploader";
 import ResizeInfo from "./ResizeInfo";
 import RotateInfo from "./RotateInfo";
 import { getCssColor } from "@/types/color";
-import useWebSocket from "@/hooks/useWebSocket";
+import useKeyboard from "@/hooks/useKeyboard";
 
 function Board() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -25,17 +25,11 @@ function Board() {
 
   const { handleMouseMove, handleMouseDown, handleMouseUp, handleWheel } =
     useBoardMouse();
+  useKeyboard();
 
   const backgroundDotSize = scaleToCamera(BACKGROUND_DOT_SIZE, camera);
   const backgroundDotGap = scaleToCamera(BACKGROUND_DOT_GAP, camera);
   const backgroundPosition = toCameraPoint(BACKGROUND_POSITION, camera);
-
-  const { sendWebSocketMessage } = useWebSocket();
-  useEffect(() => {
-    setTimeout(() => {
-      sendWebSocketMessage("test", { word: "Hello" });
-    }, 1000);
-  }, []);
 
   return (
     <div

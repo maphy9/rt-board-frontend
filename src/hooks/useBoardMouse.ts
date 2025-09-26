@@ -1,6 +1,5 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
-  addObject,
   clearSelection,
   dragSelected,
   resize,
@@ -28,6 +27,7 @@ import Toolbox from "@/types/toolbox";
 import { useDispatch, useSelector } from "react-redux";
 import useUniversalInput from "./useUniversalInput";
 import { useRef } from "react";
+import useBoardActions from "./useBoardActions";
 
 export default function useBoardMouse() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -38,9 +38,9 @@ export default function useBoardMouse() {
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
   const dispatch = useDispatch();
-  const { handleStopDragging, stopPropagationAndEdit, handleStopRotate } =
-    useUniversalInput();
+  const { handleStopDragging, stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
+  const { addNewObject } = useBoardActions();
 
   async function addNewBoardObject(src?: string) {
     const position = toRealPoint(input.mousePosition, camera);
@@ -50,8 +50,8 @@ export default function useBoardMouse() {
       theme,
       src
     );
-    dispatch(addObject(boardObject));
-    dispatch(addHistoryItem({ type: "add", data: [boardObject] }));
+
+    addNewObject(boardObject);
     dispatch(setSelectedTool("cursor"));
   }
 

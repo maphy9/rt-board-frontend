@@ -1,9 +1,18 @@
+import { addObject } from "@/state/slices/boardObjectsSlice";
 import React, { createContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 
 export const WebSocketProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
+
+  const handleAddEvent = (data) => {
+    for (const object of data) {
+      dispatch(addObject(object));
+    }
+  };
 
   useEffect(() => {
     const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
@@ -12,7 +21,14 @@ export const WebSocketProvider = ({ children }) => {
     socket.onopen = () => console.log("WebSocket open");
     socket.onclose = () => console.log("WebSocket close");
     socket.onerror = (err) => console.log("Websocket error:", err);
-    socket.onmessage = (event) => console.log(event);
+    socket.onmessage = ({ data }) => {
+      const payload = JSON.parse(data);
+      switch (payload.type) {
+        case "add":
+          handleAddEvent(payload.data);
+          break;
+      }
+    };
 
     return () => socket.close();
   }, []);
