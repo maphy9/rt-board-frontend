@@ -7,7 +7,6 @@ import {
   selectObjectsInRectangle,
 } from "@/state/slices/boardObjectsSlice";
 import { panCamera, zoomCamera } from "@/state/slices/cameraSlice";
-import { addHistoryItem } from "@/state/slices/historySlice";
 import {
   setIsPanning,
   setIsSelecting,
@@ -40,7 +39,7 @@ export default function useBoardMouse() {
   const dispatch = useDispatch();
   const { handleStopDragging, stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
-  const { addNewObject } = useBoardActions();
+  const { addNewObject, changeSelectedPosition } = useBoardActions();
 
   async function addNewBoardObject(src?: string) {
     const position = toRealPoint(input.mousePosition, camera);
@@ -100,7 +99,7 @@ export default function useBoardMouse() {
       } else if (boardObjects.rotated !== null) {
         dispatch(rotate(toRealPoint(input.mousePosition, camera)));
       } else if (input.isDragging) {
-        dispatch(dragSelected({ dx, dy }));
+        changeSelectedPosition(dx, dy);
       }
 
       ticking.current = false;

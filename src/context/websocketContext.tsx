@@ -1,4 +1,4 @@
-import { addObject } from "@/state/slices/boardObjectsSlice";
+import { addObject, changePosition } from "@/state/slices/boardObjectsSlice";
 import React, { createContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -14,6 +14,10 @@ export const WebSocketProvider = ({ children }) => {
     }
   };
 
+  const handleChangePositionEvent = (data) => {
+    dispatch(changePosition(data));
+  };
+
   useEffect(() => {
     const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
     setWebsocket(socket);
@@ -26,6 +30,9 @@ export const WebSocketProvider = ({ children }) => {
       switch (payload.type) {
         case "add":
           handleAddEvent(payload.data);
+          break;
+        case "change-position":
+          handleChangePositionEvent(payload.data);
           break;
       }
     };

@@ -74,9 +74,9 @@ export const boardObjectsSlice = createSlice({
       }
       state.selected = {};
     },
-    dragSelected: (state, action) => {
-      const { dx, dy } = action.payload;
-      for (const id in state.selected) {
+    changePosition: (state, action) => {
+      const { objectIds, dx, dy } = action.payload;
+      for (const id of objectIds) {
         state.objects[id].position.x -= dx;
         state.objects[id].position.y -= dy;
       }
@@ -191,7 +191,7 @@ export const {
   selectObject,
   unselectObject,
   clearSelection,
-  dragSelected,
+  changePosition,
   selectObjectsInRectangle,
   setIsEditing,
   setText,
