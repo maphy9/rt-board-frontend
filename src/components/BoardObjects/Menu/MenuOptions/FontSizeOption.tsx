@@ -1,6 +1,6 @@
 import useUniversalInput from "@/hooks/useUniversalInput";
 import { RootState } from "@/state/store";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import {
@@ -11,7 +11,7 @@ import TextObject from "@/types/BoardObjects/textObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
 import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
-import { addHistoryItem } from "@/state/slices/historySlice";
+import useBoardActions from "@/hooks/useBoardActions";
 
 function FontSizeOption({
   id,
@@ -29,14 +29,13 @@ function FontSizeOption({
   const dispatch = useDispatch();
   const { theme } = useSelector((state: RootState) => state.theme);
   const { stopPropagationAndEdit, handleStopEdit } = useUniversalInput();
-
+  const { changeFontSize } = useBoardActions();
   const [inputValue, setInputValue] = useState<string>(
     textObject.fontSize + ""
   );
 
   const handleOpen = (event) => {
     stopPropagationAndEdit(event);
-
     toggleIsOpen();
   };
 
@@ -52,22 +51,16 @@ function FontSizeOption({
     if (boardObjects.oldObjectState === null) {
       dispatch(setOldObjectState(boardObjectCleanCopy(textObject)));
     }
-
     dispatch(setFontSize({ id: textObject.id, fontSize: newFontSize }));
   };
 
-  const _setFontSize = (newFontSize) => {
+  const handleSetFontSize = (newFontSize) => {
     if (newFontSize === textObject.fontSize) {
       return;
     }
 
     setInputValue(newFontSize + "");
-    const oldState = boardObjectCleanCopy(textObject);
-    const data = [
-      { old: oldState, new: { ...oldState, fontSize: newFontSize } },
-    ];
-    dispatch(addHistoryItem({ type: "edit", data }));
-    dispatch(setFontSize({ id: textObject.id, fontSize: newFontSize }));
+    changeFontSize(textObject.id, newFontSize);
   };
 
   return (
@@ -109,28 +102,28 @@ function FontSizeOption({
 
           <div className={styles.dropdownOptions}>
             <div
-              onClick={() => _setFontSize(16)}
+              onClick={() => handleSetFontSize(16)}
               className={styles.dropdownOption}
             >
               <span>Small</span>
               <span>16px</span>
             </div>
             <div
-              onClick={() => _setFontSize(24)}
+              onClick={() => handleSetFontSize(24)}
               className={styles.dropdownOption}
             >
               <span>Medium</span>
               <span>24px</span>
             </div>
             <div
-              onClick={() => _setFontSize(36)}
+              onClick={() => handleSetFontSize(36)}
               className={styles.dropdownOption}
             >
               <span>Large</span>
               <span>36px</span>
             </div>
             <div
-              onClick={() => _setFontSize(48)}
+              onClick={() => handleSetFontSize(48)}
               className={styles.dropdownOption}
             >
               <span>Extra Large</span>

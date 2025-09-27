@@ -2,6 +2,8 @@ import {
   addObject,
   changePosition,
   resizeObject,
+  setFontSize,
+  setOldObjectState,
   setText,
 } from "@/state/slices/boardObjectsSlice";
 import { addHistoryItem } from "@/state/slices/historySlice";
@@ -12,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import useWebSocket from "./useWebSocket";
 import { RootState } from "@/state/store";
 import { resizeBoardObject } from "@/utils/resizing";
+import TextObject from "@/types/BoardObjects/textObject";
+import { getDifferentFields } from "@/utils/objects";
 
 export default function useBoardActions() {
   const dispatch = useDispatch();
@@ -55,10 +59,41 @@ export default function useBoardActions() {
     sendWebSocketMessage("change-size", data);
   };
 
+  const changeFontSize = (id, newFontSize) => {
+    const textObject = boardObjects.objects[id] as TextObject;
+    const oldState = boardObjectCleanCopy(textObject);
+    const historyData = [
+      { old: oldState, new: { ...oldState, fontSize: newFontSize } },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data: historyData }));
+    const data = { id, fontSize: newFontSize };
+    dispatch(setFontSize(data));
+    sendWebSocketMessage("change-fontSize", data);
+  };
+
+  const changeDifferentFields = (
+    oldState: BoardObject,
+    newState: BoardObject
+  ) => {
+    dispatch(setOldObjectState(null));
+    const historyData = [{ old: oldState, new: newState }];
+    dispatch(addHistoryItem({ type: "edit", data: historyData }));
+    const updatedKeys = getDifferentFields(oldState, newState);
+    for (const updatedKey of updatedKeys) {
+      switch (updatedKey) {
+        case "fontSize":
+          changeFontSize(newState.id, (newState as TextObject).fontSize);
+          break;
+      }
+    }
+  };
+
   return {
     addNewObject,
     changeSelectedPosition,
     changeText,
     changeSize,
+    changeFontSize,
+    changeDifferentFields,
   };
 }

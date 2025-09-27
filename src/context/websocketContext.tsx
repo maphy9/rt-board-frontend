@@ -2,6 +2,7 @@ import {
   addObject,
   changePosition,
   resizeObject,
+  setFontSize,
   setText,
 } from "@/state/slices/boardObjectsSlice";
 import React, { createContext, useEffect, useState } from "react";
@@ -31,6 +32,10 @@ export const WebSocketProvider = ({ children }) => {
     dispatch(resizeObject(data));
   };
 
+  const handleChangeFontSizeEvent = (data) => {
+    dispatch(setFontSize(data));
+  };
+
   useEffect(() => {
     const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
     setWebsocket(socket);
@@ -52,6 +57,9 @@ export const WebSocketProvider = ({ children }) => {
           break;
         case "change-size":
           handleChangeSizeEvent(data);
+          break;
+        case "change-fontSize":
+          handleChangeFontSizeEvent(data);
           break;
       }
     };
