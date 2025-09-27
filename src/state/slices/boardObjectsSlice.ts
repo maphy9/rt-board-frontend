@@ -24,13 +24,6 @@ export const boardObjectsSlice = createSlice({
       state.objects[newObject.id] = newObject;
       state.order.push(newObject.id);
     },
-    deleteSelected: (state) => {
-      state.order = state.order.filter((id) => !(id in state.selected));
-      for (const id in state.selected) {
-        delete state.objects[id];
-      }
-      state.selected = {};
-    },
     selectObject: (state, action) => {
       const id = action.payload;
       state.selected[id] = true;
@@ -122,11 +115,15 @@ export const boardObjectsSlice = createSlice({
       const { id, fontColor } = action.payload;
       (state.objects[id] as TextObject).fontColor = fontColor;
     },
-    deleteObject: (state, action) => {
-      const id = action.payload;
-      delete state.objects[id];
-      delete state.selected[id];
-      state.order = state.order.filter((_id) => _id !== id);
+    deleteObjects: (state, action) => {
+      const ids = action.payload;
+      const idMap = {};
+      for (const id of ids) {
+        delete state.objects[id];
+        delete state.selected[id];
+        idMap[id] = true;
+      }
+      state.order = state.order.filter((id) => !(id in idMap));
     },
     changeOrder: (state, action) => {
       state.order = action.payload;
@@ -194,10 +191,9 @@ export const {
   setFontSize,
   setFontStyle,
   setFontColor,
-  deleteObject,
+  deleteObjects,
   changeOrder,
   setBackgroundColor,
-  deleteSelected,
   setRotatingPoint,
   rotate,
   toggleIsFlippedHorizontally,

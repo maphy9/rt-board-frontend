@@ -37,7 +37,7 @@ export default function useBoardMouse() {
   const dispatch = useDispatch();
   const { handleStopDragging, stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
-  const { addNewObject, changeSelectedPosition, changeSize } =
+  const { handleAddObject, changeSelectedPosition, changeSize } =
     useBoardActions();
 
   async function addNewBoardObject(src?: string) {
@@ -49,7 +49,7 @@ export default function useBoardMouse() {
       src
     );
 
-    addNewObject(boardObject);
+    handleAddObject(boardObject);
     dispatch(setSelectedTool("cursor"));
   }
 

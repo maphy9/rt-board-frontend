@@ -4,7 +4,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
 import {
-  deleteObject,
   toggleIsFlippedVertically,
   toggleIsFlippedHorizontally,
   changeOrder,
@@ -34,7 +33,7 @@ function OtherOption({
   const dispatch = useDispatch();
   const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
-  const { addNewObject } = useBoardActions();
+  const { handleAddObject, handleDeleteObjects } = useBoardActions();
 
   const handleOpen = (event) => {
     stopPropagationAndEdit(event);
@@ -43,13 +42,7 @@ function OtherOption({
   };
 
   const handleDelete = () => {
-    dispatch(
-      addHistoryItem({
-        type: "delete",
-        data: [{ ...boardObject, isSelected: false, isEditing: false }],
-      })
-    );
-    dispatch(deleteObject(id));
+    handleDeleteObjects([boardObject]);
 
     toggleIsOpen();
   };
@@ -63,7 +56,7 @@ function OtherOption({
       position: addOffset(boardObject.position, OBJECT_COPY_MARGIN),
     };
 
-    addNewObject(copy);
+    handleAddObject(copy);
     toggleIsOpen();
   };
 

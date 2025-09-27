@@ -1,7 +1,6 @@
 import {
   addObject,
   changeOrder,
-  deleteObject,
   setProperties,
 } from "@/state/slices/boardObjectsSlice";
 import { goToFuture, goToPast } from "@/state/slices/historySlice";
@@ -31,7 +30,7 @@ export default function useHistory() {
       }
     } else if (historyItem.type === "delete") {
       for (const boardObject of historyItem.data) {
-        dispatch(deleteObject(boardObject.id));
+        console.log("delete");
       }
     } else if (historyItem.type === "changeOrder") {
       const { new: newOrder } = historyItem.data;
@@ -53,7 +52,7 @@ export default function useHistory() {
     const historyItem = history.history[history.historyIndex - 1];
     if (historyItem.type === "add") {
       for (const boardObject of historyItem.data) {
-        dispatch(deleteObject(boardObject.id));
+        console.log("delete");
       }
     } else if (historyItem.type === "delete") {
       for (const boardObject of historyItem.data) {

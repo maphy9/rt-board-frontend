@@ -1,6 +1,7 @@
 import {
   addObject,
   changePosition,
+  deleteObjects,
   resizeObject,
   setFontSize,
   setFontStyle,
@@ -23,7 +24,7 @@ export default function useBoardActions() {
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const { sendWebSocketMessage } = useWebSocket();
 
-  const addNewObject = (object: BoardObject) => {
+  const handleAddObject = (object: BoardObject) => {
     dispatch(addObject(object));
     dispatch(addHistoryItem({ type: "add", data: [object] }));
     sendWebSocketMessage("add-object", [object]);
@@ -97,8 +98,6 @@ export default function useBoardActions() {
     }
   };
 
-  const changeFontColor = (id, newFontColor) => {};
-
   const changeFontStyle = (textObject, newFontStyle) => {
     const oldState = boardObjectCleanCopy(textObject);
     const historyData = [
@@ -110,13 +109,26 @@ export default function useBoardActions() {
     sendWebSocketMessage("change-fontStyle", data);
   };
 
+  const handleDeleteObjects = (boardObjects) => {
+    const ids = boardObjects.map((boardObject) => boardObject.id);
+    const cleanObjects = boardObjects.map((boardObject) => ({
+      ...boardObject,
+      isSelected: false,
+      isEditing: false,
+    }));
+    dispatch(addHistoryItem({ type: "delete", data: cleanObjects }));
+    dispatch(deleteObjects(ids));
+    sendWebSocketMessage("delete-objects", ids);
+  };
+
   return {
-    addNewObject,
+    handleAddObject,
     changeSelectedPosition,
     changeText,
     changeSize,
     changeFontSize,
     changeDifferentFields,
     changeFontStyle,
+    handleDeleteObjects,
   };
 }

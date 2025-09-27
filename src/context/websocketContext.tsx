@@ -1,6 +1,7 @@
 import {
   addObject,
   changePosition,
+  deleteObjects,
   resizeObject,
   setFontColor,
   setFontSize,
@@ -46,6 +47,10 @@ export const WebSocketProvider = ({ children }) => {
     dispatch(setFontColor(data));
   };
 
+  const handleDeleteObjects = (data) => {
+    dispatch(deleteObjects(data));
+  };
+
   useEffect(() => {
     const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
     setWebsocket(socket);
@@ -76,6 +81,10 @@ export const WebSocketProvider = ({ children }) => {
           break;
         case "change-fontColor":
           handleChangeFontColor(data);
+          break;
+        case "delete-objects":
+          handleDeleteObjects(data);
+          break;
       }
     };
 

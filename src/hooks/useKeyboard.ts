@@ -2,7 +2,6 @@ import { addOffset, toRealPoint } from "@/types/point";
 import {
   addObject,
   clearSelection,
-  deleteSelected,
   selectObject,
 } from "@/state/slices/boardObjectsSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
@@ -29,7 +28,7 @@ export default function useKeyboard() {
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   const { sendWebSocketMessage } = useWebSocket();
-  const { addNewObject } = useBoardActions();
+  const { handleAddObject, handleDeleteObjects } = useBoardActions();
 
   const { handleGoToFuture, handleGoToPast } = useHistory();
 
@@ -114,7 +113,7 @@ export default function useKeyboard() {
         src
       );
 
-      addNewObject(imageObject);
+      handleAddObject(imageObject);
     }
   }
 
@@ -152,13 +151,11 @@ export default function useKeyboard() {
       if (selectedObjectIds.length === 0) {
         return;
       }
-      const selectedObjects = selectedObjectIds.map((id) => ({
-        ...boardObjectsRef.current.objects[id],
-        isSelected: false,
-        isEditing: false,
-      }));
-      dispatch(addHistoryItem({ type: "delete", data: selectedObjects }));
-      dispatch(deleteSelected());
+
+      const selectedObjects = selectedObjectIds.map(
+        (id) => boardObjectsRef.current.objects[id]
+      );
+      handleDeleteObjects(selectedObjects);
 
       return;
     }
