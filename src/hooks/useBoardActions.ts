@@ -3,6 +3,7 @@ import {
   changePosition,
   resizeObject,
   setFontSize,
+  setFontStyle,
   setOldObjectState,
   setText,
 } from "@/state/slices/boardObjectsSlice";
@@ -25,7 +26,7 @@ export default function useBoardActions() {
   const addNewObject = (object: BoardObject) => {
     dispatch(addObject(object));
     dispatch(addHistoryItem({ type: "add", data: [object] }));
-    sendWebSocketMessage("add", [object]);
+    sendWebSocketMessage("add-object", [object]);
   };
 
   const changeSelectedPosition = (dx, dy) => {
@@ -88,6 +89,17 @@ export default function useBoardActions() {
     }
   };
 
+  const changeFontStyle = (textObject, newFontStyle) => {
+    const oldState = boardObjectCleanCopy(textObject);
+    const historyData = [
+      { old: oldState, new: { ...oldState, fontStyle: newFontStyle } },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data: historyData }));
+    dispatch(setFontStyle({ id: textObject.id, fontStyle: newFontStyle }));
+    const data = { id: textObject.id, fontStyle: newFontStyle };
+    sendWebSocketMessage("change-fontStyle", data);
+  };
+
   return {
     addNewObject,
     changeSelectedPosition,
@@ -95,5 +107,6 @@ export default function useBoardActions() {
     changeSize,
     changeFontSize,
     changeDifferentFields,
+    changeFontStyle,
   };
 }

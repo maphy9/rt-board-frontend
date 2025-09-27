@@ -3,6 +3,7 @@ import {
   changePosition,
   resizeObject,
   setFontSize,
+  setFontStyle,
   setText,
 } from "@/state/slices/boardObjectsSlice";
 import React, { createContext, useEffect, useState } from "react";
@@ -14,26 +15,30 @@ export const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
 
-  const handleAddEvent = (data) => {
+  const handleAddObject = (data) => {
     for (const object of data) {
       dispatch(addObject(object));
     }
   };
 
-  const handleChangePositionEvent = (data) => {
+  const handleChangePosition = (data) => {
     dispatch(changePosition(data));
   };
 
-  const handleChangeTextEvent = (data) => {
+  const handleChangeText = (data) => {
     dispatch(setText(data));
   };
 
-  const handleChangeSizeEvent = (data) => {
+  const handleChangeSize = (data) => {
     dispatch(resizeObject(data));
   };
 
-  const handleChangeFontSizeEvent = (data) => {
+  const handleChangeFontSize = (data) => {
     dispatch(setFontSize(data));
+  };
+
+  const handleChangeFontStyle = (data) => {
+    dispatch(setFontStyle(data));
   };
 
   useEffect(() => {
@@ -46,20 +51,23 @@ export const WebSocketProvider = ({ children }) => {
     socket.onmessage = ({ data: messageData }) => {
       const { type, data } = JSON.parse(messageData);
       switch (type) {
-        case "add":
-          handleAddEvent(data);
+        case "add-object":
+          handleAddObject(data);
           break;
         case "change-position":
-          handleChangePositionEvent(data);
+          handleChangePosition(data);
           break;
         case "change-text":
-          handleChangeTextEvent(data);
+          handleChangeText(data);
           break;
         case "change-size":
-          handleChangeSizeEvent(data);
+          handleChangeSize(data);
           break;
         case "change-fontSize":
-          handleChangeFontSizeEvent(data);
+          handleChangeFontSize(data);
+          break;
+        case "change-fontStyle":
+          handleChangeFontStyle(data);
           break;
       }
     };
