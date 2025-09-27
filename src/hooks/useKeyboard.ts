@@ -1,6 +1,6 @@
 import { addOffset, toRealPoint } from "@/types/point";
 import {
-  addObject,
+  addObjects,
   clearSelection,
   selectObject,
 } from "@/state/slices/boardObjectsSlice";
@@ -28,7 +28,7 @@ export default function useKeyboard() {
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   const { sendWebSocketMessage } = useWebSocket();
-  const { handleAddObject, handleDeleteObjects } = useBoardActions();
+  const { handleAddObjects, handleDeleteObjects } = useBoardActions();
 
   const { handleGoToFuture, handleGoToPast } = useHistory();
 
@@ -86,12 +86,12 @@ export default function useKeyboard() {
           isEdited: false,
           position: addOffset(object.position, OBJECT_COPY_MARGIN),
         };
-        dispatch(addObject(copy));
         copies.push(copy);
       }
 
       dispatch(addHistoryItem({ type: "add", data: copies }));
-      sendWebSocketMessage("add", copies);
+      dispatch(addObjects(copies));
+      sendWebSocketMessage("add-objects", copies);
 
       dispatch(clearSelection());
       for (const copy of copies) {
@@ -112,8 +112,7 @@ export default function useKeyboard() {
         theme,
         src
       );
-
-      handleAddObject(imageObject);
+      handleAddObjects([imageObject]);
     }
   }
 

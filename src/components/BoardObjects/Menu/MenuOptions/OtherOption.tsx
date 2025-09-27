@@ -33,7 +33,7 @@ function OtherOption({
   const dispatch = useDispatch();
   const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
-  const { handleAddObject, handleDeleteObjects } = useBoardActions();
+  const { handleAddObjects, handleDeleteObjects } = useBoardActions();
 
   const handleOpen = (event) => {
     stopPropagationAndEdit(event);
@@ -56,7 +56,7 @@ function OtherOption({
       position: addOffset(boardObject.position, OBJECT_COPY_MARGIN),
     };
 
-    handleAddObject(copy);
+    handleAddObjects([copy]);
     toggleIsOpen();
   };
 

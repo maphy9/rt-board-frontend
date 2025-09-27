@@ -1,5 +1,5 @@
 import {
-  addObject,
+  addObjects,
   changePosition,
   deleteObjects,
   resizeObject,
@@ -24,10 +24,10 @@ export default function useBoardActions() {
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const { sendWebSocketMessage } = useWebSocket();
 
-  const handleAddObject = (object: BoardObject) => {
-    dispatch(addObject(object));
-    dispatch(addHistoryItem({ type: "add", data: [object] }));
-    sendWebSocketMessage("add-object", [object]);
+  const handleAddObjects = (objects) => {
+    dispatch(addObjects(objects));
+    dispatch(addHistoryItem({ type: "add", data: objects }));
+    sendWebSocketMessage("add-objects", objects);
   };
 
   const changeSelectedPosition = (dx, dy) => {
@@ -122,7 +122,7 @@ export default function useBoardActions() {
   };
 
   return {
-    handleAddObject,
+    handleAddObjects,
     changeSelectedPosition,
     changeText,
     changeSize,

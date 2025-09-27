@@ -1,6 +1,7 @@
 import {
-  addObject,
+  addObjects,
   changeOrder,
+  deleteObjects,
   setProperties,
 } from "@/state/slices/boardObjectsSlice";
 import { goToFuture, goToPast } from "@/state/slices/historySlice";
@@ -24,14 +25,14 @@ export default function useHistory() {
 
     const historyItem = history.history[history.historyIndex];
     if (historyItem.type === "add") {
-      for (const boardObject of historyItem.data) {
-        dispatch(addObject(boardObject));
-        sendWebSocketMessage("add", [boardObject]);
-      }
+      const addedObjects = historyItem.data;
+      dispatch(addObjects(addedObjects));
+      sendWebSocketMessage("add-objects", addedObjects);
     } else if (historyItem.type === "delete") {
-      for (const boardObject of historyItem.data) {
-        console.log("delete");
-      }
+      const deletedObjects = historyItem.data;
+      const ids = deletedObjects.map((object) => object.id);
+      dispatch(deleteObjects(ids));
+      sendWebSocketMessage("delete-objects", ids);
     } else if (historyItem.type === "changeOrder") {
       const { new: newOrder } = historyItem.data;
       dispatch(changeOrder(newOrder));
@@ -51,14 +52,14 @@ export default function useHistory() {
 
     const historyItem = history.history[history.historyIndex - 1];
     if (historyItem.type === "add") {
-      for (const boardObject of historyItem.data) {
-        console.log("delete");
-      }
+      const addedObjects = historyItem.data;
+      const ids = addedObjects.map((object) => object.id);
+      dispatch(deleteObjects(ids));
+      sendWebSocketMessage("delete-objects", ids);
     } else if (historyItem.type === "delete") {
-      for (const boardObject of historyItem.data) {
-        dispatch(addObject(boardObject));
-        sendWebSocketMessage("add", [boardObject]);
-      }
+      const deletedObjects = historyItem.data;
+      dispatch(addObjects(deletedObjects));
+      sendWebSocketMessage("add-objects", deletedObjects);
     } else if (historyItem.type === "changeOrder") {
       const { old: oldOrder } = historyItem.data;
       dispatch(changeOrder(oldOrder));

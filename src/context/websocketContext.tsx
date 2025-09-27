@@ -1,5 +1,5 @@
 import {
-  addObject,
+  addObjects,
   changePosition,
   deleteObjects,
   resizeObject,
@@ -17,10 +17,8 @@ export const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
 
-  const handleAddObject = (data) => {
-    for (const object of data) {
-      dispatch(addObject(object));
-    }
+  const handleAddObjects = (data) => {
+    dispatch(addObjects(data));
   };
 
   const handleChangePosition = (data) => {
@@ -61,8 +59,8 @@ export const WebSocketProvider = ({ children }) => {
     socket.onmessage = ({ data: messageData }) => {
       const { type, data } = JSON.parse(messageData);
       switch (type) {
-        case "add-object":
-          handleAddObject(data);
+        case "add-objects":
+          handleAddObjects(data);
           break;
         case "change-position":
           handleChangePosition(data);

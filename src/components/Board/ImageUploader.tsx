@@ -13,7 +13,7 @@ function ImageUploader() {
   const input = useSelector((state: RootState) => state.input);
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
-  const { handleAddObject } = useBoardActions();
+  const { handleAddObjects } = useBoardActions();
 
   const handleImageUpload = useCallback(
     async (event) => {
@@ -26,7 +26,7 @@ function ImageUploader() {
         theme,
         src
       );
-      handleAddObject(imageObject);
+      handleAddObjects([imageObject]);
       dispatch(setSelectedTool("cursor"));
     },
     [input.mousePosition, theme]

@@ -19,10 +19,12 @@ export const boardObjectsSlice = createSlice({
   name: "boardObjectsSlice",
   initialState,
   reducers: {
-    addObject: (state, action) => {
-      const newObject = action.payload;
-      state.objects[newObject.id] = newObject;
-      state.order.push(newObject.id);
+    addObjects: (state, action) => {
+      const objects = action.payload;
+      for (const object of objects) {
+        state.objects[object.id] = object;
+        state.order.push(object.id);
+      }
     },
     selectObject: (state, action) => {
       const id = action.payload;
@@ -178,7 +180,7 @@ export const boardObjectsSlice = createSlice({
 });
 
 export const {
-  addObject,
+  addObjects,
   selectObject,
   unselectObject,
   clearSelection,
