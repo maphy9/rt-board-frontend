@@ -1,5 +1,6 @@
 import {
   addObjects,
+  changeOrder,
   changePosition,
   deleteObjects,
   resizeObject,
@@ -17,38 +18,6 @@ export const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
 
-  const handleAddObjects = (data) => {
-    dispatch(addObjects(data));
-  };
-
-  const handleChangePosition = (data) => {
-    dispatch(changePosition(data));
-  };
-
-  const handleChangeText = (data) => {
-    dispatch(setText(data));
-  };
-
-  const handleChangeSize = (data) => {
-    dispatch(resizeObject(data));
-  };
-
-  const handleChangeFontSize = (data) => {
-    dispatch(setFontSize(data));
-  };
-
-  const handleChangeFontStyle = (data) => {
-    dispatch(setFontStyle(data));
-  };
-
-  const handleChangeFontColor = (data) => {
-    dispatch(setFontColor(data));
-  };
-
-  const handleDeleteObjects = (data) => {
-    dispatch(deleteObjects(data));
-  };
-
   useEffect(() => {
     const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
     setWebsocket(socket);
@@ -60,28 +29,31 @@ export const WebSocketProvider = ({ children }) => {
       const { type, data } = JSON.parse(messageData);
       switch (type) {
         case "add-objects":
-          handleAddObjects(data);
+          dispatch(addObjects(data));
           break;
         case "change-position":
-          handleChangePosition(data);
+          dispatch(changePosition(data));
           break;
         case "change-text":
-          handleChangeText(data);
+          dispatch(setText(data));
           break;
         case "change-size":
-          handleChangeSize(data);
+          dispatch(resizeObject(data));
           break;
         case "change-fontSize":
-          handleChangeFontSize(data);
+          dispatch(setFontSize(data));
           break;
         case "change-fontStyle":
-          handleChangeFontStyle(data);
+          dispatch(setFontStyle(data));
           break;
         case "change-fontColor":
-          handleChangeFontColor(data);
+          dispatch(setFontColor(data));
           break;
         case "delete-objects":
-          handleDeleteObjects(data);
+          dispatch(deleteObjects(data));
+          break;
+        case "change-order":
+          dispatch(changeOrder(data));
           break;
       }
     };

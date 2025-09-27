@@ -36,6 +36,7 @@ export default function useHistory() {
     } else if (historyItem.type === "changeOrder") {
       const { new: newOrder } = historyItem.data;
       dispatch(changeOrder(newOrder));
+      sendWebSocketMessage("change-order", newOrder);
     } else if (historyItem.type === "edit") {
       for (const objectStates of historyItem.data) {
         dispatch(setProperties(objectStates.new));
@@ -63,6 +64,7 @@ export default function useHistory() {
     } else if (historyItem.type === "changeOrder") {
       const { old: oldOrder } = historyItem.data;
       dispatch(changeOrder(oldOrder));
+      sendWebSocketMessage("change-order", oldOrder);
     } else if (historyItem.type === "edit") {
       for (const objectStates of historyItem.data) {
         dispatch(setProperties(objectStates.old));

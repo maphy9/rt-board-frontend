@@ -6,7 +6,6 @@ import styles from "./styles.module.css";
 import {
   toggleIsFlippedVertically,
   toggleIsFlippedHorizontally,
-  changeOrder,
 } from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
@@ -33,7 +32,8 @@ function OtherOption({
   const dispatch = useDispatch();
   const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
-  const { handleAddObjects, handleDeleteObjects } = useBoardActions();
+  const { handleAddObjects, handleDeleteObjects, handleChangeOrder } =
+    useBoardActions();
 
   const handleOpen = (event) => {
     stopPropagationAndEdit(event);
@@ -63,13 +63,7 @@ function OtherOption({
   const handleBringToFront = () => {
     const newOrder = boardObjects.order.filter((_id) => _id !== id);
     newOrder.push(id);
-    dispatch(
-      addHistoryItem({
-        type: "changeOrder",
-        data: { old: boardObjects.order, new: newOrder },
-      })
-    );
-    dispatch(changeOrder(newOrder));
+    handleChangeOrder(boardObjects.order, newOrder);
 
     toggleIsOpen();
   };
@@ -77,13 +71,7 @@ function OtherOption({
   const handleBringToRear = () => {
     const newOrder = boardObjects.order.filter((_id) => _id !== id);
     newOrder.unshift(id);
-    dispatch(
-      addHistoryItem({
-        type: "changeOrder",
-        data: { old: boardObjects.order, new: newOrder },
-      })
-    );
-    dispatch(changeOrder(newOrder));
+    handleChangeOrder(boardObjects.order, newOrder);
 
     toggleIsOpen();
   };

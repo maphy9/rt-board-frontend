@@ -1,5 +1,6 @@
 import {
   addObjects,
+  changeOrder,
   changePosition,
   deleteObjects,
   resizeObject,
@@ -121,6 +122,18 @@ export default function useBoardActions() {
     sendWebSocketMessage("delete-objects", ids);
   };
 
+  const handleChangeOrder = (oldOrder, newOrder) => {
+    dispatch(
+      addHistoryItem({
+        type: "changeOrder",
+        data: { old: oldOrder, new: newOrder },
+      })
+    );
+    console.log({ oldOrder, newOrder });
+    dispatch(changeOrder(newOrder));
+    sendWebSocketMessage("change-order", newOrder);
+  };
+
   return {
     handleAddObjects,
     changeSelectedPosition,
@@ -130,5 +143,6 @@ export default function useBoardActions() {
     changeDifferentFields,
     changeFontStyle,
     handleDeleteObjects,
+    handleChangeOrder,
   };
 }
