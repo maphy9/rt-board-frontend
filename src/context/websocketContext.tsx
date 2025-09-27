@@ -2,6 +2,7 @@ import {
   addObject,
   changePosition,
   resizeObject,
+  setFontColor,
   setFontSize,
   setFontStyle,
   setText,
@@ -41,6 +42,10 @@ export const WebSocketProvider = ({ children }) => {
     dispatch(setFontStyle(data));
   };
 
+  const handleChangeFontColor = (data) => {
+    dispatch(setFontColor(data));
+  };
+
   useEffect(() => {
     const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
     setWebsocket(socket);
@@ -69,6 +74,8 @@ export const WebSocketProvider = ({ children }) => {
         case "change-fontStyle":
           handleChangeFontStyle(data);
           break;
+        case "change-fontColor":
+          handleChangeFontColor(data);
       }
     };
 

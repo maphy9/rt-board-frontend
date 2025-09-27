@@ -83,11 +83,21 @@ export default function useBoardActions() {
     for (const updatedKey of updatedKeys) {
       switch (updatedKey) {
         case "fontSize":
-          changeFontSize(newState.id, (newState as TextObject).fontSize);
+          sendWebSocketMessage("change-fontSize", {
+            id: newState.id,
+            fontSize: (newState as TextObject).fontSize,
+          });
           break;
+        case "fontColor":
+          sendWebSocketMessage("change-fontColor", {
+            id: newState.id,
+            fontColor: (newState as TextObject).fontColor,
+          });
       }
     }
   };
+
+  const changeFontColor = (id, newFontColor) => {};
 
   const changeFontStyle = (textObject, newFontStyle) => {
     const oldState = boardObjectCleanCopy(textObject);
