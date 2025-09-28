@@ -8,6 +8,7 @@ import {
   setFontSize,
   setFontStyle,
   setOldObjectState,
+  setProperties,
   setText,
   toggleIsFlippedHorizontally,
   toggleIsFlippedVertically,
@@ -191,6 +192,11 @@ export default function useBoardActions() {
     sendWebSocketMessage("flip-vertically", boardObject.id);
   };
 
+  const handleSetProperties = (objects) => {
+    dispatch(setProperties(objects));
+    sendWebSocketMessage("set-properties", objects);
+  };
+
   return {
     handleAddObjects,
     changeSelectedPosition,
@@ -204,5 +210,6 @@ export default function useBoardActions() {
     handleRotateObject,
     handleFlipHorizontally,
     handleFlipVertically,
+    handleSetProperties,
   };
 }

@@ -161,9 +161,11 @@ export const boardObjectsSlice = createSlice({
         !state.objects[id].isFlippedVertically;
     },
     setProperties: (state, action) => {
-      const object = action.payload;
-      const id = object.id;
-      state.objects[id] = object;
+      const objects = action.payload;
+      for (const object of objects) {
+        const id = object.id;
+        state.objects[id] = object;
+      }
     },
     setOldObjectState: (state, action) => {
       state.oldObjectState = action.payload;

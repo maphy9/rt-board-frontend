@@ -9,6 +9,7 @@ import {
   setFontColor,
   setFontSize,
   setFontStyle,
+  setProperties,
   setText,
   toggleIsFlippedHorizontally,
   toggleIsFlippedVertically,
@@ -70,6 +71,9 @@ export const WebSocketProvider = ({ children }) => {
           break;
         case "flip-vertically":
           dispatch(toggleIsFlippedVertically(data));
+          break;
+        case "set-properties":
+          dispatch(setProperties(data));
           break;
       }
     };

@@ -2,17 +2,18 @@ import {
   addObjects,
   changeOrder,
   deleteObjects,
-  setProperties,
 } from "@/state/slices/boardObjectsSlice";
 import { goToFuture, goToPast } from "@/state/slices/historySlice";
 import { RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
 import useWebSocket from "./useWebSocket";
+import useBoardActions from "./useBoardActions";
 
 export default function useHistory() {
   const history = useSelector((state: RootState) => state.history);
   const dispatch = useDispatch();
   const { sendWebSocketMessage } = useWebSocket();
+  const { handleSetProperties } = useBoardActions();
 
   const hasPast = () => history.historyIndex > 0;
 
@@ -38,9 +39,8 @@ export default function useHistory() {
       dispatch(changeOrder(newOrder));
       sendWebSocketMessage("change-order", newOrder);
     } else if (historyItem.type === "edit") {
-      for (const objectStates of historyItem.data) {
-        dispatch(setProperties(objectStates.new));
-      }
+      const objects = historyItem.data.map((object) => object.new);
+      handleSetProperties(objects);
     }
 
     dispatch(goToFuture());
@@ -66,9 +66,8 @@ export default function useHistory() {
       dispatch(changeOrder(oldOrder));
       sendWebSocketMessage("change-order", oldOrder);
     } else if (historyItem.type === "edit") {
-      for (const objectStates of historyItem.data) {
-        dispatch(setProperties(objectStates.old));
-      }
+      const objects = historyItem.data.map((object) => object.old);
+      handleSetProperties(objects);
     }
 
     dispatch(goToPast());
