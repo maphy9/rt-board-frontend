@@ -4,6 +4,7 @@ import {
   changePosition,
   deleteObjects,
   resizeObject,
+  rotateObject,
   setFontSize,
   setFontStyle,
   setOldObjectState,
@@ -19,9 +20,13 @@ import { RootState } from "@/state/store";
 import { resizeBoardObject } from "@/utils/resizing";
 import TextObject from "@/types/BoardObjects/textObject";
 import { getDifferentFields } from "@/utils/objects";
+import { toRealPoint } from "@/types/point";
+import { angleBetweenTwoPoints } from "@/utils/rotation";
 
 export default function useBoardActions() {
   const dispatch = useDispatch();
+  const camera = useSelector((state: RootState) => state.camera);
+  const input = useSelector((state: RootState) => state.input);
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const { sendWebSocketMessage } = useWebSocket();
 
@@ -139,6 +144,19 @@ export default function useBoardActions() {
     sendWebSocketMessage("change-order", newOrder);
   };
 
+  const handleRotateObject = () => {
+    const mousePosition = toRealPoint(input.mousePosition, camera);
+    const id = boardObjects.rotated.id;
+    const boardObject = boardObjects.objects[id];
+    const rotationAngle = angleBetweenTwoPoints(
+      mousePosition,
+      boardObject.rotatingPoint
+    );
+    const data = { id, rotationAngle };
+    dispatch(rotateObject(data));
+    sendWebSocketMessage("rotate-object", data);
+  };
+
   return {
     handleAddObjects,
     changeSelectedPosition,
@@ -149,5 +167,6 @@ export default function useBoardActions() {
     changeFontStyle,
     handleDeleteObjects,
     handleChangeOrder,
+    handleRotateObject,
   };
 }

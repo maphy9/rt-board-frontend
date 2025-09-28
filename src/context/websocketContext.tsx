@@ -4,6 +4,7 @@ import {
   changePosition,
   deleteObjects,
   resizeObject,
+  rotateObject,
   setBackgroundColor,
   setFontColor,
   setFontSize,
@@ -58,6 +59,9 @@ export const WebSocketProvider = ({ children }) => {
           break;
         case "change-backgroundColor":
           dispatch(setBackgroundColor(data));
+          break;
+        case "rotate-object":
+          dispatch(rotateObject(data));
           break;
       }
     };

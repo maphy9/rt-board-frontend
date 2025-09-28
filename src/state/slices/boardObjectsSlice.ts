@@ -3,7 +3,6 @@ import BoardObjects from "@/types/BoardObjects/boardObjects";
 import TextObject from "@/types/BoardObjects/textObject";
 import { addOffset } from "@/types/point";
 import { areRectanglesIntersecting, createRectangle } from "@/types/rectangle";
-import { angleBetweenTwoPoints } from "@/utils/rotation";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: BoardObjects = {
@@ -143,18 +142,11 @@ export const boardObjectsSlice = createSlice({
       }
       state.objects[id].rotatingPoint = rotatingPoint;
     },
-    rotate: (state, action) => {
-      if (state.rotated === null) {
-        return;
-      }
-      const _id = state.rotated.id;
-      const boardObject = state.objects[_id];
-      const mousePosition = action.payload;
+    rotateObject: (state, action) => {
+      const { id, rotationAngle } = action.payload;
+      const boardObject = state.objects[id];
 
-      boardObject.rotationAngle = angleBetweenTwoPoints(
-        mousePosition,
-        boardObject.rotatingPoint
-      );
+      boardObject.rotationAngle = rotationAngle;
     },
     toggleIsFlippedHorizontally: (state, action) => {
       const id = action.payload;
@@ -197,7 +189,7 @@ export const {
   changeOrder,
   setBackgroundColor,
   setRotatingPoint,
-  rotate,
+  rotateObject,
   toggleIsFlippedHorizontally,
   toggleIsFlippedVertically,
   setProperties,

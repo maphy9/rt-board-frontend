@@ -6,9 +6,7 @@ import {
 import { addHistoryItem } from "@/state/slices/historySlice";
 import { setIsDragging } from "@/state/slices/inputSlice";
 import { RootState } from "@/state/store";
-import BoardObject, {
-  boardObjectCleanCopy,
-} from "@/types/BoardObjects/boardObject";
+import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import Camera from "@/types/camera";
 import Input from "@/types/input";
@@ -71,10 +69,10 @@ export default function useUniversalInput() {
     if (oldState === null) {
       return;
     }
-    const _id = oldState.id;
-    const newState = boardObjectCleanCopy(boardObjects.objects[_id]);
-    const data = [{ old: oldState, new: newState }];
-    dispatch(addHistoryItem({ type: "edit", data }));
+    const id = oldState.id;
+    const newState = boardObjectCleanCopy(boardObjects.objects[id]);
+    const historyData = [{ old: oldState, new: newState }];
+    dispatch(addHistoryItem({ type: "edit", data: historyData }));
     dispatch(
       setRotatingPoint({ id: boardObjects.rotated.id, rotatingPoint: null })
     );
