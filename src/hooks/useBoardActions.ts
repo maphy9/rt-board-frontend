@@ -9,6 +9,8 @@ import {
   setFontStyle,
   setOldObjectState,
   setText,
+  toggleIsFlippedHorizontally,
+  toggleIsFlippedVertically,
 } from "@/state/slices/boardObjectsSlice";
 import { addHistoryItem } from "@/state/slices/historySlice";
 import BoardObject, {
@@ -157,6 +159,38 @@ export default function useBoardActions() {
     sendWebSocketMessage("rotate-object", data);
   };
 
+  const handleFlipHorizontally = (boardObject) => {
+    const oldState = boardObjectCleanCopy(boardObject);
+    const historyData = [
+      {
+        old: oldState,
+        new: {
+          ...oldState,
+          isFlippedHorizontally: !oldState.isFlippedHorizontally,
+        },
+      },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data: historyData }));
+    dispatch(toggleIsFlippedHorizontally(boardObject.id));
+    sendWebSocketMessage("flip-horizontally", boardObject.id);
+  };
+
+  const handleFlipVertically = (boardObject) => {
+    const oldState = boardObjectCleanCopy(boardObject);
+    const historyData = [
+      {
+        old: oldState,
+        new: {
+          ...oldState,
+          isFlippedVertically: !oldState.isFlippedVertically,
+        },
+      },
+    ];
+    dispatch(addHistoryItem({ type: "edit", data: historyData }));
+    dispatch(toggleIsFlippedVertically(boardObject.id));
+    sendWebSocketMessage("flip-vertically", boardObject.id);
+  };
+
   return {
     handleAddObjects,
     changeSelectedPosition,
@@ -168,5 +202,7 @@ export default function useBoardActions() {
     handleDeleteObjects,
     handleChangeOrder,
     handleRotateObject,
+    handleFlipHorizontally,
+    handleFlipVertically,
   };
 }

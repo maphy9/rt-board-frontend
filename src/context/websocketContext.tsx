@@ -10,6 +10,8 @@ import {
   setFontSize,
   setFontStyle,
   setText,
+  toggleIsFlippedHorizontally,
+  toggleIsFlippedVertically,
 } from "@/state/slices/boardObjectsSlice";
 import React, { createContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -62,6 +64,12 @@ export const WebSocketProvider = ({ children }) => {
           break;
         case "rotate-object":
           dispatch(rotateObject(data));
+          break;
+        case "flip-horizontally":
+          dispatch(toggleIsFlippedHorizontally(data));
+          break;
+        case "flip-vertically":
+          dispatch(toggleIsFlippedVertically(data));
           break;
       }
     };
