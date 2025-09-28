@@ -95,6 +95,11 @@ export default function useBoardActions() {
             id: newState.id,
             fontColor: (newState as TextObject).fontColor,
           });
+        case "backgroundColor":
+          sendWebSocketMessage("change-backgroundColor", {
+            id: newState.id,
+            backgroundColor: (newState as any).backgroundColor,
+          });
       }
     }
   };

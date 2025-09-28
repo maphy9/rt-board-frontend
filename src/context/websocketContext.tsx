@@ -4,6 +4,7 @@ import {
   changePosition,
   deleteObjects,
   resizeObject,
+  setBackgroundColor,
   setFontColor,
   setFontSize,
   setFontStyle,
@@ -54,6 +55,9 @@ export const WebSocketProvider = ({ children }) => {
           break;
         case "change-order":
           dispatch(changeOrder(data));
+          break;
+        case "change-backgroundColor":
+          dispatch(setBackgroundColor(data));
           break;
       }
     };

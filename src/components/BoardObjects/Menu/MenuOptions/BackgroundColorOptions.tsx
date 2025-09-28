@@ -43,7 +43,6 @@ function BackgroundColorOption({
     if (boardObjects.oldObjectState === null) {
       dispatch(setOldObjectState(boardObjectCleanCopy(boardObject)));
     }
-
     dispatch(
       setBackgroundColor({ id: boardObject.id, backgroundColor: newColor })
     );
