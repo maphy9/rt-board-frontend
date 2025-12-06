@@ -19,6 +19,23 @@ import { useDispatch } from "react-redux";
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 
+const MESSAGE_HANDLERS = {
+  "add-objects": addObjects,
+  "change-position": changePosition,
+  "change-text": setText,
+  "change-size": resizeObject,
+  "change-fontSize": setFontSize,
+  "change-fontStyle": setFontStyle,
+  "change-fontColor": setFontColor,
+  "delete-objects": deleteObjects,
+  "change-order": changeOrder,
+  "change-backgroundColor": setBackgroundColor,
+  "rotate-object": rotateObject,
+  "flip-horizontally": toggleIsFlippedHorizontally,
+  "flip-vertically": toggleIsFlippedVertically,
+  "set-properties": setProperties,
+};
+
 export const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
@@ -32,49 +49,9 @@ export const WebSocketProvider = ({ children }) => {
     socket.onerror = (err) => console.log("Websocket error:", err);
     socket.onmessage = ({ data: messageData }) => {
       const { type, data } = JSON.parse(messageData);
-      switch (type) {
-        case "add-objects":
-          dispatch(addObjects(data));
-          break;
-        case "change-position":
-          dispatch(changePosition(data));
-          break;
-        case "change-text":
-          dispatch(setText(data));
-          break;
-        case "change-size":
-          dispatch(resizeObject(data));
-          break;
-        case "change-fontSize":
-          dispatch(setFontSize(data));
-          break;
-        case "change-fontStyle":
-          dispatch(setFontStyle(data));
-          break;
-        case "change-fontColor":
-          dispatch(setFontColor(data));
-          break;
-        case "delete-objects":
-          dispatch(deleteObjects(data));
-          break;
-        case "change-order":
-          dispatch(changeOrder(data));
-          break;
-        case "change-backgroundColor":
-          dispatch(setBackgroundColor(data));
-          break;
-        case "rotate-object":
-          dispatch(rotateObject(data));
-          break;
-        case "flip-horizontally":
-          dispatch(toggleIsFlippedHorizontally(data));
-          break;
-        case "flip-vertically":
-          dispatch(toggleIsFlippedVertically(data));
-          break;
-        case "set-properties":
-          dispatch(setProperties(data));
-          break;
+      const handler = MESSAGE_HANDLERS[type];
+      if (handler) {
+        dispatch(handler(data));
       }
     };
 
