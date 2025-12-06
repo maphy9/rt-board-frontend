@@ -55,7 +55,7 @@ export const WebSocketProvider = ({ children }) => {
       }
     };
 
-    return () => socket.close();
+    return () => socket.close(1000, "Component unmounting");
   }, []);
 
   if (websocket === null) {
