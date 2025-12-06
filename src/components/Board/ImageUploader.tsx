@@ -4,6 +4,7 @@ import { RootState } from "@/state/store";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import Camera from "@/types/camera";
 import { toRealPoint } from "@/types/point";
+import { imageDataToBase64 } from "@/utils/image";
 
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +19,7 @@ function ImageUploader() {
   const handleImageUpload = useCallback(
     async (event) => {
       const file = event.target.files[0];
-      const src = URL.createObjectURL(file);
+      const src = await imageDataToBase64(file);
       const position = toRealPoint(input.mousePosition, camera);
       const imageObject = await createBoardObject(
         "image",

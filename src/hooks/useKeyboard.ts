@@ -16,6 +16,7 @@ import getID from "@/utils/id";
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
 import useWebSocket from "./useWebSocket";
 import useBoardActions from "./useBoardActions";
+import { imageDataToBase64 } from "@/utils/image";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -104,7 +105,7 @@ export default function useKeyboard() {
     const imageType = getType(clipboardItem.types, "image");
     if (imageType !== undefined) {
       const blob = await clipboardItem.getType(imageType);
-      const src = URL.createObjectURL(blob);
+      const src = await imageDataToBase64(blob);
       const position = toRealPoint(mousePosition.current, cameraRef.current);
       const imageObject = await createBoardObject(
         "image",
