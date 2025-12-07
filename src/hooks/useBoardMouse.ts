@@ -1,14 +1,9 @@
 import { MAX_ZOOM, MIN_ZOOM } from "@/constants/cameraConstants";
 import {
-  addObject,
   clearSelection,
-  dragSelected,
-  resize,
-  rotate,
   selectObjectsInRectangle,
 } from "@/state/slices/boardObjectsSlice";
 import { panCamera, zoomCamera } from "@/state/slices/cameraSlice";
-import { addHistoryItem } from "@/state/slices/historySlice";
 import {
   setIsPanning,
   setIsSelecting,
@@ -28,6 +23,7 @@ import Toolbox from "@/types/toolbox";
 import { useDispatch, useSelector } from "react-redux";
 import useUniversalInput from "./useUniversalInput";
 import { useRef } from "react";
+import useBoardActions from "./useBoardActions";
 
 export default function useBoardMouse() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -38,9 +34,14 @@ export default function useBoardMouse() {
   const toolbox: Toolbox = useSelector((state: RootState) => state.toolbox);
   const { selectedTool } = toolbox;
   const dispatch = useDispatch();
-  const { handleStopDragging, stopPropagationAndEdit, handleStopRotate } =
-    useUniversalInput();
+  const { handleStopDragging, stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
+  const {
+    handleAddObjects,
+    changeSelectedPosition,
+    changeSize,
+    handleRotateObject,
+  } = useBoardActions();
 
   async function addNewBoardObject(src?: string) {
     const position = toRealPoint(input.mousePosition, camera);
@@ -50,8 +51,8 @@ export default function useBoardMouse() {
       theme,
       src
     );
-    dispatch(addObject(boardObject));
-    dispatch(addHistoryItem({ type: "add", data: [boardObject] }));
+
+    handleAddObjects([boardObject]);
     dispatch(setSelectedTool("cursor"));
   }
 
@@ -96,11 +97,11 @@ export default function useBoardMouse() {
       if (input.isPanning) {
         dispatch(panCamera({ dx, dy }));
       } else if (boardObjects.resized !== null) {
-        dispatch(resize({ dx, dy }));
+        changeSize(dx, dy);
       } else if (boardObjects.rotated !== null) {
-        dispatch(rotate(toRealPoint(input.mousePosition, camera)));
+        handleRotateObject();
       } else if (input.isDragging) {
-        dispatch(dragSelected({ dx, dy }));
+        changeSelectedPosition(dx, dy);
       }
 
       ticking.current = false;

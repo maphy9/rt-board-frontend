@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "module": "es2022",
+    "moduleResolution": "bundler",
     "jsx": "react",
     "paths": {
       "@/*": ["./src/*"]

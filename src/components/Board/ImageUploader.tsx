@@ -1,10 +1,10 @@
-import { addObject } from "@/state/slices/boardObjectsSlice";
-import { addHistoryItem } from "@/state/slices/historySlice";
+import useBoardActions from "@/hooks/useBoardActions";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import Camera from "@/types/camera";
 import { toRealPoint } from "@/types/point";
+import { imageDataToBase64 } from "@/utils/image";
 
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,11 +14,12 @@ function ImageUploader() {
   const input = useSelector((state: RootState) => state.input);
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
+  const { handleAddObjects } = useBoardActions();
 
   const handleImageUpload = useCallback(
     async (event) => {
       const file = event.target.files[0];
-      const src = URL.createObjectURL(file);
+      const src = await imageDataToBase64(file);
       const position = toRealPoint(input.mousePosition, camera);
       const imageObject = await createBoardObject(
         "image",
@@ -26,8 +27,7 @@ function ImageUploader() {
         theme,
         src
       );
-      dispatch(addObject(imageObject));
-      dispatch(addHistoryItem({ type: "add", data: [imageObject] }));
+      handleAddObjects([imageObject]);
       dispatch(setSelectedTool("cursor"));
     },
     [input.mousePosition, theme]

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import useEditEvents from "@/hooks/useEditEvents";
 import TextObject, { getFontStyle } from "@/types/BoardObjects/textObject";
@@ -23,6 +23,10 @@ function TextObjectInput({ textObject }: { textObject: TextObject }) {
   const { stopPropagation, stopPropagationAndEdit } = useUniversalInput();
 
   const [newText, setNewText] = useState(textObject.text);
+
+  useEffect(() => {
+    setNewText(textObject.text);
+  }, [textObject.text]);
 
   const handleChange = (event) => {
     const text = event.target.value;

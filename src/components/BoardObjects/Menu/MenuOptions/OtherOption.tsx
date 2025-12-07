@@ -3,20 +3,12 @@ import { RootState } from "@/state/store";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./styles.module.css";
-import {
-  deleteObject,
-  toggleIsFlippedVertically,
-  toggleIsFlippedHorizontally,
-  changeOrder,
-  addObject,
-} from "@/state/slices/boardObjectsSlice";
 import BoardObjects from "@/types/BoardObjects/boardObjects";
 import { getCssColor } from "@/types/color";
-import { addHistoryItem } from "@/state/slices/historySlice";
 import getID from "@/utils/id";
 import { addOffset } from "@/types/point";
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
-import { boardObjectCleanCopy } from "@/types/BoardObjects/boardObject";
+import useBoardActions from "@/hooks/useBoardActions";
 
 function OtherOption({
   id,
@@ -31,9 +23,15 @@ function OtherOption({
     (state: RootState) => state.boardObjects
   );
   const boardObject = boardObjects.objects[id];
-  const dispatch = useDispatch();
   const { stopPropagationAndEdit } = useUniversalInput();
   const { theme } = useSelector((state: RootState) => state.theme);
+  const {
+    handleAddObjects,
+    handleDeleteObjects,
+    handleChangeOrder,
+    handleFlipHorizontally,
+    handleFlipVertically,
+  } = useBoardActions();
 
   const handleOpen = (event) => {
     stopPropagationAndEdit(event);
@@ -42,13 +40,7 @@ function OtherOption({
   };
 
   const handleDelete = () => {
-    dispatch(
-      addHistoryItem({
-        type: "delete",
-        data: [{ ...boardObject, isSelected: false, isEditing: false }],
-      })
-    );
-    dispatch(deleteObject(id));
+    handleDeleteObjects([boardObject]);
 
     toggleIsOpen();
   };
@@ -61,22 +53,15 @@ function OtherOption({
       isEdited: false,
       position: addOffset(boardObject.position, OBJECT_COPY_MARGIN),
     };
-    dispatch(addObject(copy));
-    dispatch(addHistoryItem({ type: "add", data: [copy] }));
 
+    handleAddObjects([copy]);
     toggleIsOpen();
   };
 
   const handleBringToFront = () => {
     const newOrder = boardObjects.order.filter((_id) => _id !== id);
     newOrder.push(id);
-    dispatch(
-      addHistoryItem({
-        type: "changeOrder",
-        data: { old: boardObjects.order, new: newOrder },
-      })
-    );
-    dispatch(changeOrder(newOrder));
+    handleChangeOrder(boardObjects.order, newOrder);
 
     toggleIsOpen();
   };
@@ -84,48 +69,18 @@ function OtherOption({
   const handleBringToRear = () => {
     const newOrder = boardObjects.order.filter((_id) => _id !== id);
     newOrder.unshift(id);
-    dispatch(
-      addHistoryItem({
-        type: "changeOrder",
-        data: { old: boardObjects.order, new: newOrder },
-      })
-    );
-    dispatch(changeOrder(newOrder));
+    handleChangeOrder(boardObjects.order, newOrder);
 
     toggleIsOpen();
   };
 
-  const handleFlipHorizontally = () => {
-    const oldState = boardObjectCleanCopy(boardObject);
-    const data = [
-      {
-        old: oldState,
-        new: {
-          ...oldState,
-          isFlippedHorizontally: !oldState.isFlippedHorizontally,
-        },
-      },
-    ];
-    dispatch(addHistoryItem({ type: "edit", data }));
-    dispatch(toggleIsFlippedHorizontally(id));
-
+  const flipHorizontally = () => {
+    handleFlipHorizontally(boardObject);
     toggleIsOpen();
   };
 
-  const handleFlipVertically = () => {
-    const oldState = boardObjectCleanCopy(boardObject);
-    const data = [
-      {
-        old: oldState,
-        new: {
-          ...oldState,
-          isFlippedVertically: !oldState.isFlippedVertically,
-        },
-      },
-    ];
-    dispatch(addHistoryItem({ type: "edit", data }));
-    dispatch(toggleIsFlippedVertically(id));
-
+  const flipVertically = () => {
+    handleFlipVertically(boardObject);
     toggleIsOpen();
   };
 
@@ -207,10 +162,7 @@ function OtherOption({
                 }}
               />
             </div>
-            <div
-              className={styles.dropdownOption}
-              onClick={handleFlipHorizontally}
-            >
+            <div className={styles.dropdownOption} onClick={flipHorizontally}>
               <span>Flip horizontally</span>
               <img
                 className={styles.otherOptionsIcon}
@@ -220,10 +172,7 @@ function OtherOption({
                 }}
               />
             </div>
-            <div
-              className={styles.dropdownOption}
-              onClick={handleFlipVertically}
-            >
+            <div className={styles.dropdownOption} onClick={flipVertically}>
               <span>Flip vertically</span>
               <img
                 className={styles.otherOptionsIcon}

@@ -1,23 +1,22 @@
 import { addOffset, toRealPoint } from "@/types/point";
 import {
-  addObject,
+  addObjects,
   clearSelection,
-  deleteSelected,
   selectObject,
 } from "@/state/slices/boardObjectsSlice";
 import { setSelectedTool } from "@/state/slices/toolboxSlice";
 import { RootState } from "@/state/store";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  boardObjectCleanCopy,
-  createBoardObject,
-} from "@/types/BoardObjects/boardObject";
+import { createBoardObject } from "@/types/BoardObjects/boardObject";
 import { addHistoryItem } from "@/state/slices/historySlice";
 import useHistory from "./useHistory";
 import { copyObjectToClipboard } from "@/utils/clipboard";
 import getID from "@/utils/id";
 import { OBJECT_COPY_MARGIN } from "@/constants/boardObjectConstants";
+import useWebSocket from "./useWebSocket";
+import useBoardActions from "./useBoardActions";
+import { imageDataToBase64 } from "@/utils/image";
 
 function getType(types: readonly string[], type: string) {
   return types.find((t) => t.startsWith(type));
@@ -29,6 +28,8 @@ export default function useKeyboard() {
   const boardObjects = useSelector((state: RootState) => state.boardObjects);
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
+  const { sendWebSocketMessage } = useWebSocket();
+  const { handleAddObjects, handleDeleteObjects } = useBoardActions();
 
   const { handleGoToFuture, handleGoToPast } = useHistory();
 
@@ -86,11 +87,13 @@ export default function useKeyboard() {
           isEdited: false,
           position: addOffset(object.position, OBJECT_COPY_MARGIN),
         };
-        dispatch(addObject(copy));
         copies.push(copy);
       }
 
       dispatch(addHistoryItem({ type: "add", data: copies }));
+      dispatch(addObjects(copies));
+      sendWebSocketMessage("add-objects", copies);
+
       dispatch(clearSelection());
       for (const copy of copies) {
         dispatch(selectObject(copy.id));
@@ -102,7 +105,7 @@ export default function useKeyboard() {
     const imageType = getType(clipboardItem.types, "image");
     if (imageType !== undefined) {
       const blob = await clipboardItem.getType(imageType);
-      const src = URL.createObjectURL(blob);
+      const src = await imageDataToBase64(blob);
       const position = toRealPoint(mousePosition.current, cameraRef.current);
       const imageObject = await createBoardObject(
         "image",
@@ -110,8 +113,7 @@ export default function useKeyboard() {
         theme,
         src
       );
-      dispatch(addObject(imageObject));
-      dispatch(addHistoryItem({ type: "add", data: [imageObject] }));
+      handleAddObjects([imageObject]);
     }
   }
 
@@ -149,13 +151,11 @@ export default function useKeyboard() {
       if (selectedObjectIds.length === 0) {
         return;
       }
-      const selectedObjects = selectedObjectIds.map((id) => ({
-        ...boardObjectsRef.current.objects[id],
-        isSelected: false,
-        isEditing: false,
-      }));
-      dispatch(addHistoryItem({ type: "delete", data: selectedObjects }));
-      dispatch(deleteSelected());
+
+      const selectedObjects = selectedObjectIds.map(
+        (id) => boardObjectsRef.current.objects[id]
+      );
+      handleDeleteObjects(selectedObjects);
 
       return;
     }

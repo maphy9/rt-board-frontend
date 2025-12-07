@@ -12,6 +12,7 @@ import Camera from "@/types/camera";
 import Input from "@/types/input";
 import { addOffset, toRealPoint } from "@/types/point";
 import { useDispatch, useSelector } from "react-redux";
+import useBoardActions from "./useBoardActions";
 
 export default function useUniversalInput() {
   const camera: Camera = useSelector((state: RootState) => state.camera);
@@ -20,6 +21,7 @@ export default function useUniversalInput() {
     (state: RootState) => state.boardObjects
   );
   const dispatch = useDispatch();
+  const { changeDifferentFields } = useBoardActions();
 
   const stopPropagation = (event) => event.stopPropagation();
 
@@ -67,25 +69,24 @@ export default function useUniversalInput() {
     if (oldState === null) {
       return;
     }
-    const _id = oldState.id;
-    const newState = boardObjectCleanCopy(boardObjects.objects[_id]);
-    const data = [{ old: oldState, new: newState }];
-    dispatch(addHistoryItem({ type: "edit", data }));
+    const id = oldState.id;
+    const newState = boardObjectCleanCopy(boardObjects.objects[id]);
+    const historyData = [{ old: oldState, new: newState }];
+    dispatch(addHistoryItem({ type: "edit", data: historyData }));
     dispatch(
       setRotatingPoint({ id: boardObjects.rotated.id, rotatingPoint: null })
     );
   };
 
   const handleStopEdit = () => {
+    const oldState = boardObjects.oldObjectState;
     if (boardObjects.oldObjectState === null) {
       return;
     }
 
-    const _id = boardObjects.oldObjectState.id;
-    const newState = boardObjectCleanCopy(boardObjects.objects[_id]);
-    const data = [{ old: boardObjects.oldObjectState, new: newState }];
-    dispatch(setOldObjectState(null));
-    dispatch(addHistoryItem({ type: "edit", data }));
+    const id = oldState.id;
+    const newState = boardObjectCleanCopy(boardObjects.objects[id]);
+    changeDifferentFields(oldState, newState);
   };
 
   return {

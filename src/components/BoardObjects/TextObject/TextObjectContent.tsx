@@ -1,5 +1,5 @@
 import TextObject, { getFontStyle } from "@/types/BoardObjects/textObject";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import TextObjectInput from "./TextObjectInput";
 import { RootState } from "@/state/store";
 import Camera, { scaleToCamera } from "@/types/camera";
