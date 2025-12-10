@@ -41,7 +41,7 @@ export const WebSocketProvider = ({ children }) => {
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
+    const socket = new WebSocket(import.meta.env.NEXT_PUBLIC_WEBSOCKET_URL);
     setWebsocket(socket);
 
     socket.onopen = () => console.log("WebSocket open");
