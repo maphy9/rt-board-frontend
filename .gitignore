@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 .env
+package-lock.json
+
+.next
+next-env.d.ts
+build/
