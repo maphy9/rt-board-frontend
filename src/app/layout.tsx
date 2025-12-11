@@ -1,4 +1,3 @@
-import "./index.css";
 import type { Metadata } from "next";
 import React, { ReactNode } from "react";
 
